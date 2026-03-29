@@ -1,0 +1,66 @@
+:root {
+  // Light Mode Variables (Default)
+  --color-primary: #1E293B; // Slate 800 - Headlines, main strong text
+  --color-secondary: #475569; // Slate 600 - Body text, softer borders
+  --color-tertiary: #0D9488; // Teal 600 - Accents, some active states
+  --color-neutral: #F8FAFC; // Slate 50 - Main background
+  
+  --color-surface: #FFFFFF; // Cards, Modals, inner backgrounds
+  --color-border: #E2E8F0; // Slate 200 - General borders
+  --color-muted: #94A3B8; // Slate 400 - Disabled text, placeholders
+  --color-inverted-text: #FFFFFF; // Text on dark elements (like buttons)
+  
+  --color-sidebar-bg: #F1F5F9; // Slate 100
+  --color-sidebar-active: #FFFFFF;
+  --color-sidebar-hover: #E2E8F0;
+
+  // Status Colors (Light Mode)
+  --status-lead-bg: #E0E7FF; // Indigo 100
+  --status-lead-text: #3730A3; // Indigo 800
+  --status-contacted-bg: #DBEAFE; // Blue 100
+  --status-contacted-text: #1E40AF; // Blue 800
+  --status-qualified-bg: #D1FAE5; // Emerald 100
+  --status-qualified-text: #065F46; // Emerald 800
+  --status-customer-bg: #ECFDF5; // Emerald 50
+  --status-customer-text: #047857; // Emerald 700
+  --status-inactive-bg: #FEE2E2; // Red 100
+  --status-inactive-text: #991B1B; // Red 800
+
+  // Misc
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="dark"] {
+  // Dark Mode Variables
+  --color-primary: #F8FAFC; // Slate 50 - Headlines, strong text
+  --color-secondary: #94A3B8; // Slate 400 - Body text
+  --color-tertiary: #334155; // Slate 700 - Subdued panels, borders
+  --color-neutral: #0F172A; // Slate 900 - Main background
+  
+  --color-surface: #1E293B; // Slate 800 - Cards, Modals
+  --color-border: #334155; // Slate 700
+  --color-muted: #475569; // Slate 600
+  --color-inverted-text: #0F172A; // Text on bright elements (like primary buttons)
+  
+  --color-sidebar-bg: #0B1120; // Darker slate
+  --color-sidebar-active: #1E293B;
+  --color-sidebar-hover: #334155;
+
+  // Status Colors (Dark Mode)
+  --status-lead-bg: rgba(55, 48, 163, 0.2); // Indigo 800 / 20%
+  --status-lead-text: #818CF8; // Indigo 400
+  --status-contacted-bg: rgba(30, 64, 175, 0.3); // Blue 800 / 30%
+  --status-contacted-text: #60A5FA; // Blue 400
+  --status-qualified-bg: rgba(6, 95, 70, 0.3); // Emerald 800 / 30%
+  --status-qualified-text: #34D399; // Emerald 400
+  --status-customer-bg: rgba(4, 120, 87, 0.4); // Emerald 700 / 40%
+  --status-customer-text: #A7F3D0; // Emerald 200
+  --status-inactive-bg: rgba(153, 27, 27, 0.3); // Red 800 / 30%
+  --status-inactive-text: #F87171; // Red 400
+}

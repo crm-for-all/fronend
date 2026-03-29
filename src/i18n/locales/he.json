@@ -1,0 +1,17 @@
+{
+  "translation": {
+    "login": "התחברות",
+    "register": "הרשמה",
+    "dashboard": "לוח בקרה",
+    "settings": "הגדרות",
+    "customers": "לקוחות",
+    "tasks": "משימות",
+    "status": {
+      "lead": "ליד",
+      "contacted": "נוצר קשר",
+      "qualified": "מתאים",
+      "customer": "לקוח",
+      "inactive": "לא פעיל"
+    }
+  }
+}

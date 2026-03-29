@@ -1,0 +1,95 @@
+// Breakpoints
+$mobile: 480px;
+$tablet: 768px;
+$laptop: 1024px;
+$desktop: 1280px;
+
+// Media Query Mixins
+@mixin mobile {
+  @media (max-width: #{$tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$tablet}) and (max-width: #{$laptop - 1px}) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (min-width: #{$laptop}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}
+
+// LTR / RTL Mixins
+@mixin rtl() {
+  [dir="rtl"] & {
+    @content;
+  }
+}
+
+@mixin ltr() {
+  [dir="ltr"] & {
+    @content;
+  }
+}
+
+// Spacing Utilities Contexts
+@mixin r-margin-right($val) {
+  margin-right: $val;
+  @include rtl {
+    margin-right: 0;
+    margin-left: $val;
+  }
+}
+
+@mixin r-margin-left($val) {
+  margin-left: $val;
+  @include rtl {
+    margin-left: 0;
+    margin-right: $val;
+  }
+}
+
+@mixin r-padding-right($val) {
+  padding-right: $val;
+  @include rtl {
+    padding-right: 0;
+    padding-left: $val;
+  }
+}
+
+@mixin r-padding-left($val) {
+  padding-left: $val;
+  @include rtl {
+    padding-left: 0;
+    padding-right: $val;
+  }
+}
+
+// Flex Utilities
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

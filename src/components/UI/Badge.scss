@@ -1,0 +1,34 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 9999px; // Pill shape
+  font-size: 12px;
+  font-weight: 600;
+
+  &--lead {
+    background-color: var(--status-lead-bg);
+    color: var(--status-lead-text);
+  }
+
+  &--contacted {
+    background-color: var(--status-contacted-bg);
+    color: var(--status-contacted-text);
+  }
+
+  &--qualified {
+    background-color: var(--status-qualified-bg);
+    color: var(--status-qualified-text);
+  }
+
+  &--customer {
+    background-color: var(--status-customer-bg);
+    color: var(--status-customer-text);
+  }
+
+  &--inactive {
+    background-color: var(--status-inactive-bg);
+    color: var(--status-inactive-text);
+  }
+}

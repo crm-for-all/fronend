@@ -1,0 +1,73 @@
+@import '../../styles/mixins';
+
+.header {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background-color: var(--color-neutral);
+  flex-shrink: 0;
+
+  &__mobile-toggle {
+    display: none;
+    color: var(--color-primary);
+    
+    @include mobile {
+      display: block;
+    }
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .badge {
+      background-color: var(--color-sidebar-hover);
+      padding: 4px 8px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__icon-btn {
+    color: var(--color-secondary);
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      color: var(--color-primary);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__select {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-primary);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    outline: none;
+    
+    &:focus {
+      border-color: var(--color-tertiary);
+    }
+  }
+}

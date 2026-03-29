@@ -1,0 +1,17 @@
+{
+  "translation": {
+    "login": "Войти",
+    "register": "Регистрация",
+    "dashboard": "Дашборд",
+    "settings": "Настройки",
+    "customers": "Клиенты",
+    "tasks": "Задачи",
+    "status": {
+      "lead": "Лид",
+      "contacted": "Связь установлена",
+      "qualified": "Квалифицирован",
+      "customer": "Клиент",
+      "inactive": "Неактивен"
+    }
+  }
+}

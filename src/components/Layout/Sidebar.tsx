@@ -1,0 +1,75 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { LayoutDashboard, Users, ClipboardList, Settings } from 'lucide-react';
+import clsx from 'clsx';
+import './Sidebar.scss';
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      {/* Mobile backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+      
+      <aside className={clsx('sidebar', { 'sidebar--open': isOpen })}>
+        <div className="sidebar__logo">
+          <h1>Curator CRM</h1>
+          <span>Free Plan</span>
+        </div>
+
+        <nav className="sidebar__nav">
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              clsx('sidebar__link', { 'sidebar__link--active': isActive })
+            }
+          >
+            <LayoutDashboard />
+            <span>{t('dashboard')}</span>
+          </NavLink>
+
+          <NavLink
+            to="/customers"
+            className={({ isActive }) =>
+              clsx('sidebar__link', { 'sidebar__link--active': isActive })
+            }
+          >
+            <Users />
+            <span>{t('customers')}</span>
+          </NavLink>
+
+          <div className="sidebar__link sidebar__link--disabled">
+            <ClipboardList />
+            <span>{t('tasks')}</span>
+          </div>
+
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              clsx('sidebar__link', { 'sidebar__link--active': isActive })
+            }
+          >
+            <Settings />
+            <span>{t('settings')}</span>
+          </NavLink>
+        </nav>
+      </aside>
+    </>
+  );
+};
+
+export default Sidebar;

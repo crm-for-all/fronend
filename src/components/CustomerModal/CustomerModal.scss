@@ -1,0 +1,23 @@
+.customer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "translation": {
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "customers": "Customers",
+    "tasks": "Tasks",
+    "status": {
+      "lead": "Lead",
+      "contacted": "Contacted",
+      "qualified": "Qualified",
+      "customer": "Customer",
+      "inactive": "Inactive"
+    }
+  }
+}
