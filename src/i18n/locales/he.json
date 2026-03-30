@@ -12,6 +12,7 @@
       "qualified": "מתאים",
       "customer": "לקוח",
       "inactive": "לא פעיל"
-    }
+    },
+    "session_expired": "הפגישה פגה. אנא התחבר שוב."
   }
 }

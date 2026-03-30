@@ -18,8 +18,20 @@
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
   width: 100%;
-  max-width: 500px;
   max-height: 90vh;
+  
+  &--md {
+    max-width: 500px;
+  }
+
+  &--lg {
+    max-width: 800px;
+
+    @include mobile {
+      max-width: 100%;
+    }
+  }
+
   display: flex;
   flex-direction: column;
   animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);

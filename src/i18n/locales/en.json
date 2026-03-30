@@ -12,6 +12,7 @@
       "qualified": "Qualified",
       "customer": "Customer",
       "inactive": "Inactive"
-    }
+    },
+    "session_expired": "Session expired. Please log in again."
   }
 }

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import i18n from 'i18next';
 
 interface AuthContextType {
   token: string | null;
@@ -19,6 +20,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('crm_token');
     }
   }, [token]);
+
+  useEffect(() => {
+    const handleGlobalLogout = () => {
+      setToken(null);
+      window.dispatchEvent(new CustomEvent('app-error', { 
+        detail: i18n.t('session_expired') 
+      }));
+    };
+    window.addEventListener('app-logout', handleGlobalLogout);
+    return () => window.removeEventListener('app-logout', handleGlobalLogout);
+  }, []);
 
   const login = (newToken: string) => {
     setToken(newToken);

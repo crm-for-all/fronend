@@ -6,10 +6,11 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  size?: 'md' | 'lg';
   children: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, size = 'md', children }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -26,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   return (
     <div className="modal-overlay" onClick={onClose} aria-hidden="true">
       <div 
-        className="modal-content" 
+        className={`modal-content modal-content--${size}`} 
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

@@ -7,6 +7,7 @@ import Button from '../../components/UI/Button';
 import Badge from '../../components/UI/Badge';
 import Card from '../../components/UI/Card';
 import CustomerModal from '../../components/CustomerModal/CustomerModal';
+import CustomerDetailsModal from '../../components/CustomerModal/CustomerDetailsModal';
 import './Customers.scss';
 
 const CustomersDashboard = () => {
@@ -14,7 +15,8 @@ const CustomersDashboard = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateEditModalOpen, setIsCreateEditModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | undefined>(undefined);
 
   const fetchCustomers = async () => {
@@ -35,16 +37,22 @@ const CustomersDashboard = () => {
 
   const handleOpenCreateModal = () => {
     setSelectedCustomer(undefined);
-    setIsModalOpen(true);
+    setIsCreateEditModalOpen(true);
+  };
+
+  const handleOpenDetailsModal = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setIsDetailsModalOpen(true);
   };
 
   const handleOpenEditModal = (customer: Customer) => {
     setSelectedCustomer(customer);
-    setIsModalOpen(true);
+    setIsDetailsModalOpen(false);
+    setIsCreateEditModalOpen(true);
   };
 
-  const handleModalClose = (saved?: boolean) => {
-    setIsModalOpen(false);
+  const handleCreateEditModalClose = (saved?: boolean) => {
+    setIsCreateEditModalOpen(false);
     if (saved) {
       fetchCustomers();
     }
@@ -97,11 +105,11 @@ const CustomersDashboard = () => {
             const primaryPhone = customer.phones?.find(p => p.is_primary)?.phone_number || customer.phones?.[0]?.phone_number || '';
             
             return (
-              <div 
-                key={customer.id} 
-                className="customers-list__row"
-                onClick={() => handleOpenEditModal(customer)}
-              >
+                <div 
+                  key={customer.id} 
+                  className="customers-list__row"
+                  onClick={() => handleOpenDetailsModal(customer)}
+                >
                 <div className="col-name">
                   <strong>{customer.name}</strong>
                   <span>{customer.email || 'No Company'}</span>
@@ -131,9 +139,16 @@ const CustomersDashboard = () => {
       </Card>
 
       <CustomerModal 
-        isOpen={isModalOpen} 
-        onClose={handleModalClose} 
+        isOpen={isCreateEditModalOpen} 
+        onClose={handleCreateEditModalClose} 
         customer={selectedCustomer} 
+      />
+
+      <CustomerDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        customer={selectedCustomer}
+        onEdit={handleOpenEditModal}
       />
     </div>
   );
