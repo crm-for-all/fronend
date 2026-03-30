@@ -13,6 +13,18 @@
       "customer": "לקוח",
       "inactive": "לא פעיל"
     },
-    "session_expired": "הפגישה פגה. אנא התחבר שוב."
+    "session_expired": "פג תוקף ההתחברות. אנא התחבר מחדש.",
+    "logout": "התנתק",
+    "settings_subtitle": "נהל את הגדרות ה-CRM והחשבון שלך.",
+    "profile_settings": "הגדרות פרופיל",
+    "coming_soon": "ההגדרות יגיעו בקרוב...",
+    "customer_profile": "פרופיל לקוח",
+    "last_updated": "עודכן לאחרונה",
+    "contact_details": "פרטי התקשרות",
+    "email_label": "דואר אלקטרוני",
+    "phone_label": "טלפון נייד",
+    "last_activity": "פעולה אחרונה",
+    "notes_documentation": "הערות ותיעוד",
+    "no_notes": "אין הערות מתועדות ללקוח זה."
   }
 }

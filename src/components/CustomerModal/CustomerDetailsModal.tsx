@@ -15,36 +15,37 @@ interface CustomerDetailsModalProps {
 }
 
 const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ isOpen, onClose, onEdit, customer }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (!customer) return null;
 
   const primaryPhone = customer.phones?.find(p => p.is_primary)?.phone_number || customer.phones?.[0]?.phone_number;
 
-  // Formatting date nicely (mocking "some time ago" or just showing date)
+  // Formatting date nicely
   const updatedAt = new Date(customer.updated_at || customer.created_at || Date.now());
-  const dateString = updatedAt.toLocaleDateString(t('he') ? 'he-IL' : 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+  const locale = i18n.language === 'he' ? 'he-IL' : i18n.language === 'ru' ? 'ru-RU' : 'en-US';
+  const dateString = updatedAt.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <div className="customer-details">
         <div className="customer-details__header">
           <div className="customer-details__header-content">
-            <span className="customer-details__subtitle">פרופיל לקוח</span>
+            <span className="customer-details__subtitle">{t('customer_profile')}</span>
             <div className="customer-details__title-row">
               <h2>{customer.name}</h2>
               <Badge status={customer.status} />
             </div>
             <div className="customer-details__meta">
               <CalendarClock size={14} />
-              <span>עודכן לאחרונה: {dateString}</span>
+              <span>{t('last_updated')}: {dateString}</span>
             </div>
           </div>
           <div className="customer-details__actions">
-            <Button variant="outline" className="action-btn" disabled>
+            <Button variant="outline" className="action-btn" disabled title="Share (Disabled)">
               <Share2 size={18} />
             </Button>
-            <Button variant="secondary" className="action-btn" onClick={() => { onClose(); onEdit(customer); }}>
+            <Button variant="secondary" className="action-btn" onClick={() => { onClose(); onEdit(customer); }} title={t('edit', 'Edit')}>
               <Edit2 size={18} />
             </Button>
           </div>
@@ -53,14 +54,14 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ isOpen, onC
         <div className="customer-details__body">
           <div className="customer-details__sidebar">
             <div className="info-card">
-              <h3 className="info-card__title">פרטי התקשרות</h3>
+              <h3 className="info-card__title">{t('contact_details')}</h3>
               
               <div className="info-card__item">
                 <div className="info-card__icon-box">
                   <Mail size={16} />
                 </div>
                 <div className="info-card__text">
-                  <span>דואר אלקטרוני</span>
+                  <span>{t('email_label')}</span>
                   <strong>{customer.email || '---'}</strong>
                 </div>
               </div>
@@ -70,7 +71,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ isOpen, onC
                   <Phone size={16} />
                 </div>
                 <div className="info-card__text">
-                  <span>טלפון נייד</span>
+                  <span>{t('phone_label')}</span>
                   <strong>{primaryPhone || '---'}</strong>
                 </div>
               </div>
@@ -78,7 +79,7 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ isOpen, onC
 
             {customer.last_event && (
               <div className="info-card">
-                <h3 className="info-card__title">פעולה אחרונה</h3>
+                <h3 className="info-card__title">{t('last_activity')}</h3>
                 <div className="info-card__text">
                   <strong>{customer.last_event}</strong>
                 </div>
@@ -88,12 +89,12 @@ const CustomerDetailsModal: React.FC<CustomerDetailsModalProps> = ({ isOpen, onC
 
           <div className="customer-details__main">
             <div className="timeline">
-              <h3 className="timeline__title">הערות ותיעוד</h3>
+              <h3 className="timeline__title">{t('notes_documentation')}</h3>
               
               <div className="timeline__item">
                 <div className="timeline__content">
                   <p className="timeline__text">
-                    {customer.notes || 'אין הערות מתועדות ללקוח זה.'}
+                    {customer.notes || t('no_notes')}
                   </p>
                 </div>
               </div>

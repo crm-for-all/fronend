@@ -18,7 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {/* Mobile backdrop */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
+          className="sidebar-backdrop" 
           onClick={onClose}
           aria-hidden="true"
         />
@@ -34,6 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <NavLink
             to="/"
             end
+            onClick={onClose}
             className={({ isActive }) =>
               clsx('sidebar__link', { 'sidebar__link--active': isActive })
             }
@@ -44,6 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           <NavLink
             to="/customers"
+            onClick={onClose}
             className={({ isActive }) =>
               clsx('sidebar__link', { 'sidebar__link--active': isActive })
             }
@@ -59,8 +61,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           <NavLink
             to="/settings"
+            onClick={onClose}
             className={({ isActive }) =>
-              clsx('sidebar__link', { 'sidebar__link--active': isActive })
+              clsx('sidebar__link sidebar__link--settings', { 'sidebar__link--active': isActive })
             }
           >
             <Settings />

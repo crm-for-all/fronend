@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Menu, Bell, Sun, Moon } from 'lucide-react';
+import { Menu, User, Sun, Moon, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import './Header.scss';
 
 interface HeaderProps {
@@ -8,8 +9,22 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { logout } = useAuth();
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Initialize theme based on system preference
   useEffect(() => {
@@ -62,9 +77,30 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
           {theme === 'light' ? <Moon /> : <Sun />}
         </button>
 
-        <button className="header__icon-btn" aria-label="Notifications">
-          <Bell />
-        </button>
+        <div className="header__profile-wrapper" ref={profileRef}>
+          <button 
+            className="header__icon-btn" 
+            aria-label="Profile"
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+          >
+            <User />
+          </button>
+          
+          {isProfileOpen && (
+            <div className="profile-dropdown">
+              <button 
+                className="profile-dropdown__logout"
+                onClick={() => {
+                  setIsProfileOpen(false);
+                  logout();
+                }}
+              >
+                <LogOut size={16} />
+                <span>{t('logout', 'התנתק')}</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

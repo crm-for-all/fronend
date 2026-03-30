@@ -1,5 +1,17 @@
 @import '../../styles/mixins';
 
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  
+  // Only display on mobile where the sidebar actually slides
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
 .sidebar {
   width: 260px;
   background-color: var(--color-sidebar-bg);
@@ -16,9 +28,11 @@
   }
 
   @include mobile {
-    position: absolute;
+    position: fixed; // Better for mobile offscreen menus than absolute
+    top: 0;
+    left: 0;
     z-index: 50;
-    height: 100%;
+    height: 100vh;
     transform: translateX(-100%);
     @include rtl {
       transform: translateX(100%);
@@ -52,6 +66,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    flex-grow: 1;
   }
 
   &__link {
@@ -97,6 +112,10 @@
     &--disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+
+    &--settings {
+      margin-top: auto;
     }
 
     svg {

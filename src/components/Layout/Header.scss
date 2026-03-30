@@ -70,4 +70,61 @@
       border-color: var(--color-tertiary);
     }
   }
+
+  &__profile-wrapper {
+    position: relative;
+  }
 }
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0; // Default (LTR): Align right of menu to right of button
+  margin-top: 12px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 8px;
+  min-width: 160px;
+  z-index: 100;
+  transform-origin: top;
+  animation: slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @include rtl {
+    right: auto;
+    left: 0; // RTL: Align left of menu to left of button
+  }
+
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    color: #ef4444; // Red color specifically requested
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba(239, 68, 68, 0.1);
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

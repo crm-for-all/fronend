@@ -10,14 +10,18 @@ const SettingsDashboard = () => {
         <h1 style={{ fontSize: '32px', fontWeight: 700, color: 'var(--color-primary)' }}>
           {t('settings')}
         </h1>
-        <p style={{ color: 'var(--color-secondary)' }}>Manage your CRM preferences and account details.</p>
+        <p style={{ color: 'var(--color-secondary)' }}>
+          {t('settings_subtitle', 'נהל את הגדרות ה-CRM והחשבון שלך.')}
+        </p>
       </div>
 
       <Card>
         <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-primary)', marginBottom: '16px' }}>
-          Profile Settings
+          {t('profile_settings', 'הגדרות פרופיל')}
         </h2>
-        <p style={{ color: 'var(--color-secondary)' }}>Settings coming soon...</p>
+        <p style={{ color: 'var(--color-secondary)' }}>
+          {t('coming_soon', 'ההגדרות יגיעו בקרוב...')}
+        </p>
       </Card>
     </div>
   );

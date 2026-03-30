@@ -13,6 +13,18 @@
       "customer": "Customer",
       "inactive": "Inactive"
     },
-    "session_expired": "Session expired. Please log in again."
+    "session_expired": "Session expired. Please log in again.",
+    "logout": "Logout",
+    "settings_subtitle": "Manage your CRM preferences and account details.",
+    "profile_settings": "Profile Settings",
+    "coming_soon": "Settings coming soon...",
+    "customer_profile": "Customer Profile",
+    "last_updated": "Last updated",
+    "contact_details": "Contact Details",
+    "email_label": "Email",
+    "phone_label": "Phone Number",
+    "last_activity": "Last Activity",
+    "notes_documentation": "Notes & Documentation",
+    "no_notes": "No notes recorded for this customer."
   }
 }
