@@ -12,9 +12,15 @@
   &__mobile-toggle {
     display: none;
     color: var(--color-primary);
+    background: transparent;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
     
     @include mobile {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 

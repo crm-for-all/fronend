@@ -34,12 +34,19 @@
     z-index: 50;
     height: 100vh;
     transform: translateX(-100%);
+
     @include rtl {
+      left: auto;
+      right: 0;
       transform: translateX(100%);
     }
     
     &--open {
       transform: translateX(0);
+      
+      @include rtl {
+        transform: translateX(0);
+      }
     }
   }
 
