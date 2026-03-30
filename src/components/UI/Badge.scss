@@ -31,4 +31,9 @@
     background-color: var(--status-inactive-bg);
     color: var(--status-inactive-text);
   }
+
+  &--dynamic {
+    background-color: var(--color-sidebar-hover);
+    color: var(--color-primary);
+  }
 }

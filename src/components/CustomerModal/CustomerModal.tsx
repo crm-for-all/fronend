@@ -3,8 +3,11 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../UI/Modal';
 import Input from '../UI/Input';
 import Button from '../UI/Button';
+import { Plus, Trash2, Check } from 'lucide-react';
 import { customersApi } from '../../api/customers';
-import type { Customer, CustomerCreateDTO, CustomerStatus, CustomerUpdateDTO } from '../../types';
+import { tagsApi } from '../../api/tags';
+import { statusesApi } from '../../api/statuses';
+import type { Customer, CustomerCreateDTO, CustomerUpdateDTO, Tag, Status } from '../../types';
 import './CustomerModal.scss';
 
 interface CustomerModalProps {
@@ -16,18 +19,16 @@ interface CustomerModalProps {
 const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer }) => {
   const { t } = useTranslation();
 
-  const STATUS_OPTIONS = [
-    { value: 'lead', label: t('status.lead') },
-    { value: 'contacted', label: t('status.contacted') },
-    { value: 'qualified', label: t('status.qualified') },
-    { value: 'customer', label: t('status.customer') },
-    { value: 'inactive', label: t('status.inactive') }
-  ];
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [availableStatuses, setAvailableStatuses] = useState<Status[]>([]);
+  const [isFetchingMeta, setIsFetchingMeta] = useState(false);
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
 
   const [formData, setFormData] = useState<Partial<CustomerCreateDTO>>({
     name: '',
     email: '',
-    status: 'lead',
+    status_id: '',
+    tag_ids: [],
     notes: '',
     last_event: '',
     phones: [{ phone_number: '', is_primary: true }]
@@ -37,11 +38,29 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const fetchMeta = async () => {
+      setIsFetchingMeta(true);
+      try {
+        const [fetchedTags, fetchedStatuses] = await Promise.all([
+          tagsApi.getAll().catch(() => []),
+          statusesApi.getAll().catch(() => [])
+        ]);
+        setAvailableTags(fetchedTags);
+        setAvailableStatuses(fetchedStatuses);
+      } finally {
+        setIsFetchingMeta(false);
+      }
+    };
+    if (isOpen) fetchMeta();
+  }, [isOpen]);
+
+  useEffect(() => {
     if (customer) {
       setFormData({
         name: customer.name,
         email: customer.email || '',
-        status: customer.status,
+        status_id: customer.status_id || '',
+        tag_ids: customer.tag_ids || customer.tags?.map(t => t.id) || [],
         notes: customer.notes || '',
         last_event: customer.last_event || '',
         phones: customer.phones?.length ? customer.phones : [{ phone_number: '', is_primary: true }]
@@ -50,14 +69,15 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
       setFormData({
         name: '',
         email: '',
-        status: 'lead',
+        status_id: availableStatuses.length > 0 ? availableStatuses[0].id : '',
+        tag_ids: [],
         notes: '',
         last_event: '',
         phones: [{ phone_number: '', is_primary: true }]
       });
     }
     setError('');
-  }, [customer, isOpen]);
+  }, [customer, isOpen, availableStatuses]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,11 +98,49 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
     }
   };
 
-  const handlePhoneChange = (val: string) => {
+  const handleAddPhone = () => {
     setFormData(prev => ({
       ...prev,
-      phones: [{ phone_number: val, is_primary: true }]
+      phones: [...(prev.phones || []), { phone_number: '', is_primary: prev.phones?.length === 0 }]
     }));
+  };
+
+  const handleRemovePhone = (index: number) => {
+    setFormData(prev => {
+      const newPhones = [...(prev.phones || [])];
+      newPhones.splice(index, 1);
+      // If we removed the primary, make the first one primary
+      if (newPhones.length > 0 && !newPhones.some(p => p.is_primary)) {
+        newPhones[0].is_primary = true;
+      }
+      return { ...prev, phones: newPhones };
+    });
+  };
+
+  const updatePhone = (index: number, val: string) => {
+    setFormData(prev => {
+      const newPhones = [...(prev.phones || [])];
+      newPhones[index].phone_number = val;
+      return { ...prev, phones: newPhones };
+    });
+  };
+
+  const setPrimaryPhone = (index: number) => {
+    setFormData(prev => {
+      const newPhones = [...(prev.phones || [])].map((p, i) => ({ ...p, is_primary: i === index }));
+      return { ...prev, phones: newPhones };
+    });
+  };
+
+  const handleTagToggle = (tagId: string) => {
+    setFormData(prev => {
+      const currentTags = prev.tag_ids || [];
+      if (currentTags.includes(tagId)) {
+        return { ...prev, tag_ids: currentTags.filter(id => id !== tagId) };
+      } else {
+        return { ...prev, tag_ids: [...currentTags, tagId] };
+      }
+    });
   };
 
   return (
@@ -108,25 +166,149 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
           onChange={e => setFormData({ ...formData, email: e.target.value })} 
         />
         
-        <Input 
-          label="טלפון ראשי" 
-          value={formData.phones?.[0]?.phone_number || ''} 
-          onChange={e => handlePhoneChange(e.target.value)} 
-        />
-        
         <div className="input-group input-group--full">
-          <label className="input-group__label">סטטוס</label>
-          <select 
-            className="input-group__input"
-            value={formData.status}
-            onChange={e => setFormData({ ...formData, status: e.target.value as CustomerStatus })}
-          >
-            {STATUS_OPTIONS.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <label className="input-group__label" style={{ margin: 0 }}>{t('phone_label', 'טלפון')}</label>
+            <Button type="button" variant="outline" onClick={handleAddPhone} style={{ padding: '4px 8px', height: 'auto', fontSize: '12px' }}>
+              <Plus size={14} style={{ marginRight: t('he') ? 0 : '4px', marginLeft: t('he') ? '4px' : 0 }} />
+              {t('add_phone', 'הוסף טלפון')}
+            </Button>
+          </div>
+          
+          <div className="phones-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {formData.phones?.map((phone, idx) => (
+              <div key={idx} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  className="input-group__input"
+                  style={{ flex: 1 }}
+                  value={phone.phone_number}
+                  onChange={(e) => updatePhone(idx, e.target.value)}
+                  placeholder={t('phone_label', 'טלפון')}
+                />
+                <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', cursor: 'pointer' }}>
+                  <input
+                    type="radio"
+                    name="primary_phone"
+                    checked={phone.is_primary}
+                    onChange={() => setPrimaryPhone(idx)}
+                  />
+                  {t('primary', 'ראשי')}
+                </label>
+                {formData.phones!.length > 1 && (
+                  <button type="button" onClick={() => handleRemovePhone(idx)} style={{ background: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}>
+                    <Trash2 size={16} />
+                  </button>
+                )}
+              </div>
             ))}
-          </select>
+          </div>
+        </div>
+        
+        <div className="input-group input-group--full" style={{ position: 'relative' }}>
+          <label className="input-group__label">{t('status_label', 'סטטוס')}</label>
+          <div 
+            className="input-group__input" 
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: isFetchingMeta || availableStatuses.length === 0 ? 'not-allowed' : 'pointer', opacity: isFetchingMeta || availableStatuses.length === 0 ? 0.5 : 1 }}
+            onClick={() => { if (!isFetchingMeta && availableStatuses.length > 0) setIsStatusOpen(!isStatusOpen); }}
+          >
+            {isFetchingMeta ? (
+              <span style={{ color: 'var(--color-secondary)' }}>{t('loading', 'טוען...')}</span>
+            ) : availableStatuses.length === 0 ? (
+              <span style={{ color: 'var(--color-secondary)' }}>{t('no_statuses', 'אין סטטוסים, הוסף בהגדרות')}</span>
+            ) : formData.status_id ? (
+              <span style={{ 
+                color: 'var(--color-primary)', 
+                textDecoration: 'underline', 
+                textDecorationColor: availableStatuses.find(s => s.id === formData.status_id)?.color || 'var(--color-border)',
+                textDecorationThickness: '2px',
+                textUnderlineOffset: '4px'
+              }}>
+                {availableStatuses.find(s => s.id === formData.status_id)?.name}
+              </span>
+            ) : (
+              <span style={{ color: 'var(--color-secondary)' }}>{t('select_status', 'בחר סטטוס')}</span>
+            )}
+          </div>
+          
+          {isStatusOpen && availableStatuses.length > 0 && (
+            <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '4px', maxHeight: '160px', overflowY: 'auto', backgroundColor: 'var(--color-surface)', zIndex: 10, boxShadow: 'var(--shadow-md)' }}>
+              {availableStatuses.map(status => (
+                <div 
+                  key={status.id} 
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', cursor: 'pointer', borderRadius: 'var(--radius-sm)' }}
+                  onClick={() => { setFormData({ ...formData, status_id: status.id }); setIsStatusOpen(false); }}
+                  onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-sidebar-hover)'}
+                  onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  <span style={{ 
+                    color: 'var(--color-primary)',
+                    textDecoration: 'underline', 
+                    textDecorationColor: status.color || 'var(--color-border)',
+                    textDecorationThickness: '2px',
+                    textUnderlineOffset: '4px' 
+                  }}>
+                    {status.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="input-group input-group--full">
+          <label className="input-group__label">{t('tags_label', 'תגיות')}</label>
+          <div className="tags-dropdown" style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '8px', maxHeight: '120px', overflowY: 'auto', backgroundColor: 'var(--color-surface)' }}>
+            {isFetchingMeta ? (
+              <span style={{ fontSize: '14px', color: 'var(--color-secondary)' }}>{t('loading', 'טוען...')}</span>
+            ) : availableTags.length === 0 ? (
+              <span style={{ fontSize: '14px', color: 'var(--color-secondary)' }}>{t('no_labels', 'אין תגיות, הוסף בהגדרות')}</span>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {availableTags.map(tag => {
+                  const isSelected = formData.tag_ids?.includes(tag.id) || false;
+                  return (
+                    <label 
+                      key={tag.id} 
+                      style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: '12px', 
+                        padding: '8px 12px',
+                        fontSize: '14px', 
+                        cursor: 'pointer', 
+                        color: isSelected ? 'var(--color-primary)' : 'var(--color-secondary)',
+                        backgroundColor: isSelected ? 'var(--color-sidebar-hover)' : 'transparent',
+                        borderRadius: 'var(--radius-md)',
+                        transition: 'all 0.2s',
+                        margin: 0
+                      }}
+                    >
+                      <input 
+                        type="checkbox" 
+                        checked={isSelected}
+                        onChange={() => handleTagToggle(tag.id)}
+                        style={{ display: 'none' }}
+                      />
+                      <div style={{ 
+                        width: '18px', 
+                        height: '18px', 
+                        borderRadius: '4px', 
+                        border: `2px solid ${isSelected ? 'var(--color-primary)' : 'var(--color-border)'}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: isSelected ? 'var(--color-primary)' : 'transparent'
+                      }}>
+                        {isSelected && <Check size={12} color="var(--color-surface)" strokeWidth={3} />}
+                      </div>
+                      <span style={{ fontWeight: isSelected ? 600 : 400 }}>{tag.name}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
         
         <Input 
