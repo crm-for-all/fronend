@@ -89,11 +89,11 @@ const CustomersDashboard = () => {
 
       <Card className="customers-list">
         <div className="customers-list__head">
-          <div className="col-name">שם הלקוח</div>
-          <div className="col-contact">פרטי התקשרות</div>
-          <div className="col-status">סטטוס</div>
-          <div className="col-notes">הערות</div>
-          <div className="col-action">פעולה אחרונה</div>
+          <div className="col-name">{t('col_name')}</div>
+          <div className="col-contact">{t('col_contact')}</div>
+          <div className="col-notes">{t('col_notes')}</div>
+          <div className="col-tags">{t('col_tags')}</div>
+          <div className="col-status">{t('col_status')}</div>
         </div>
 
         {isLoading ? (
@@ -120,17 +120,22 @@ const CustomersDashboard = () => {
                   {customer.email && <span className="email">{customer.email}</span>}
                 </div>
                 
+                <div className="col-notes">
+                  <span className="truncate">{customer.notes || '\u2014'}</span>
+                  {customer.notes && <span className="read-more">{t('read_more')}</span>}
+                </div>
+
+                <div className="col-tags">
+                  {customer.tags && customer.tags.length > 0
+                    ? customer.tags.map(tag => (
+                        <span key={tag.id} className="tag-pill">{tag.name}</span>
+                      ))
+                    : <span className="no-tags">{t('no_tags')}</span>
+                  }
+                </div>
+
                 <div className="col-status">
                   <Badge status={customer.status} />
-                </div>
-                
-                <div className="col-notes">
-                  <span className="truncate">{customer.notes || '---'}</span>
-                  {customer.notes && <span className="read-more">קרא עוד</span>}
-                </div>
-                
-                <div className="col-action">
-                  <strong>{customer.last_event || '---'}</strong>
                 </div>
               </div>
             );
