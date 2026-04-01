@@ -48,7 +48,7 @@
     "settings_statuses_desc": "Create and manage dynamic statuses and select their matching colors.",
     "add_status": "Add Status",
     "name": "Name",
-    "color": "Color",
+    "status_color_label": "Status Color",
     "save": "Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
@@ -75,12 +75,13 @@
     "no_company": "No Company",
     "fetching_customers": "Loading customers...",
     "no_customers_found": "No customers found.",
-    "tone": {
-      "neutral": "Neutral",
-      "info": "Info",
-      "success": "Success",
-      "warning": "Warning",
-      "danger": "Danger",
+    "color": {
+      "gray": "Gray",
+      "blue": "Blue",
+      "green": "Green",
+      "yellow": "Yellow",
+      "orange": "Orange",
+      "red": "Red",
       "purple": "Purple",
       "pink": "Pink",
       "teal": "Teal"

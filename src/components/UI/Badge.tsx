@@ -1,13 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import type { CustomerStatus, Status, StatusTone, TagTone, Tag } from '../../types';
+import type { CustomerStatus, Status, StatusColor, Tag } from '../../types';
 import './Badge.scss';
 
 interface BadgeProps {
   status?: CustomerStatus | Status | string | null;
   tag?: Tag | null;
-  tone?: StatusTone | TagTone;
+  tone?: StatusColor;
   type?: 'status' | 'tag';
   label?: string;
   className?: string;
@@ -40,11 +40,11 @@ const Badge: React.FC<BadgeProps> = ({
 
   if (!label) return null;
 
-  // 3. Determine Tone
+  // 3. Determine Tone/Color
   let tone = manualTone;
   if (!tone) {
-    if (tag?.tone) tone = tag.tone;
-    else if (status && typeof status === 'object' && 'tone' in status) tone = status.tone;
+    if (tag) tone = 'gray';
+    else if (status && typeof status === 'object' && 'color' in status) tone = status.color;
   }
 
   // 4. Handle Legacy Status Strings

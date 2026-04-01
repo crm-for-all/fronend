@@ -6,7 +6,7 @@ import Input from '../../../components/UI/Input';
 import Badge from '../../../components/UI/Badge';
 import ConfirmModal from '../../../components/UI/ConfirmModal';
 import { statusesApi } from '../../../api/statuses';
-import type { Status } from '../../../types';
+import type { Status, StatusColor } from '../../../types';
 
 interface StatusesManagerProps {
   setIsDirty: (dirty: boolean) => void;
@@ -47,14 +47,14 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
 
   const handleEdit = (status: Status) => {
     setEditingId(status.id);
-    setEditForm({ name: status.name, tone: status.tone });
+    setEditForm({ name: status.name, color: status.color });
     setAddingNew(false);
   };
 
   const handleAddNew = () => {
     setAddingNew(true);
     setEditingId(null);
-    setEditForm({ name: '', tone: 'neutral' });
+    setEditForm({ name: '', color: 'gray' });
   };
 
   const handleCancelEdit = () => {
@@ -64,13 +64,13 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
   };
 
   const handleSave = async () => {
-    if (!editForm.name?.trim() || !editForm.tone) return;
+    if (!editForm.name?.trim() || !editForm.color) return;
     
     try {
       if (addingNew) {
-        await statusesApi.create({ name: editForm.name, tone: editForm.tone });
+        await statusesApi.create({ name: editForm.name, color: editForm.color as StatusColor });
       } else if (editingId) {
-        await statusesApi.update(editingId, { name: editForm.name, tone: editForm.tone });
+        await statusesApi.update(editingId, { name: editForm.name, color: editForm.color as StatusColor });
       }
       handleCancelEdit();
       fetchStatuses();
@@ -93,6 +93,73 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
     }
   };
 
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+
+  const renderColorSelect = () => {
+    const colors: StatusColor[] = ['gray', 'blue', 'green', 'yellow', 'orange', 'red', 'purple', 'pink', 'teal'];
+    
+    return (
+      <div style={{ position: 'relative', width: 'fit-content' }}>
+        <button
+          type="button"
+          onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
+          style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: 'var(--radius-sm)',
+            border: '2px solid var(--color-border)',
+            backgroundColor: `var(--tone-${editForm.color || 'gray'}-bg)`,
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <div style={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: `var(--tone-${editForm.color || 'gray'}-text)` }} />
+        </button>
+        
+        {isColorPickerOpen && (
+          <div style={{
+            position: 'absolute',
+            top: '100%',
+            insetInlineEnd: 0,
+            marginTop: '8px',
+            padding: '8px',
+            background: 'var(--color-surface)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: 'var(--shadow-lg)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '8px',
+            zIndex: 100,
+          }}>
+            {colors.map(color => (
+              <button
+                key={color}
+                type="button"
+                onClick={() => {
+                  setEditForm(prev => ({ ...prev, color }));
+                  setIsColorPickerOpen(false);
+                }}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: `var(--tone-${color}-bg)`,
+                  border: `2px solid ${editForm.color === color ? 'var(--color-primary)' : 'var(--tone-${color}-border)'}`,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (isLoading) return <div>{t('loading', 'טוען...')}</div>;
 
   return (
@@ -107,35 +174,18 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {addingNew && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', background: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-primary)' }}>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <Input 
-                value={editForm.name || ''} 
-                onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
-                placeholder={t('name', 'שם')}
-                style={{ margin: 0, flex: 1 }}
-              />
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {(['neutral', 'info', 'success', 'warning', 'danger'] as const).map(tone => (
-                <button
-                  key={tone}
-                  type="button"
-                  onClick={() => setEditForm(prev => ({ ...prev, tone }))}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '999px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    border: '1px solid',
-                    backgroundColor: editForm.tone === tone ? `var(--tone-${tone}-bg)` : 'transparent',
-                    color: editForm.tone === tone ? `var(--tone-${tone}-text)` : 'var(--color-secondary)',
-                    borderColor: editForm.tone === tone ? `var(--tone-${tone}-border)` : 'var(--color-border)',
-                  }}
-                >
-                  {t(`tone.${tone}`, tone)}
-                </button>
-              ))}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <div style={{ flex: 1 }}>
+                <Input 
+                  value={editForm.name || ''} 
+                  onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
+                  placeholder={t('status_label', 'סטטוס')}
+                  style={{ margin: 0 }}
+                />
+              </div>
+              <div style={{ paddingBottom: '4px' }}>
+                {renderColorSelect()}
+              </div>
             </div>
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
               <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>
@@ -148,34 +198,18 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
           <div key={status.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', background: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
             {editingId === status.id ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <Input 
-                    value={editForm.name || ''} 
-                    onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
-                    style={{ margin: 0, flex: 1 }}
-                  />
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {(['neutral', 'info', 'success', 'warning', 'danger'] as const).map(tone => (
-                    <button
-                      key={tone}
-                      type="button"
-                      onClick={() => setEditForm(prev => ({ ...prev, tone }))}
-                      style={{
-                        padding: '6px 12px',
-                        borderRadius: '999px',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        border: '1px solid',
-                        backgroundColor: editForm.tone === tone ? `var(--tone-${tone}-bg)` : 'transparent',
-                        color: editForm.tone === tone ? `var(--tone-${tone}-text)` : 'var(--color-secondary)',
-                        borderColor: editForm.tone === tone ? `var(--tone-${tone}-border)` : 'var(--color-border)',
-                      }}
-                    >
-                      {t(`tone.${tone}`, tone)}
-                    </button>
-                  ))}
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                  <div style={{ flex: 1 }}>
+                    <Input 
+                      value={editForm.name || ''} 
+                      onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
+                      placeholder={t('status_label', 'סטטוס')}
+                      style={{ margin: 0 }}
+                    />
+                  </div>
+                  <div style={{ paddingBottom: '4px' }}>
+                    {renderColorSelect()}
+                  </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                   <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>

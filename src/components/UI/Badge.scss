@@ -30,18 +30,17 @@
     }
   }
 
-  // Tones
-  @each $tone in neutral, info, success, warning, danger, purple, pink, teal {
-    &--tone-#{$tone} {
+  @each $color in gray, blue, green, yellow, orange, red, purple, pink, teal {
+    &--tone-#{$color} {
       &.badge--tag {
-        background-color: var(--tone-#{$tone}-bg);
-        color: var(--tone-#{$tone}-text);
-        border-color: var(--tone-#{$tone}-border);
+        background-color: var(--tone-#{$color}-bg);
+        color: var(--tone-#{$color}-text);
+        border-color: var(--tone-#{$color}-border);
       }
 
       &.badge--status {
         &::before {
-          background-color: var(--tone-#{$tone}-text);
+          background-color: var(--tone-#{$color}-text);
         }
       }
     }

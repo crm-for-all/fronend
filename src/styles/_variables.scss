@@ -26,12 +26,13 @@
   --status-inactive-bg: #FEE2E2; // Red 100
   --status-inactive-text: #991B1B; // Red 800
   
-  // Semantic Tones (Light Mode)
-  --tone-neutral-bg: #F1F5F9; --tone-neutral-text: #475569; --tone-neutral-border: #CBD5E1;
-  --tone-info-bg: #E0F2FE; --tone-info-text: #0369A1; --tone-info-border: #BAE6FD;
-  --tone-success-bg: #DCFCE7; --tone-success-text: #15803D; --tone-success-border: #BBF7D0;
-  --tone-warning-bg: #FEF9C3; --tone-warning-text: #A16207; --tone-warning-border: #FEF08A;
-  --tone-danger-bg: #FEE2E2; --tone-danger-text: #B91C1C; --tone-danger-border: #FECACA;
+  // Color Tokens (Light Mode)
+  --tone-gray-bg: #F1F5F9; --tone-gray-text: #475569; --tone-gray-border: #CBD5E1;
+  --tone-blue-bg: #E0F2FE; --tone-blue-text: #0369A1; --tone-blue-border: #BAE6FD;
+  --tone-green-bg: #DCFCE7; --tone-green-text: #15803D; --tone-green-border: #BBF7D0;
+  --tone-yellow-bg: #FEF9C3; --tone-yellow-text: #A16207; --tone-yellow-border: #FEF08A;
+  --tone-orange-bg: #FFEDD5; --tone-orange-text: #C2410C; --tone-orange-border: #FED7AA;
+  --tone-red-bg: #FEE2E2; --tone-red-text: #B91C1C; --tone-red-border: #FECACA;
   --tone-purple-bg: #F3E8FF; --tone-purple-text: #7E22CE; --tone-purple-border: #E9D5FF;
   --tone-pink-bg: #FCE7F3; --tone-pink-text: #BE185D; --tone-pink-border: #FBCFE8;
   --tone-teal-bg: #CCFBFE; --tone-teal-text: #0D9488; --tone-teal-border: #99F6E4;
@@ -74,12 +75,13 @@
   --status-inactive-bg: rgba(153, 27, 27, 0.3); // Red 800 / 30%
   --status-inactive-text: #F87171; // Red 400
 
-  // Semantic Tones (Dark Mode)
-  --tone-neutral-bg: rgba(71, 85, 105, 0.2); --tone-neutral-text: #94A3B8; --tone-neutral-border: rgba(71, 85, 105, 0.4);
-  --tone-info-bg: rgba(3, 105, 161, 0.2); --tone-info-text: #7DD3FC; --tone-info-border: rgba(3, 105, 161, 0.4);
-  --tone-success-bg: rgba(21, 128, 61, 0.2); --tone-success-text: #86EFAC; --tone-success-border: rgba(21, 128, 61, 0.4);
-  --tone-warning-bg: rgba(161, 98, 7, 0.2); --tone-warning-text: #FDE047; --tone-warning-border: rgba(161, 98, 7, 0.3);
-  --tone-danger-bg: rgba(185, 28, 28, 0.2); --tone-danger-text: #FCA5A5; --tone-danger-border: rgba(185, 28, 28, 0.4);
+  // Color Tokens (Dark Mode)
+  --tone-gray-bg: rgba(71, 85, 105, 0.2); --tone-gray-text: #94A3B8; --tone-gray-border: rgba(71, 85, 105, 0.4);
+  --tone-blue-bg: rgba(3, 105, 161, 0.2); --tone-blue-text: #7DD3FC; --tone-blue-border: rgba(3, 105, 161, 0.4);
+  --tone-green-bg: rgba(21, 128, 61, 0.2); --tone-green-text: #86EFAC; --tone-green-border: rgba(21, 128, 61, 0.4);
+  --tone-yellow-bg: rgba(161, 98, 7, 0.2); --tone-yellow-text: #FDE047; --tone-yellow-border: rgba(161, 98, 7, 0.3);
+  --tone-orange-bg: rgba(194, 65, 12, 0.2); --tone-orange-text: #FB923C; --tone-orange-border: rgba(194, 65, 12, 0.4);
+  --tone-red-bg: rgba(185, 28, 28, 0.2); --tone-red-text: #FCA5A5; --tone-red-border: rgba(185, 28, 28, 0.4);
   --tone-purple-bg: rgba(126, 34, 206, 0.2); --tone-purple-text: #D8B4FE; --tone-purple-border: rgba(126, 34, 206, 0.4);
   --tone-pink-bg: rgba(190, 24, 93, 0.2); --tone-pink-text: #F9A8D4; --tone-pink-border: rgba(190, 24, 93, 0.4);
   --tone-teal-bg: rgba(13, 148, 136, 0.2); --tone-teal-text: #5EEAD4; --tone-teal-border: rgba(13, 148, 136, 0.4);

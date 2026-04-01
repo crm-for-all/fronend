@@ -47,14 +47,14 @@ const TagsManager: React.FC<TagsManagerProps> = ({ setIsDirty }) => {
 
   const handleEdit = (tag: Tag) => {
     setEditingId(tag.id);
-    setEditForm({ name: tag.name, tone: tag.tone || 'neutral' });
+    setEditForm({ name: tag.name });
     setAddingNew(false);
   };
 
   const handleAddNew = () => {
     setAddingNew(true);
     setEditingId(null);
-    setEditForm({ name: '', tone: 'neutral' });
+    setEditForm({ name: '' });
   };
 
   const handleCancelEdit = () => {
@@ -68,9 +68,9 @@ const TagsManager: React.FC<TagsManagerProps> = ({ setIsDirty }) => {
     
     try {
       if (addingNew) {
-        await tagsApi.create({ name: editForm.name, tone: editForm.tone });
+        await tagsApi.create({ name: editForm.name });
       } else if (editingId) {
-        await tagsApi.update(editingId, { name: editForm.name, tone: editForm.tone });
+        await tagsApi.update(editingId, { name: editForm.name });
       }
       handleCancelEdit();
       fetchTags();
@@ -115,28 +115,6 @@ const TagsManager: React.FC<TagsManagerProps> = ({ setIsDirty }) => {
                 style={{ margin: 0, flex: 1 }}
               />
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {(['neutral', 'info', 'success', 'warning', 'danger', 'purple', 'pink', 'teal'] as const).map(tone => (
-                <button
-                  key={tone}
-                  type="button"
-                  onClick={() => setEditForm(prev => ({ ...prev, tone }))}
-                  style={{
-                    padding: '6px 12px',
-                    borderRadius: '999px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    border: '1px solid',
-                    backgroundColor: editForm.tone === tone ? `var(--tone-${tone}-bg)` : 'transparent',
-                    color: editForm.tone === tone ? `var(--tone-${tone}-text)` : 'var(--color-secondary)',
-                    borderColor: editForm.tone === tone ? `var(--tone-${tone}-border)` : 'var(--color-border)',
-                  }}
-                >
-                  {t(`tone.${tone}`, tone)}
-                </button>
-              ))}
-            </div>
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
               <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>
               <Button variant="primary" onClick={handleSave} disabled={!editForm.name?.trim()}>{t('save', 'שמור')}</Button>
@@ -154,28 +132,6 @@ const TagsManager: React.FC<TagsManagerProps> = ({ setIsDirty }) => {
                     onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
                     style={{ margin: 0, flex: 1 }}
                   />
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                  {(['neutral', 'info', 'success', 'warning', 'danger', 'purple', 'pink', 'teal'] as const).map(tone => (
-                    <button
-                      key={tone}
-                      type="button"
-                      onClick={() => setEditForm(prev => ({ ...prev, tone }))}
-                      style={{
-                        padding: '6px 12px',
-                        borderRadius: '999px',
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                        border: '1px solid',
-                        backgroundColor: editForm.tone === tone ? `var(--tone-${tone}-bg)` : 'transparent',
-                        color: editForm.tone === tone ? `var(--tone-${tone}-text)` : 'var(--color-secondary)',
-                        borderColor: editForm.tone === tone ? `var(--tone-${tone}-border)` : 'var(--color-border)',
-                      }}
-                    >
-                      {t(`tone.${tone}`, tone)}
-                    </button>
-                  ))}
                 </div>
                 <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                   <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>

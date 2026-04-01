@@ -48,7 +48,7 @@
     "settings_statuses_desc": "צור ונהל סטטוסים דינמיים ובחר להם צבעים מותאמים.",
     "add_status": "הוסף סטטוס",
     "name": "שם",
-    "color": "צבע",
+    "status_color_label": "צבע סטטוס",
     "save": "שמור",
     "cancel": "ביטול",
     "confirm": "אישור",
@@ -75,12 +75,13 @@
     "no_company": "ללא חברה",
     "fetching_customers": "טוען לקוחות...",
     "no_customers_found": "לא נמצאו לקוחות.",
-    "tone": {
-      "neutral": "ניטרלי",
-      "info": "מידע",
-      "success": "הצלחה",
-      "warning": "אזהרה",
-      "danger": "סכנה",
+    "color": {
+      "gray": "אפור",
+      "blue": "כחול",
+      "green": "ירוק",
+      "yellow": "צהוב",
+      "orange": "כתום",
+      "red": "אדום",
       "purple": "סגול",
       "pink": "ורוד",
       "teal": "טורקיז"
