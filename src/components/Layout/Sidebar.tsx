@@ -31,44 +31,48 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </div>
 
         <nav className="sidebar__nav">
-          <NavLink
-            to="/"
-            end
-            onClick={onClose}
-            className={({ isActive }) =>
-              clsx('sidebar__link', { 'sidebar__link--active': isActive })
-            }
-          >
-            <LayoutDashboard />
-            <span>{t('dashboard')}</span>
-          </NavLink>
+          <div className="sidebar__nav-links">
+            <NavLink
+              to="/"
+              end
+              onClick={onClose}
+              className={({ isActive }) =>
+                clsx('sidebar__link', { 'sidebar__link--active': isActive })
+              }
+            >
+              <LayoutDashboard />
+              <span>{t('dashboard')}</span>
+            </NavLink>
 
-          <NavLink
-            to="/customers"
-            onClick={onClose}
-            className={({ isActive }) =>
-              clsx('sidebar__link', { 'sidebar__link--active': isActive })
-            }
-          >
-            <Users />
-            <span>{t('customers')}</span>
-          </NavLink>
+            <NavLink
+              to="/customers"
+              onClick={onClose}
+              className={({ isActive }) =>
+                clsx('sidebar__link', { 'sidebar__link--active': isActive })
+              }
+            >
+              <Users />
+              <span>{t('customers')}</span>
+            </NavLink>
 
-          <div className="sidebar__link sidebar__link--disabled">
-            <ClipboardList />
-            <span>{t('tasks')}</span>
+            <div className="sidebar__link sidebar__link--disabled">
+              <ClipboardList />
+              <span>{t('tasks')}</span>
+            </div>
           </div>
 
-          <NavLink
-            to="/settings"
-            onClick={onClose}
-            className={({ isActive }) =>
-              clsx('sidebar__link sidebar__link--settings', { 'sidebar__link--active': isActive })
-            }
-          >
-            <Settings />
-            <span>{t('settings')}</span>
-          </NavLink>
+          <div className="sidebar__footer">
+            <NavLink
+              to="/settings"
+              onClick={onClose}
+              className={({ isActive }) =>
+                clsx('sidebar__link', { 'sidebar__link--active': isActive })
+              }
+            >
+              <Settings />
+              <span>{t('settings')}</span>
+            </NavLink>
+          </div>
         </nav>
       </aside>
     </>

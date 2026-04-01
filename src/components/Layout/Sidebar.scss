@@ -19,7 +19,10 @@
   display: flex;
   flex-direction: column;
   padding: 24px;
+  padding-top: max(24px, env(safe-area-inset-top));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
   transition: all 0.3s ease;
+  overflow: hidden;
   border-right: 1px solid var(--color-border); // will be overridden in RTL by flip logic? Actually we can just do borders differently.
 
   @include rtl {
@@ -33,6 +36,11 @@
     left: 0;
     z-index: 50;
     height: 100vh;
+    height: 100svh;
+    width: 280px;
+    padding: 16px;
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
     transform: translateX(-100%);
 
     @include rtl {
@@ -72,8 +80,40 @@
   &__nav {
     display: flex;
     flex-direction: column;
-    gap: 16px;
     flex-grow: 1;
+    overflow: hidden;
+    gap: 16px;
+
+    @include mobile {
+      gap: 12px;
+    }
+  }
+
+  &__nav-links {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 24px;
+
+    @include mobile {
+      gap: 8px;
+      padding-bottom: 16px;
+    }
+
+    // Hide scrollbar for clean look but keep scrollable
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__footer {
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+    margin-top: auto;
+    flex-shrink: 0;
   }
 
   &__link {
@@ -86,6 +126,11 @@
     font-size: 15px;
     font-weight: 500;
     transition: all 0.2s ease;
+
+    @include mobile {
+      padding: 12px 14px;
+      font-size: 14px;
+    }
 
     &:hover:not(&--disabled) {
       background-color: var(--color-sidebar-hover);
@@ -119,10 +164,6 @@
     &--disabled {
       opacity: 0.5;
       cursor: not-allowed;
-    }
-
-    &--settings {
-      margin-top: auto;
     }
 
     svg {
