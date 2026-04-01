@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Plus, Trash2, Edit2 } from 'lucide-react';
 import Button from '../../../components/UI/Button';
 import Input from '../../../components/UI/Input';
+import Badge from '../../../components/UI/Badge';
 import ConfirmModal from '../../../components/UI/ConfirmModal';
 import { tagsApi } from '../../../api/tags';
 import type { Tag } from '../../../types';
@@ -46,14 +47,14 @@ const TagsManager: React.FC<TagsManagerProps> = ({ setIsDirty }) => {
 
   const handleEdit = (tag: Tag) => {
     setEditingId(tag.id);
-    setEditForm({ name: tag.name });
+    setEditForm({ name: tag.name, tone: tag.tone || 'neutral' });
     setAddingNew(false);
   };
 
   const handleAddNew = () => {
     setAddingNew(true);
     setEditingId(null);
-    setEditForm({ name: '' });
+    setEditForm({ name: '', tone: 'neutral' });
   };
 
   const handleCancelEdit = () => {
@@ -67,9 +68,9 @@ const TagsManager: React.FC<TagsManagerProps> = ({ setIsDirty }) => {
     
     try {
       if (addingNew) {
-        await tagsApi.create({ name: editForm.name });
+        await tagsApi.create({ name: editForm.name, tone: editForm.tone });
       } else if (editingId) {
-        await tagsApi.update(editingId, { name: editForm.name });
+        await tagsApi.update(editingId, { name: editForm.name, tone: editForm.tone });
       }
       handleCancelEdit();
       fetchTags();
@@ -105,36 +106,86 @@ const TagsManager: React.FC<TagsManagerProps> = ({ setIsDirty }) => {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {addingNew && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px', background: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-primary)' }}>
-            <Input 
-              value={editForm.name || ''} 
-              onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
-              placeholder={t('name', 'שם')}
-              style={{ margin: 0 }}
-            />
-            <Button variant="primary" onClick={handleSave} disabled={!editForm.name?.trim()}>{t('save', 'שמור')}</Button>
-            <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px', background: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-primary)' }}>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <Input 
+                value={editForm.name || ''} 
+                onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
+                placeholder={t('name', 'שם')}
+                style={{ margin: 0, flex: 1 }}
+              />
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {(['neutral', 'info', 'success', 'warning', 'danger', 'purple', 'pink', 'teal'] as const).map(tone => (
+                <button
+                  key={tone}
+                  type="button"
+                  onClick={() => setEditForm(prev => ({ ...prev, tone }))}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: '999px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: '1px solid',
+                    backgroundColor: editForm.tone === tone ? `var(--tone-${tone}-bg)` : 'transparent',
+                    color: editForm.tone === tone ? `var(--tone-${tone}-text)` : 'var(--color-secondary)',
+                    borderColor: editForm.tone === tone ? `var(--tone-${tone}-border)` : 'var(--color-border)',
+                  }}
+                >
+                  {t(`tone.${tone}`, tone)}
+                </button>
+              ))}
+            </div>
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+              <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>
+              <Button variant="primary" onClick={handleSave} disabled={!editForm.name?.trim()}>{t('save', 'שמור')}</Button>
+            </div>
           </div>
         )}
 
         {tags.map(tag => (
           <div key={tag.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', background: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
             {editingId === tag.id ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-                <Input 
-                  value={editForm.name || ''} 
-                  onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
-                  style={{ margin: 0, flex: 1 }}
-                />
-                <Button variant="primary" onClick={handleSave} disabled={!editForm.name?.trim()}>{t('save', 'שמור')}</Button>
-                <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <Input 
+                    value={editForm.name || ''} 
+                    onChange={(e: any) => setEditForm((prev: any) => ({ ...prev, name: e.target.value }))}
+                    style={{ margin: 0, flex: 1 }}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {(['neutral', 'info', 'success', 'warning', 'danger', 'purple', 'pink', 'teal'] as const).map(tone => (
+                    <button
+                      key={tone}
+                      type="button"
+                      onClick={() => setEditForm(prev => ({ ...prev, tone }))}
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: '999px',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        border: '1px solid',
+                        backgroundColor: editForm.tone === tone ? `var(--tone-${tone}-bg)` : 'transparent',
+                        color: editForm.tone === tone ? `var(--tone-${tone}-text)` : 'var(--color-secondary)',
+                        borderColor: editForm.tone === tone ? `var(--tone-${tone}-border)` : 'var(--color-border)',
+                      }}
+                    >
+                      {t(`tone.${tone}`, tone)}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                  <Button variant="outline" onClick={handleCancelEdit}>{t('cancel', 'ביטול')}</Button>
+                  <Button variant="primary" onClick={handleSave} disabled={!editForm.name?.trim()}>{t('save', 'שמור')}</Button>
+                </div>
               </div>
             ) : (
               <>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <span style={{ fontWeight: 500, color: 'var(--color-primary)', background: 'var(--color-sidebar-hover)', padding: '4px 12px', borderRadius: '999px', fontSize: '13px' }}>
-                    {tag.name}
-                  </span>
+                  <Badge tag={tag} />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Button variant="outline" onClick={() => handleEdit(tag)} disabled={addingNew || editingId !== null}>

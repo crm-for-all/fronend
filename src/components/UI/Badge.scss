@@ -1,39 +1,56 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 4px 12px;
-  border-radius: 9999px; // Pill shape
+  gap: 6px;
   font-size: 12px;
   font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
 
-  &--lead {
-    background-color: var(--status-lead-bg);
-    color: var(--status-lead-text);
+  // Variants
+  &--tag {
+    padding: 4px 10px;
+    border-radius: 9999px;
+    border: 1px solid transparent;
   }
 
-  &--contacted {
-    background-color: var(--status-contacted-bg);
-    color: var(--status-contacted-text);
-  }
-
-  &--qualified {
-    background-color: var(--status-qualified-bg);
-    color: var(--status-qualified-text);
-  }
-
-  &--customer {
-    background-color: var(--status-customer-bg);
-    color: var(--status-customer-text);
-  }
-
-  &--inactive {
-    background-color: var(--status-inactive-bg);
-    color: var(--status-inactive-text);
-  }
-
-  &--dynamic {
-    background-color: var(--color-sidebar-hover);
+  &--status {
+    padding: 2px 0;
     color: var(--color-primary);
+    font-weight: 500;
+    
+    // Status Dot
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
   }
+
+  // Tones
+  @each $tone in neutral, info, success, warning, danger, purple, pink, teal {
+    &--tone-#{$tone} {
+      &.badge--tag {
+        background-color: var(--tone-#{$tone}-bg);
+        color: var(--tone-#{$tone}-text);
+        border-color: var(--tone-#{$tone}-border);
+      }
+
+      &.badge--status {
+        &::before {
+          background-color: var(--tone-#{$tone}-text);
+        }
+      }
+    }
+  }
+
+  // Handle default statuses (legacy support)
+  &--lead { color: var(--status-lead-text); &::before { background-color: var(--status-lead-text); } }
+  &--contacted { color: var(--status-contacted-text); &::before { background-color: var(--status-contacted-text); } }
+  &--qualified { color: var(--status-qualified-text); &::before { background-color: var(--status-qualified-text); } }
+  &--customer { color: var(--status-customer-text); &::before { background-color: var(--status-customer-text); } }
+  &--inactive { color: var(--status-inactive-text); &::before { background-color: var(--status-inactive-text); } }
 }

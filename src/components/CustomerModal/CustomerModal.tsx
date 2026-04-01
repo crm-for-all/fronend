@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from '../UI/Modal';
 import Input from '../UI/Input';
 import Button from '../UI/Button';
+import Badge from '../UI/Badge';
 import { Plus, Trash2, Check } from 'lucide-react';
 import { customersApi } from '../../api/customers';
 import { tagsApi } from '../../api/tags';
@@ -147,20 +148,20 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
     <Modal 
       isOpen={isOpen} 
       onClose={() => onClose(false)} 
-      title={customer ? 'ערוך לקוח' : 'לקוח חדש'}
+      title={customer ? t('edit_customer', 'ערוך לקוח') : t('new_customer', 'לקוח חדש')}
     >
       <form className="customer-form" onSubmit={handleSubmit}>
         {error && <div className="customer-form__error">{error}</div>}
         
         <Input 
-          label="שם מלא" 
+          label={t('full_name', 'שם מלא')} 
           value={formData.name || ''} 
           onChange={e => setFormData({ ...formData, name: e.target.value })} 
           required 
         />
         
         <Input 
-          label="אימייל" 
+          label={t('email_label', 'אימייל')} 
           type="email" 
           value={formData.email || ''} 
           onChange={e => setFormData({ ...formData, email: e.target.value })} 
@@ -170,7 +171,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <label className="input-group__label" style={{ margin: 0 }}>{t('phone_label', 'טלפון')}</label>
             <Button type="button" variant="outline" onClick={handleAddPhone} style={{ padding: '4px 8px', height: 'auto', fontSize: '12px' }}>
-              <Plus size={14} style={{ marginRight: t('he') ? 0 : '4px', marginLeft: t('he') ? '4px' : 0 }} />
+              <Plus size={14} style={{ marginInlineEnd: '4px' }} />
               {t('add_phone', 'הוסף טלפון')}
             </Button>
           </div>
@@ -217,15 +218,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
             ) : availableStatuses.length === 0 ? (
               <span style={{ color: 'var(--color-secondary)' }}>{t('no_statuses', 'אין סטטוסים, הוסף בהגדרות')}</span>
             ) : formData.status_id ? (
-              <span style={{ 
-                color: 'var(--color-primary)', 
-                textDecoration: 'underline', 
-                textDecorationColor: availableStatuses.find(s => s.id === formData.status_id)?.color || 'var(--color-border)',
-                textDecorationThickness: '2px',
-                textUnderlineOffset: '4px'
-              }}>
-                {availableStatuses.find(s => s.id === formData.status_id)?.name}
-              </span>
+              <Badge status={availableStatuses.find(s => s.id === formData.status_id)} />
             ) : (
               <span style={{ color: 'var(--color-secondary)' }}>{t('select_status', 'בחר סטטוס')}</span>
             )}
@@ -241,15 +234,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
                   onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-sidebar-hover)'}
                   onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
-                  <span style={{ 
-                    color: 'var(--color-primary)',
-                    textDecoration: 'underline', 
-                    textDecorationColor: status.color || 'var(--color-border)',
-                    textDecorationThickness: '2px',
-                    textUnderlineOffset: '4px' 
-                  }}>
-                    {status.name}
-                  </span>
+                  <Badge status={status} />
                 </div>
               ))}
             </div>
@@ -258,13 +243,13 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
 
         <div className="input-group input-group--full">
           <label className="input-group__label">{t('tags_label', 'תגיות')}</label>
-          <div className="tags-dropdown" style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '8px', maxHeight: '120px', overflowY: 'auto', backgroundColor: 'var(--color-surface)' }}>
+          <div className="tags-dropdown" style={{ border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '8px', maxHeight: '140px', overflowY: 'auto', backgroundColor: 'var(--color-surface)' }}>
             {isFetchingMeta ? (
               <span style={{ fontSize: '14px', color: 'var(--color-secondary)' }}>{t('loading', 'טוען...')}</span>
             ) : availableTags.length === 0 ? (
               <span style={{ fontSize: '14px', color: 'var(--color-secondary)' }}>{t('no_labels', 'אין תגיות, הוסף בהגדרות')}</span>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                 {availableTags.map(tag => {
                   const isSelected = formData.tag_ids?.includes(tag.id) || false;
                   return (
@@ -274,10 +259,9 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
                         display: 'flex', 
                         alignItems: 'center', 
                         gap: '12px', 
-                        padding: '8px 12px',
+                        padding: '6px 12px',
                         fontSize: '14px', 
                         cursor: 'pointer', 
-                        color: isSelected ? 'var(--color-primary)' : 'var(--color-secondary)',
                         backgroundColor: isSelected ? 'var(--color-sidebar-hover)' : 'transparent',
                         borderRadius: 'var(--radius-md)',
                         transition: 'all 0.2s',
@@ -302,7 +286,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
                       }}>
                         {isSelected && <Check size={12} color="var(--color-surface)" strokeWidth={3} />}
                       </div>
-                      <span style={{ fontWeight: isSelected ? 600 : 400 }}>{tag.name}</span>
+                      <Badge tag={tag} />
                     </label>
                   );
                 })}
@@ -312,13 +296,13 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
         </div>
         
         <Input 
-          label="פעולה אחרונה (למשל: שיחה - 24/05/2024)" 
+          label={t('last_activity_help', 'פעולה אחרונה (למשל: שיחה - 24/05/2024)')} 
           value={formData.last_event || ''} 
           onChange={e => setFormData({ ...formData, last_event: e.target.value })} 
         />
 
         <div className="input-group input-group--full">
-          <label className="input-group__label">הערות</label>
+          <label className="input-group__label">{t('notes', 'הערות')}</label>
           <textarea 
             className="input-group__input"
             style={{ height: '100px', padding: '12px' }}
@@ -329,10 +313,10 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
 
         <div className="customer-form__actions">
           <Button type="button" variant="outline" onClick={() => onClose()}>
-            ביטול
+            {t('cancel', 'ביטול')}
           </Button>
           <Button type="submit" isLoading={isLoading}>
-            {customer ? 'שמור שינויים' : 'צור לקוח'}
+            {customer ? t('save_changes', 'שמור שינויים') : t('create_customer', 'צור לקוח')}
           </Button>
         </div>
       </form>

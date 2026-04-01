@@ -59,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         </button>
         {/* Breadcrumb or dynamic title could go here if needed. According to screenshot it's a specific badge */}
         <span className="badge">AD</span>
-        <span>לוח בקרה</span> {/* Example static title based on screenshot, can localize later */}
+        <span>{t('dashboard_title', 'לוח בקרה')}</span>
       </div>
 
       <div className="header__actions">

@@ -51,7 +51,7 @@ const Register = () => {
       <Card className="auth-page__card">
         <div className="auth-page__header">
           <h1>{t('register')}</h1>
-          <p>Create a new Curator CRM account</p>
+          <p>{t('register_title', 'Create a new Curator CRM account')}</p>
         </div>
 
         {error && <div className="auth-page__error">{error}</div>}

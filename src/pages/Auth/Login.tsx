@@ -39,7 +39,7 @@ const Login = () => {
       <Card className="auth-page__card">
         <div className="auth-page__header">
           <h1>{t('login')}</h1>
-          <p>Welcome back to Curator CRM</p>
+          <p>{t('login_title', 'Welcome back to Curator CRM')}</p>
         </div>
 
         {error && <div className="auth-page__error">{error}</div>}

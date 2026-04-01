@@ -5,7 +5,7 @@
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 40;
-  
+
   // Only display on mobile where the sidebar actually slides
   @media (min-width: 768px) {
     display: none;
@@ -40,10 +40,10 @@
       right: 0;
       transform: translateX(100%);
     }
-    
+
     &--open {
       transform: translateX(0);
-      
+
       @include rtl {
         transform: translateX(0);
       }
@@ -97,7 +97,7 @@
       color: var(--color-primary);
       box-shadow: var(--shadow-sm);
       position: relative;
-      
+
       &::before {
         content: '';
         position: absolute;
@@ -107,7 +107,7 @@
         width: 4px;
         background-color: var(--color-tertiary);
         border-radius: 0 4px 4px 0;
-        
+
         @include rtl {
           left: auto;
           right: 0;

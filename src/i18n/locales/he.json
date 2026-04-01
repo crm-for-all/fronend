@@ -57,6 +57,33 @@
     "confirm_delete_status_msg": "האם אתה בטוח שברצונך למחוק סטטוס זה?",
     "unsaved_changes": "שינויים שלא נשמרו",
     "confirm_discard_msg": "יש לך שינויים שלא נשמרו. האם אתה בטוח שברצונך לעזוב מסך זה?",
-    "leave": "עזוב"
+    "leave": "עזוב",
+    "edit_customer": "ערוך לקוח",
+    "new_customer": "לקוח חדש",
+    "full_name": "שם מלא",
+    "last_activity_help": "פעולה אחרונה (למשל: שיחה - 24/05/2024)",
+    "notes": "הערות",
+    "save_changes": "שמור שינויים",
+    "create_customer": "צור לקוח",
+    "register_title": "צור חשבון Curator CRM חדש",
+    "login_title": "ברוכים השבים ל-Curator CRM",
+    "free_plan": "מסלול חינמי",
+    "dashboard_title": "לוח בקרה",
+    "customers_subtitle": "נהל את קשרי הלקוחות שלך בממשק נקי, מהיר וממוקד פעולה.",
+    "search_placeholder": "חיפוש לפי שם או פרטי קשר...",
+    "new_customer_btn": "לקוח חדש",
+    "no_company": "ללא חברה",
+    "fetching_customers": "טוען לקוחות...",
+    "no_customers_found": "לא נמצאו לקוחות.",
+    "tone": {
+      "neutral": "ניטרלי",
+      "info": "מידע",
+      "success": "הצלחה",
+      "warning": "אזהרה",
+      "danger": "סכנה",
+      "purple": "סגול",
+      "pink": "ורוד",
+      "teal": "טורקיז"
+    }
   }
 }

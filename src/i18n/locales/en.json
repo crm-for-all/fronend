@@ -57,6 +57,33 @@
     "confirm_delete_status_msg": "Are you sure you want to delete this status?",
     "unsaved_changes": "Unsaved Changes",
     "confirm_discard_msg": "You have unsaved changes. Are you sure you want to leave this screen?",
-    "leave": "Leave"
+    "leave": "Leave",
+    "edit_customer": "Edit Customer",
+    "new_customer": "New Customer",
+    "full_name": "Full Name",
+    "last_activity_help": "Last activity (e.g., call - 24/05/2024)",
+    "notes": "Notes",
+    "save_changes": "Save Changes",
+    "create_customer": "Create Customer",
+    "register_title": "Create a new Curator CRM account",
+    "login_title": "Welcome back to Curator CRM",
+    "free_plan": "Free Plan",
+    "dashboard_title": "Dashboard",
+    "customers_subtitle": "Manage your customer relationships in a clean, fast, and action-oriented interface.",
+    "search_placeholder": "Search by name or contact details...",
+    "new_customer_btn": "New Customer",
+    "no_company": "No Company",
+    "fetching_customers": "Loading customers...",
+    "no_customers_found": "No customers found.",
+    "tone": {
+      "neutral": "Neutral",
+      "info": "Info",
+      "success": "Success",
+      "warning": "Warning",
+      "danger": "Danger",
+      "purple": "Purple",
+      "pink": "Pink",
+      "teal": "Teal"
+    }
   }
 }

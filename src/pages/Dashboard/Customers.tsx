@@ -68,21 +68,21 @@ const CustomersDashboard = () => {
       <div className="customers-page__header">
         <div className="customers-page__title">
           <h1>{t('customers')}</h1>
-          <p>נהל את קשרי הלקוחות שלך בממשק נקי, מהיר וממוקד פעולה.</p>
+          <p>{t('customers_subtitle', 'Manage your customer relationships in a clean, fast, and action-oriented interface.')}</p>
         </div>
         <div className="customers-page__actions">
           <div className="search-box">
             <Search className="search-box__icon" />
             <input 
               type="text" 
-              placeholder="חיפוש לפי שם או פרטי קשר..." 
+              placeholder={t('search_placeholder', 'חיפוש לפי שם או פרטי קשר...')} 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
           <Button onClick={handleOpenCreateModal} className="btn-new-customer">
             <UserPlus size={18} />
-            לקוח חדש
+            {t('new_customer_btn', 'לקוח חדש')}
           </Button>
         </div>
       </div>
@@ -97,9 +97,9 @@ const CustomersDashboard = () => {
         </div>
 
         {isLoading ? (
-          <div className="p-8 text-center">Loading...</div>
+          <div className="p-8 text-center">{t('fetching_customers', 'Loading customers...')}</div>
         ) : filteredCustomers.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">No customers found.</div>
+          <div className="p-8 text-center text-gray-500">{t('no_customers_found', 'No customers found.')}</div>
         ) : (
           filteredCustomers.map(customer => {
             const primaryPhone = customer.phones?.find(p => p.is_primary)?.phone_number || customer.phones?.[0]?.phone_number || '';
@@ -112,7 +112,7 @@ const CustomersDashboard = () => {
                 >
                 <div className="col-name">
                   <strong>{customer.name}</strong>
-                  <span>{customer.email || 'No Company'}</span>
+                  <span>{customer.email || t('no_company', 'No Company')}</span>
                 </div>
                 
                 <div className="col-contact">
@@ -128,7 +128,7 @@ const CustomersDashboard = () => {
                 <div className="col-tags">
                   {customer.tags && customer.tags.length > 0
                     ? customer.tags.map(tag => (
-                        <span key={tag.id} className="tag-pill">{tag.name}</span>
+                        <Badge key={tag.id} tag={tag} />
                       ))
                     : <span className="no-tags">{t('no_tags')}</span>
                   }

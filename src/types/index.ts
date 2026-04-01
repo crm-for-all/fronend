@@ -9,15 +9,20 @@ export interface CustomerPhone {
   is_primary: boolean;
 }
 
+export type StatusTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+export type TagTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger' | 'purple' | 'pink' | 'teal';
+
 export interface Tag {
   id: string;
   name: string;
+  tone?: TagTone;
 }
 
 export interface Status {
   id: string;
   name: string;
-  color: string;
+  tone: StatusTone;
+  color?: string; // Temporarily keeping color for migration/legacy overlap
 }
 
 export type CustomerStatus = 'lead' | 'contacted' | 'qualified' | 'customer' | 'inactive';
@@ -46,6 +51,7 @@ export interface CustomerCreateDTO {
   notes?: string;
   last_event?: string;
   phones?: { phone_number: string; is_primary: boolean }[];
+  status_tone?: StatusTone;
 }
 
 export interface CustomerUpdateDTO {
@@ -57,4 +63,5 @@ export interface CustomerUpdateDTO {
   notes?: string;
   last_event?: string;
   phones?: { phone_number: string; is_primary: boolean }[];
+  status_tone?: StatusTone;
 }

@@ -1,41 +1,65 @@
 import React from 'react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import type { CustomerStatus, Status } from '../../types';
+import type { CustomerStatus, Status, StatusTone, TagTone, Tag } from '../../types';
 import './Badge.scss';
 
 interface BadgeProps {
-  status: CustomerStatus | Status | string | null;
+  status?: CustomerStatus | Status | string | null;
+  tag?: Tag | null;
+  tone?: StatusTone | TagTone;
+  type?: 'status' | 'tag';
+  label?: string;
   className?: string;
 }
 
-const Badge: React.FC<BadgeProps> = ({ status, className }) => {
+const Badge: React.FC<BadgeProps> = ({ 
+  status, 
+  tag, 
+  tone: manualTone, 
+  type: manualType, 
+  label: manualLabel, 
+  className 
+}) => {
   const { t } = useTranslation();
   
-  if (!status) return null;
+  // 1. Determine Type
+  const type = manualType || (tag ? 'tag' : 'status');
 
-  // Handle object status from API
-  if (typeof status === 'object' && 'name' in status) {
-    return (
-      <span 
-        className={clsx('badge', 'badge--dynamic', className)}
-        style={{ 
-          backgroundColor: `${status.color}20`, // 20 is hex for ~12% opacity
-          color: status.color,
-          borderColor: `${status.color}40`
-        } as React.CSSProperties}
-      >
-        {status.name}
-      </span>
-    );
+  // 2. Determine Label
+  let label = manualLabel;
+  if (!label) {
+    if (tag) label = tag.name;
+    else if (typeof status === 'string') {
+      const isDefault = ['lead', 'contacted', 'qualified', 'customer', 'inactive'].includes(status);
+      label = isDefault ? t(`status.${status}`) : status;
+    } else if (status && typeof status === 'object') {
+      label = status.name;
+    }
   }
 
-  // Handle string status (legacy/default)
-  const isDefaultStatus = ['lead', 'contacted', 'qualified', 'customer', 'inactive'].includes(status as string);
-  
+  if (!label) return null;
+
+  // 3. Determine Tone
+  let tone = manualTone;
+  if (!tone) {
+    if (tag?.tone) tone = tag.tone;
+    else if (status && typeof status === 'object' && 'tone' in status) tone = status.tone;
+  }
+
+  // 4. Handle Legacy Status Strings
+  const isLegacyStatus = typeof status === 'string' && ['lead', 'contacted', 'qualified', 'customer', 'inactive'].includes(status);
+
   return (
-    <span className={clsx('badge', `badge--${isDefaultStatus ? status : 'dynamic'}`, className)}>
-      {isDefaultStatus ? t(`status.${status}`) : status}
+    <span 
+      className={clsx(
+        'badge', 
+        `badge--${type}`, 
+        tone ? `badge--tone-${tone}` : (isLegacyStatus ? `badge--${status}` : ''),
+        className
+      )}
+    >
+      {label}
     </span>
   );
 };

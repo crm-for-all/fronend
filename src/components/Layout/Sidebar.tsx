@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <aside className={clsx('sidebar', { 'sidebar--open': isOpen })}>
         <div className="sidebar__logo">
           <h1>Curator CRM</h1>
-          <span>Free Plan</span>
+          <span>{t('free_plan', 'Free Plan')}</span>
         </div>
 
         <nav className="sidebar__nav">
