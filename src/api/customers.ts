@@ -1,9 +1,9 @@
 import api from './client';
-import type { Customer, CustomerCreateDTO, CustomerUpdateDTO } from '../types';
+import type { Customer, CustomerCreateDTO, CustomerUpdateDTO, CustomerFilters } from '../types';
 
 export const customersApi = {
-  getAll: async (): Promise<Customer[]> => {
-    const response = await api.get('/customers');
+  getAll: async (filters?: CustomerFilters): Promise<Customer[]> => {
+    const response = await api.get('/customers', { params: filters });
     return response.data;
   },
 

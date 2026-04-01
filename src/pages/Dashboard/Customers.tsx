@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, UserPlus } from 'lucide-react';
+import { Search, UserPlus, Filter, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { customersApi } from '../../api/customers';
-import type { Customer } from '../../types';
+import { tagsApi } from '../../api/tags';
+import { statusesApi } from '../../api/statuses';
+import type { Customer, Tag, Status, CustomerFilters } from '../../types';
 import Button from '../../components/UI/Button';
 import Badge from '../../components/UI/Badge';
 import Card from '../../components/UI/Card';
+import Input from '../../components/UI/Input';
 import CustomerModal from '../../components/CustomerModal/CustomerModal';
 import CustomerDetailsModal from '../../components/CustomerModal/CustomerDetailsModal';
 import './Customers.scss';
@@ -13,27 +16,90 @@ import './Customers.scss';
 const CustomersDashboard = () => {
   const { t } = useTranslation();
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Modals
   const [isCreateEditModalOpen, setIsCreateEditModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | undefined>(undefined);
 
-  const fetchCustomers = async () => {
+  // Filtering State
+  const [filters, setFilters] = useState<CustomerFilters>({});
+  const [showFilters, setShowFilters] = useState(false);
+  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const [availableStatuses, setAvailableStatuses] = useState<Status[]>([]);
+  
+  // Local state for debouncing textual inputs
+  const [localSearch, setLocalSearch] = useState('');
+
+  const fetchMetadata = useCallback(async () => {
+    try {
+      const [tags, statuses] = await Promise.all([
+        tagsApi.getAll(),
+        statusesApi.getAll()
+      ]);
+      setAvailableTags(tags);
+      setAvailableStatuses(statuses);
+    } catch (err) {
+      console.error('Failed to fetch filter metadata', err);
+    }
+  }, []);
+
+  const fetchCustomers = useCallback(async (currentFilters: CustomerFilters) => {
     try {
       setIsLoading(true);
-      const data = await customersApi.getAll();
+      const data = await customersApi.getAll(currentFilters);
       setCustomers(data);
     } catch (error) {
       console.error('Failed to fetch customers', error);
     } finally {
       setIsLoading(false);
     }
+  }, []);
+
+  // Initial fetch
+  useEffect(() => {
+    fetchMetadata();
+  }, [fetchMetadata]);
+
+  // Fetch when filters change
+  useEffect(() => {
+    fetchCustomers(filters);
+  }, [filters, fetchCustomers]);
+
+  // Debounced search for the main bar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFilters(prev => ({ 
+        ...prev, 
+        name: localSearch || undefined,
+        name_match: localSearch ? 'starts_with' : undefined 
+      }));
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [localSearch]);
+
+  const handleUpdateFilter = (key: keyof CustomerFilters, value: any) => {
+    setFilters(prev => ({ ...prev, [key]: value || undefined }));
   };
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
+  const clearFilters = () => {
+    setFilters({});
+    setLocalSearch('');
+  };
+
+  const removeFilter = (key: keyof CustomerFilters) => {
+    setFilters(prev => {
+      const next = { ...prev };
+      delete next[key];
+      // Also handle match types
+      if (key === 'name') delete next.name_match;
+      if (key === 'phone') delete next.phone_match;
+      if (key === 'email') delete next.email_match;
+      return next;
+    });
+    if (key === 'name') setLocalSearch('');
+  };
 
   const handleOpenCreateModal = () => {
     setSelectedCustomer(undefined);
@@ -54,36 +120,141 @@ const CustomersDashboard = () => {
   const handleCreateEditModalClose = (saved?: boolean) => {
     setIsCreateEditModalOpen(false);
     if (saved) {
-      fetchCustomers();
+      fetchCustomers(filters);
     }
   };
-
-  const filteredCustomers = customers.filter(c => 
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.email?.toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <div className="customers-page">
       <div className="customers-page__header">
         <div className="customers-page__title">
           <h1>{t('customers')}</h1>
-          <p>{t('customers_subtitle', 'Manage your customer relationships in a clean, fast, and action-oriented interface.')}</p>
+          <p>{t('customers_subtitle', 'נהל את קשרי הלקוחות שלך בממשק נקי וממוקד פעולה.')}</p>
         </div>
         <div className="customers-page__actions">
+          <Button onClick={handleOpenCreateModal} className="btn-new-customer shadow-sm">
+            <UserPlus size={18} />
+            {t('new_customer_btn', 'לקוח חדש')}
+          </Button>
+        </div>
+      </div>
+
+      <div className="search-and-filters">
+        <div className="search-bar-row">
           <div className="search-box">
             <Search className="search-box__icon" />
             <input 
               type="text" 
-              placeholder={t('search_placeholder', 'חיפוש לפי שם או פרטי קשר...')} 
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              placeholder={t('search_name_placeholder', 'חיפוש לפי שם...')} 
+              value={localSearch}
+              onChange={(e) => setLocalSearch(e.target.value)}
             />
           </div>
-          <Button onClick={handleOpenCreateModal} className="btn-new-customer">
-            <UserPlus size={18} />
-            {t('new_customer_btn', 'לקוח חדש')}
+          <Button 
+            variant="outline" 
+            onClick={() => setShowFilters(!showFilters)} 
+            className={showFilters ? 'btn-filters-active' : ''}
+          >
+            <Filter size={18} />
+            {t('filters', 'מסננים')}
+            {showFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </Button>
+          {(Object.keys(filters).length > 0) && (
+            <Button variant="ghost" onClick={clearFilters} className="btn-clear-all">
+              {t('clear_all', 'נקה הכל')}
+            </Button>
+          )}
+        </div>
+
+        {showFilters && (
+          <Card className="advanced-filters animate-slide-down">
+            <div className="filters-grid">
+              <div className="filters-grid__item">
+                <label>{t('status_label', 'סטטוס')}</label>
+                <select 
+                  value={filters.status || ''} 
+                  onChange={(e) => handleUpdateFilter('status', e.target.value)}
+                  className="filter-select"
+                >
+                  <option value="">{t('all_statuses', 'כל הסטטוסים')}</option>
+                  {availableStatuses.map(s => (
+                    <option key={s.id} value={s.id}>{s.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="filters-grid__item">
+                <label>{t('tags_label', 'תגיות')}</label>
+                <select 
+                  value={filters.tag || ''} 
+                  onChange={(e) => handleUpdateFilter('tag', e.target.value)}
+                  className="filter-select"
+                >
+                  <option value="">{t('all_tags', 'כל התגיות')}</option>
+                  {availableTags.map(t => (
+                    <option key={t.id} value={t.id}>{t.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="filters-grid__item">
+                <label>{t('phone_label', 'טלפון')}</label>
+                <div className="filter-input-group">
+                  <Input 
+                    value={filters.phone || ''} 
+                    onChange={(e) => handleUpdateFilter('phone', e.target.value)}
+                    placeholder="05..."
+                    fullWidth
+                  />
+                  <select 
+                    value={filters.phone_match || 'starts_with'} 
+                    onChange={(e) => handleUpdateFilter('phone_match', e.target.value)}
+                    className="match-select"
+                  >
+                    <option value="starts_with">{t('starts_with', 'מתחיל ב-')}</option>
+                    <option value="ends_with">{t('ends_with', 'מסתיים ב-')}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="filters-grid__item">
+                <label>{t('email_label', 'אימייל')}</label>
+                <Input 
+                  value={filters.email || ''} 
+                  onChange={(e) => handleUpdateFilter('email', e.target.value)}
+                  placeholder="name@..."
+                  fullWidth
+                />
+              </div>
+            </div>
+          </Card>
+        )}
+
+        <div className="active-chips">
+          {filters.status && (
+            <div className="filter-chip">
+              <span>{t('status_label')}: {availableStatuses.find(s => s.id === filters.status)?.name}</span>
+              <button onClick={() => removeFilter('status')}><X size={14} /></button>
+            </div>
+          )}
+          {filters.tag && (
+            <div className="filter-chip">
+              <span>{t('tags_label')}: {availableTags.find(t => t.id === filters.tag)?.name}</span>
+              <button onClick={() => removeFilter('tag')}><X size={14} /></button>
+            </div>
+          )}
+          {filters.phone && (
+              <div className="filter-chip">
+                <span>{t('phone_label')}: {filters.phone}</span>
+                <button onClick={() => removeFilter('phone')}><X size={14} /></button>
+              </div>
+          )}
+          {filters.email && (
+              <div className="filter-chip">
+                <span>{t('email_label')}: {filters.email}</span>
+                <button onClick={() => removeFilter('email')}><X size={14} /></button>
+              </div>
+          )}
         </div>
       </div>
 
@@ -97,11 +268,14 @@ const CustomersDashboard = () => {
         </div>
 
         {isLoading ? (
-          <div className="p-8 text-center">{t('fetching_customers', 'Loading customers...')}</div>
-        ) : filteredCustomers.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">{t('no_customers_found', 'No customers found.')}</div>
+          <div className="p-8 text-center" style={{ padding: '80px 0' }}>
+            <div className="loading-spinner"></div>
+            <p style={{ marginTop: '16px', color: 'var(--color-secondary)' }}>{t('fetching_customers', 'טוען לקוחות...')}</p>
+          </div>
+        ) : customers.length === 0 ? (
+          <div className="p-8 text-center text-gray-500" style={{ padding: '80px 0' }}>{t('no_customers_found', 'לא נמצאו לקוחות.')}</div>
         ) : (
-          filteredCustomers.map(customer => {
+          customers.map(customer => {
             const primaryPhone = customer.phones?.find(p => p.is_primary)?.phone_number || customer.phones?.[0]?.phone_number || '';
             
             return (

@@ -62,3 +62,15 @@ export interface CustomerUpdateDTO {
   phones?: { phone_number: string; is_primary: boolean }[];
   status_color?: StatusColor;
 }
+
+export interface CustomerFilters {
+  name?: string;
+  name_match?: 'full' | 'starts_with';
+  phone?: string;
+  phone_match?: 'starts_with' | 'ends_with';
+  email?: string;
+  email_match?: 'starts_with';
+  status?: string;
+  tag?: string;
+}
+
