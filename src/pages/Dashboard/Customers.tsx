@@ -112,12 +112,11 @@ const CustomersDashboard = () => {
                 >
                 <div className="col-name">
                   <strong>{customer.name}</strong>
-                  <span>{customer.email || t('no_company', 'No Company')}</span>
+                  {customer.email && <span>{customer.email}</span>}
                 </div>
                 
                 <div className="col-contact">
                   {primaryPhone && <span className="phone">{primaryPhone}</span>}
-                  {customer.email && <span className="email">{customer.email}</span>}
                 </div>
                 
                 <div className="col-notes">
