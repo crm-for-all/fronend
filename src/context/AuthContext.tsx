@@ -24,8 +24,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const handleGlobalLogout = () => {
       setToken(null);
-      window.dispatchEvent(new CustomEvent('app-error', { 
-        detail: i18n.t('session_expired') 
+      window.dispatchEvent(new CustomEvent('app-error', {
+        detail: i18n.t('session_expired')
       }));
     };
     window.addEventListener('app-logout', handleGlobalLogout);
@@ -33,10 +33,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const login = (newToken: string) => {
+    localStorage.setItem('crm_token', newToken);
     setToken(newToken);
   };
 
   const logout = () => {
+    localStorage.removeItem('crm_token');
     setToken(null);
   };
 

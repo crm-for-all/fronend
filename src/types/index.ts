@@ -26,7 +26,7 @@ export interface Customer {
   id: string;
   name: string;
   email: string | null;
-  status: CustomerStatus | string; // Fallback or dynamic
+  status: CustomerStatus | Status | string | null;
   status_id?: string;
   tag_ids?: string[];
   tags?: Tag[];
