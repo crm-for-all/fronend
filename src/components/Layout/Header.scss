@@ -8,6 +8,18 @@
   padding: 0 24px;
   background-color: var(--color-neutral);
   flex-shrink: 0;
+  z-index: 30;
+
+  @include mobile {
+    position: sticky;
+    top: 0;
+    height: auto;
+    min-height: 64px;
+    padding: 0 16px;
+    padding-top: env(safe-area-inset-top);
+    background-color: var(--color-neutral);
+    border-bottom: 1px solid var(--color-border);
+  }
 
   &__mobile-toggle {
     display: none;
