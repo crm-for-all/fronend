@@ -156,7 +156,7 @@ const CustomersDashboard = () => {
             <Search className="search-box__icon" />
             <input 
               type="text" 
-              placeholder={t('search_name_placeholder', 'חיפוש לפי שם...')} 
+              placeholder={t('search_name_placeholder', 'Search by name...')} 
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
             />
@@ -167,12 +167,12 @@ const CustomersDashboard = () => {
             className={showFilters ? 'btn-filters-active' : ''}
           >
             <Filter size={18} />
-            {t('filters', 'מסננים')}
+            {t('filters', 'Filters')}
             {showFilters ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </Button>
           {(Object.keys(filters).length > 0) && (
             <Button variant="ghost" onClick={clearFilters} className="btn-clear-all">
-              {t('clear_all', 'נקה הכל')}
+              {t('clear_all', 'Clear All')}
             </Button>
           )}
         </div>
@@ -181,13 +181,13 @@ const CustomersDashboard = () => {
           <Card className="advanced-filters animate-slide-down">
             <div className="filters-grid">
               <div className="filters-grid__item">
-                <label>{t('status_label', 'סטטוס')}</label>
+                <label>{t('status_label', 'Status')}</label>
                 <select 
                   value={filters.status || ''} 
                   onChange={(e) => handleUpdateFilter('status', e.target.value)}
                   className="filter-select"
                 >
-                  <option value="">{t('all_statuses', 'כל הסטטוסים')}</option>
+                  <option value="">{t('all_statuses', 'All Statuses')}</option>
                   {availableStatuses.map(s => (
                     <option key={s.id} value={s.id}>{s.name}</option>
                   ))}
@@ -195,13 +195,13 @@ const CustomersDashboard = () => {
               </div>
 
               <div className="filters-grid__item">
-                <label>{t('tags_label', 'תגיות')}</label>
+                <label>{t('tags_label', 'Tags')}</label>
                 <select 
                   value={filters.tag || ''} 
                   onChange={(e) => handleUpdateFilter('tag', e.target.value)}
                   className="filter-select"
                 >
-                  <option value="">{t('all_tags', 'כל התגיות')}</option>
+                  <option value="">{t('all_tags', 'All Tags')}</option>
                   {availableTags.map(t => (
                     <option key={t.id} value={t.id}>{t.name}</option>
                   ))}
@@ -209,7 +209,7 @@ const CustomersDashboard = () => {
               </div>
 
               <div className="filters-grid__item">
-                <label>{t('phone_label', 'טלפון')}</label>
+                <label>{t('phone_label', 'Phone')}</label>
                 <div className="filter-input-group">
                   <Input 
                     value={localPhone} 
@@ -222,14 +222,14 @@ const CustomersDashboard = () => {
                     onChange={(e) => handleUpdateFilter('phone_match', e.target.value)}
                     className="match-select"
                   >
-                    <option value="starts_with">{t('starts_with', 'מתחיל ב-')}</option>
-                    <option value="ends_with">{t('ends_with', 'מסתיים ב-')}</option>
+                    <option value="starts_with">{t('starts_with', 'Starts with')}</option>
+                    <option value="ends_with">{t('ends_with', 'Ends with')}</option>
                   </select>
                 </div>
               </div>
 
               <div className="filters-grid__item">
-                <label>{t('email_label', 'אימייל')}</label>
+                <label>{t('email_label', 'Email')}</label>
                 <Input 
                   value={localEmail} 
                   onChange={(e) => setLocalEmail(e.target.value)}

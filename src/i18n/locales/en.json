@@ -85,6 +85,14 @@
       "purple": "Purple",
       "pink": "Pink",
       "teal": "Teal"
-    }
+    },
+    "search_name_placeholder": "Search by name...",
+    "filters": "Filters",
+    "clear_all": "Clear All",
+    "all_statuses": "All Statuses",
+    "all_tags": "All Tags",
+    "starts_with": "Starts with",
+    "ends_with": "Ends with",
+    "no_status_option": "No Status"
   }
 }

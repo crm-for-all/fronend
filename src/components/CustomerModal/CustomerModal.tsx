@@ -70,7 +70,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
       setFormData({
         name: '',
         email: '',
-        status_id: availableStatuses.length > 0 ? availableStatuses[0].id : '',
+        status_id: '',
         tag_ids: [],
         notes: '',
         last_event: '',
@@ -220,12 +220,20 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
             ) : formData.status_id ? (
               <Badge status={availableStatuses.find(s => s.id === formData.status_id)} />
             ) : (
-              <span style={{ color: 'var(--color-secondary)' }}>{t('select_status', 'בחר סטטוס')}</span>
+              <span style={{ color: 'var(--color-secondary)' }}>{t('select_status', 'Select Status')}</span>
             )}
           </div>
           
           {isStatusOpen && availableStatuses.length > 0 && (
             <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '4px', maxHeight: '160px', overflowY: 'auto', backgroundColor: 'var(--color-surface)', zIndex: 10, boxShadow: 'var(--shadow-md)' }}>
+              <div 
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', cursor: 'pointer', borderRadius: 'var(--radius-sm)', fontSize: '14px', color: 'var(--color-muted)' }}
+                onClick={() => { setFormData({ ...formData, status_id: '' }); setIsStatusOpen(false); }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--color-sidebar-hover)'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                {t('no_status_option', 'No Status')}
+              </div>
               {availableStatuses.map(status => (
                 <div 
                   key={status.id} 

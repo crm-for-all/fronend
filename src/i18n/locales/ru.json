@@ -85,6 +85,14 @@
       "purple": "Фиолетовый",
       "pink": "Розовый",
       "teal": "Бирюзовый"
-    }
+    },
+    "search_name_placeholder": "Поиск по имени...",
+    "filters": "Фильтры",
+    "clear_all": "Очистить всё",
+    "all_statuses": "Все статусы",
+    "all_tags": "Все теги",
+    "starts_with": "Начинается с",
+    "ends_with": "Заканчивается на",
+    "no_status_option": "Без статуса"
   }
 }

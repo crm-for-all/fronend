@@ -85,6 +85,14 @@
       "purple": "סגול",
       "pink": "ורוד",
       "teal": "טורקיז"
-    }
+    },
+    "search_name_placeholder": "חיפוש לפי שם...",
+    "filters": "מסננים",
+    "clear_all": "נקה הכל",
+    "all_statuses": "כל הסטטוסים",
+    "all_tags": "כל התגיות",
+    "starts_with": "מתחיל ב-",
+    "ends_with": "מסתיים ב-",
+    "no_status_option": "ללא סטטוס"
   }
 }
