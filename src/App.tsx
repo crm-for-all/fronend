@@ -9,6 +9,7 @@ import Register from './pages/Auth/Register';
 
 import CustomersDashboard from './pages/Dashboard/Customers';
 import SettingsDashboard from './pages/Dashboard/Settings';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -22,6 +23,13 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/" element={
+        <ProtectedRoute>
+          <Layout>
+            <Dashboard />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/customers" element={
         <ProtectedRoute>
           <Layout>
             <CustomersDashboard />

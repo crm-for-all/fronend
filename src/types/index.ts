@@ -73,4 +73,36 @@ export interface CustomerFilters {
   status?: string;
   tag?: string;
 }
+export interface StatusStat {
+  status_id: string | null;
+  status_name: string | null;
+  count: number;
+}
 
+export interface TagStat {
+  tag_id: string;
+  tag_name: string;
+  count: number;
+}
+
+export interface OverviewStats {
+  by_status: StatusStat[];
+  by_tag: TagStat[];
+}
+
+export type TimePeriod = 
+  | "last_12_months" 
+  | "last_3_months_weekly" 
+  | "last_12_days" 
+  | "last_7_days" 
+  | "last_3_days";
+
+export interface TimeSeriesPoint {
+  label: string;
+  count: number;
+}
+
+export interface TimeSeriesResponse {
+  period: TimePeriod;
+  data: TimeSeriesPoint[];
+}

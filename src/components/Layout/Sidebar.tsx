@@ -41,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               }
             >
               <LayoutDashboard />
-              <span>{t('dashboard')}</span>
+              <span>{t('dashboard_title', 'Dashboard')}</span>
             </NavLink>
 
             <NavLink
