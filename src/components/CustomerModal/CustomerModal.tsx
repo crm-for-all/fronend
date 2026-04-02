@@ -86,10 +86,15 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
     setError('');
 
     try {
+      const payload = {
+        ...formData,
+        status_id: formData.status_id || null
+      };
+
       if (customer) {
-        await customersApi.update(customer.id, formData as CustomerUpdateDTO);
+        await customersApi.update(customer.id, payload as CustomerUpdateDTO);
       } else {
-        await customersApi.create(formData as CustomerCreateDTO);
+        await customersApi.create(payload as CustomerCreateDTO);
       }
       onClose(true);
     } catch (err: any) {
