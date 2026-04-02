@@ -31,6 +31,8 @@ const CustomersDashboard = () => {
   
   // Local state for debouncing textual inputs
   const [localSearch, setLocalSearch] = useState('');
+  const [localEmail, setLocalEmail] = useState('');
+  const [localPhone, setLocalPhone] = useState('');
 
   const fetchMetadata = useCallback(async () => {
     try {
@@ -67,17 +69,21 @@ const CustomersDashboard = () => {
     fetchCustomers(filters);
   }, [filters, fetchCustomers]);
 
-  // Debounced search for the main bar
+  // Debounced search for the main bar and advanced text filters
   useEffect(() => {
     const timer = setTimeout(() => {
       setFilters(prev => ({ 
         ...prev, 
         name: localSearch || undefined,
-        name_match: localSearch ? 'starts_with' : undefined 
+        name_match: localSearch ? 'starts_with' : (prev.name_match || undefined),
+        email: localEmail || undefined,
+        email_match: localEmail ? 'starts_with' : undefined,
+        phone: localPhone || undefined,
+        phone_match: localPhone ? (prev.phone_match || 'starts_with') : undefined
       }));
     }, 500);
     return () => clearTimeout(timer);
-  }, [localSearch]);
+  }, [localSearch, localEmail, localPhone]);
 
   const handleUpdateFilter = (key: keyof CustomerFilters, value: any) => {
     setFilters(prev => ({ ...prev, [key]: value || undefined }));
@@ -86,6 +92,8 @@ const CustomersDashboard = () => {
   const clearFilters = () => {
     setFilters({});
     setLocalSearch('');
+    setLocalEmail('');
+    setLocalPhone('');
   };
 
   const removeFilter = (key: keyof CustomerFilters) => {
@@ -99,7 +107,10 @@ const CustomersDashboard = () => {
       return next;
     });
     if (key === 'name') setLocalSearch('');
+    if (key === 'email') setLocalEmail('');
+    if (key === 'phone') setLocalPhone('');
   };
+
 
   const handleOpenCreateModal = () => {
     setSelectedCustomer(undefined);
@@ -201,8 +212,8 @@ const CustomersDashboard = () => {
                 <label>{t('phone_label', 'טלפון')}</label>
                 <div className="filter-input-group">
                   <Input 
-                    value={filters.phone || ''} 
-                    onChange={(e) => handleUpdateFilter('phone', e.target.value)}
+                    value={localPhone} 
+                    onChange={(e) => setLocalPhone(e.target.value)}
                     placeholder="05..."
                     fullWidth
                   />
@@ -220,8 +231,8 @@ const CustomersDashboard = () => {
               <div className="filters-grid__item">
                 <label>{t('email_label', 'אימייל')}</label>
                 <Input 
-                  value={filters.email || ''} 
-                  onChange={(e) => handleUpdateFilter('email', e.target.value)}
+                  value={localEmail} 
+                  onChange={(e) => setLocalEmail(e.target.value)}
                   placeholder="name@..."
                   fullWidth
                 />
