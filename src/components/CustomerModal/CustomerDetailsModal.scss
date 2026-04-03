@@ -221,3 +221,131 @@
   }
 }
 
+// Financial Summary Specifics
+.financial-summary {
+  gap: 20px;
+  
+  .info-card__header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .contracts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contract-item {
+    padding: 16px;
+    background-color: var(--color-sidebar-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    &:hover {
+      border-color: var(--color-tertiary);
+      background-color: var(--color-sidebar-active);
+      transform: translateY(-1px);
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .contract-item__title-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+
+        .contract-icon {
+          color: var(--color-tertiary);
+          flex-shrink: 0;
+        }
+
+        .contract-title {
+          font-size: 13px;
+          font-weight: 600;
+          color: var(--color-primary);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .paid-icon {
+        color: var(--color-tertiary); // Success green
+        flex-shrink: 0;
+      }
+    }
+
+    .contract-progress {
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.08); // More visible in dark, soft in light
+      border-radius: 99px;
+      overflow: hidden;
+      direction: ltr; // Always fill from left to right
+
+      [data-theme="light"] & {
+        background-color: var(--color-border);
+      }
+
+      &__bar {
+        height: 100%;
+        background: linear-gradient(90deg, #0d9488, #10b981); // Teal to Emerald gradient
+        border-radius: 99px;
+        transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        margin-left: 0; // Ensure it starts from absolute left
+        box-shadow: 0 0 10px rgba(13, 148, 136, 0.3); // Neon glow for dark mode
+      }
+    }
+
+    .contract-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--color-muted);
+
+      .remaining-label {
+        strong {
+          color: #ef4444; // Warning red for balance
+          margin-inline-start: 2px;
+        }
+      }
+      
+      .total-label {
+        font-weight: 500;
+        @include rtl {
+          margin-right: auto;
+        }
+        @include ltr {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
+  .loading-state {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  .no-data-msg {
+    font-size: 13px;
+    color: var(--color-muted);
+    text-align: center;
+    padding: 10px 0;
+  }
+}
+

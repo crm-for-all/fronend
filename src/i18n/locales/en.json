@@ -106,6 +106,26 @@
     "all_tags": "All Tags",
     "starts_with": "Starts with",
     "ends_with": "Ends with",
-    "no_status_option": "No Status"
+    "no_status_option": "No Status",
+    "contracts": "Contracts",
+    "payments": "Payments",
+    "total_amount": "Total Amount",
+    "amount_paid": "Amount Paid",
+    "remaining_balance": "Remaining Balance",
+    "fully_paid": "Fully Paid",
+    "add_contract": "Add Contract",
+    "add_payment": "Add Payment",
+    "no_payments_yet": "No payments recorded yet.",
+    "contract_title": "Contract Title",
+    "contract_title_placeholder": "e.g. Software Development",
+    "create_contract": "Create Contract",
+    "payment_amount": "Payment Amount",
+    "paid_at": "Paid at",
+    "delete_contract_confirm": "Are you sure you want to delete this contract? All payments will be lost.",
+    "delete_payment_confirm": "Are you sure you want to remove this payment?",
+    "payment_exceeds_balance": "Payment exceeds remaining balance",
+    "payment_exceeds_balance_detail": "Payment amount ({{val}}) exceeds remaining balance ({{balance}})",
+    "future_date_error": "Payment date cannot be in the future",
+    "currency_symbol": "$"
   }
 }

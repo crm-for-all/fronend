@@ -106,6 +106,26 @@
     "all_tags": "כל התגיות",
     "starts_with": "מתחיל ב-",
     "ends_with": "מסתיים ב-",
-    "no_status_option": "ללא סטטוס"
+    "no_status_option": "ללא סטטוס",
+    "contracts": "חוזים",
+    "payments": "תשלומים",
+    "total_amount": "סכום כולל",
+    "amount_paid": "שולם",
+    "remaining_balance": "יתרה לתשלום",
+    "fully_paid": "שולם במלואו",
+    "add_contract": "הוסף חוזה",
+    "add_payment": "הוסף תשלום",
+    "no_payments_yet": "טרם נרשמו תשלומים",
+    "contract_title": "תיאור החוזה",
+    "contract_title_placeholder": "למשל: פיתוח תוכנה",
+    "create_contract": "צור חוזה",
+    "payment_amount": "סכום התשלום",
+    "paid_at": "תאריך תשלום",
+    "delete_contract_confirm": "האם אתה בטוח שברצונך למחוק חוזה זה? כל התשלומים המשויכים יימחקו.",
+    "delete_payment_confirm": "האם אתה בטוח שברצונך למחוק תשלום זה?",
+    "payment_exceeds_balance": "סכום התשלום עולה על היתרה הנותרת",
+    "payment_exceeds_balance_detail": "סכום התשלום ({{val}}) עולה על היתרה הנותרת ({{balance}})",
+    "future_date_error": "תאריך התשלום אינו יכול להיות בעתיד",
+    "currency_symbol": "₪"
   }
 }

@@ -106,3 +106,46 @@ export interface TimeSeriesResponse {
   period: TimePeriod;
   data: TimeSeriesPoint[];
 }
+
+// Financials
+export interface Contract {
+  id: string;
+  customer_id: string;
+  title: string;
+  total_amount: number;
+  total_paid: number;
+  remaining_balance: number;
+  payment_count: number;
+  is_fully_paid: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ContractCreateDTO {
+  title: string;
+  total_amount: number;
+}
+
+export interface ContractUpdateDTO {
+  title?: string;
+  total_amount?: number;
+}
+
+export interface Payment {
+  id: string;
+  contract_id: string;
+  amount: number;
+  paid_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PaymentCreateDTO {
+  amount: number;
+  paid_at?: string;
+}
+
+export interface PaymentUpdateDTO {
+  amount?: number;
+  paid_at?: string;
+}

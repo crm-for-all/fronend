@@ -106,6 +106,26 @@
     "all_tags": "Все теги",
     "starts_with": "Начинается с",
     "ends_with": "Заканчивается на",
-    "no_status_option": "Без статуса"
+    "no_status_option": "Без статуса",
+    "contracts": "Контракты",
+    "payments": "Платежи",
+    "total_amount": "Общая сумма",
+    "amount_paid": "Оплачено",
+    "remaining_balance": "Остаток",
+    "fully_paid": "Оплачено полностью",
+    "add_contract": "Добавить контракт",
+    "add_payment": "Добавить платеж",
+    "no_payments_yet": "Платежи пока не зарегистрированы",
+    "contract_title": "Название контракта",
+    "contract_title_placeholder": "Напр.: Разработка ПО",
+    "create_contract": "Создать контракт",
+    "payment_amount": "Сумма платежа",
+    "paid_at": "Дата оплаты",
+    "delete_contract_confirm": "Вы уверены, что хотите удалить этот контракт? Все платежи будут утеряны.",
+    "delete_payment_confirm": "Вы уверены, что хотите удалить этот платеж?",
+    "payment_exceeds_balance": "Сумма платежа превышает остаток",
+    "payment_exceeds_balance_detail": "Сумма платежа ({{val}}) превышает остаток ({{balance}})",
+    "future_date_error": "Дата платежа не может быть в будущем",
+    "currency_symbol": "₽"
   }
 }
