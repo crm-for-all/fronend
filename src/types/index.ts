@@ -163,9 +163,9 @@ export interface PaymentReportItem {
 }
 
 export interface DebtAging {
-  "0-30": number;
-  "31-60": number;
-  "60+": number;
+  range_0_30: number | string;
+  range_31_60: number | string;
+  range_60_plus: number | string;
 }
 
 export interface PaymentStats {

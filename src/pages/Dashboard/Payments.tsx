@@ -76,12 +76,20 @@ const Payments: React.FC = () => {
     });
   };
 
+  const formatDateShort = (dateStr: string) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString(undefined, { 
+      day: 'numeric', 
+      month: 'short'
+    });
+  };
+
   return (
     <div className="payments-page">
       <div className="payments-page__header">
-        <div className="payments-page__header-content">
+        <div className="payments-page__title">
           <h1>{t('payments_report')}</h1>
-          <p className="subtitle">{t('payments_subtitle')}</p>
+          <p>{t('payments_subtitle')}</p>
         </div>
       </div>
 
@@ -94,61 +102,75 @@ const Payments: React.FC = () => {
             <div className="metric-card__value">
               {currencySymbol}{formatCurrency(stats?.total_contract_amount || 0)}
             </div>
-            <span className="metric-card__sub">{stats?.contract_count || 0} {t('contracts')}</span>
+            <div className="metric-card__footer">
+              <span className="contract-count">{stats?.contract_count || 0} {t('contracts')}</span>
+              <span className="period-badge">
+                {startDate || endDate 
+                  ? `${startDate ? formatDateShort(startDate) : ''} - ${endDate ? formatDateShort(endDate) : '∞'}` 
+                  : t('period_overall', 'Overall')}
+              </span>
+            </div>
           </div>
         </div>
 
         <div className="metric-card">
           <div className="metric-card__icon"><Clock size={20} /></div>
           <div className="metric-card__content">
-            <span className="metric-card__label">{t('debt_0_30')}</span>
+            <span className="metric-card__label">{t('debt_new', 'New Debt')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{formatCurrency(stats?.debt_aging?.['0-30'] || 0)}
+              {currencySymbol}{formatCurrency(stats?.debt_aging?.range_0_30 || 0)}
             </div>
+            <span className="metric-card__sub">0-30 {t('days')}</span>
           </div>
         </div>
 
         <div className="metric-card metric-card--warning">
           <div className="metric-card__icon"><AlertCircle size={20} /></div>
           <div className="metric-card__content">
-            <span className="metric-card__label">{t('debt_31_60')}</span>
+            <span className="metric-card__label">{t('debt_overdue', 'Overdue')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{formatCurrency(stats?.debt_aging?.['31-60'] || 0)}
+              {currencySymbol}{formatCurrency(stats?.debt_aging?.range_31_60 || 0)}
             </div>
+            <span className="metric-card__sub">31-60 {t('days')}</span>
           </div>
         </div>
 
         <div className="metric-card metric-card--danger">
           <div className="metric-card__icon"><AlertCircle size={20} /></div>
           <div className="metric-card__content">
-            <span className="metric-card__label">{t('debt_60_plus')}</span>
+            <span className="metric-card__label">{t('debt_critical', 'Critical')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{formatCurrency(stats?.debt_aging?.['60+'] || 0)}
+              {currencySymbol}{formatCurrency(stats?.debt_aging?.range_60_plus || 0)}
             </div>
+            <span className="metric-card__sub">60+ {t('days')}</span>
           </div>
         </div>
       </div>
 
       {/* Filters Bar */}
       <div className="payments-filters">
-        <div className="filters-group">
-          <div className="date-input">
-            <Calendar size={16} />
-            <input 
-              type="date" 
-              value={startDate} 
-              onChange={(e) => { setStartDate(e.target.value); setPage(1); }} 
-              placeholder="Start"
-            />
+        <div className="filters-group filters-group--date">
+          <div className="date-field">
+            <label>{t('from', 'From')}</label>
+            <div className="date-input">
+              <Calendar size={16} />
+              <input 
+                type="date" 
+                value={startDate} 
+                onChange={(e) => { setStartDate(e.target.value); setPage(1); }} 
+              />
+            </div>
           </div>
-          <div className="date-input">
-            <Calendar size={16} />
-            <input 
-              type="date" 
-              value={endDate} 
-              onChange={(e) => { setEndDate(e.target.value); setPage(1); }} 
-              placeholder="End"
-            />
+          <div className="date-field">
+            <label>{t('to', 'To')}</label>
+            <div className="date-input">
+              <Calendar size={16} />
+              <input 
+                type="date" 
+                value={endDate} 
+                onChange={(e) => { setEndDate(e.target.value); setPage(1); }} 
+              />
+            </div>
           </div>
         </div>
 
