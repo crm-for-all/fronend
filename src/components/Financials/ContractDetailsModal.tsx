@@ -54,7 +54,15 @@ const ContractDetailsModal: React.FC<ContractDetailsModalProps> = ({
         financialsApi.getPayments(contract.id),
         financialsApi.getContract(contract.id)
       ]);
-      setPayments(paymentsData);
+      
+      // Sort payments by date desc (newest first)
+      const sortedPayments = [...paymentsData].sort((a, b) => {
+        const timeA = new Date(a.paid_at || a.created_at).getTime();
+        const timeB = new Date(b.paid_at || b.created_at).getTime();
+        return timeB - timeA;
+      });
+
+      setPayments(sortedPayments);
       setCurrentContract(contractData);
     } catch (err) {
       console.error('Failed to fetch data', err);
