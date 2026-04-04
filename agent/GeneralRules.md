@@ -13,3 +13,4 @@
 11. Use theme tokens and shared styling primitives instead of hardcoded colors.
 12. Use logical spacing/alignment properties instead of left/right-specific CSS whenever possible.
 13. Consider a task incomplete if translations, RTL/LTR support, responsiveness, or theming are missing.
+14. Any payment format should be with ',' after 3 digits from the right.

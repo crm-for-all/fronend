@@ -16,6 +16,7 @@ import type { PaymentReportItem, PaymentStats } from '../../types';
 import Button from '../../components/UI/Button';
 import Badge from '../../components/UI/Badge';
 import CustomerDetailsModal from '../../components/CustomerModal/CustomerDetailsModal';
+import { formatCurrency } from '../../utils/format';
 import './Payments.scss';
 
 const Payments: React.FC = () => {
@@ -91,7 +92,7 @@ const Payments: React.FC = () => {
           <div className="metric-card__content">
             <span className="metric-card__label">{t('total_contract_value')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{(stats?.total_contract_amount || 0).toLocaleString()}
+              {currencySymbol}{formatCurrency(stats?.total_contract_amount || 0)}
             </div>
             <span className="metric-card__sub">{stats?.contract_count || 0} {t('contracts')}</span>
           </div>
@@ -102,7 +103,7 @@ const Payments: React.FC = () => {
           <div className="metric-card__content">
             <span className="metric-card__label">{t('debt_0_30')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{(stats?.debt_aging?.['0-30'] || 0).toLocaleString()}
+              {currencySymbol}{formatCurrency(stats?.debt_aging?.['0-30'] || 0)}
             </div>
           </div>
         </div>
@@ -112,7 +113,7 @@ const Payments: React.FC = () => {
           <div className="metric-card__content">
             <span className="metric-card__label">{t('debt_31_60')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{(stats?.debt_aging?.['31-60'] || 0).toLocaleString()}
+              {currencySymbol}{formatCurrency(stats?.debt_aging?.['31-60'] || 0)}
             </div>
           </div>
         </div>
@@ -122,7 +123,7 @@ const Payments: React.FC = () => {
           <div className="metric-card__content">
             <span className="metric-card__label">{t('debt_60_plus')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{(stats?.debt_aging?.['60+'] || 0).toLocaleString()}
+              {currencySymbol}{formatCurrency(stats?.debt_aging?.['60+'] || 0)}
             </div>
           </div>
         </div>
@@ -216,12 +217,12 @@ const Payments: React.FC = () => {
                       <td data-label={t('status')}><Badge status={item.status} /></td>
                       <td data-label={t('debt_label')}>
                         <span className={item.total_owed > 0 ? 'debt-amount danger' : 'debt-amount'}>
-                          {currencySymbol}{item.total_owed.toLocaleString()}
+                          {currencySymbol}{formatCurrency(item.total_owed)}
                         </span>
                       </td>
                       <td data-label={t('last_payment')}>
                         <div className="last-payment-cell">
-                          <span className="amount">{currencySymbol}{item.last_payment_amount.toLocaleString()}</span>
+                          <span className="amount">{currencySymbol}{formatCurrency(item.last_payment_amount)}</span>
                           <span className="date">{formatDate(item.last_payment_at)}</span>
                         </div>
                       </td>

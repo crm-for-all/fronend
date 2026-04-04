@@ -14,6 +14,7 @@ import Button from '../UI/Button';
 import ConfirmModal from '../UI/ConfirmModal';
 import { financialsApi } from '../../api/financials';
 import type { Contract, Payment } from '../../types';
+import { formatCurrency } from '../../utils/format';
 import './ContractDetailsModal.scss';
 
 interface ContractDetailsModalProps {
@@ -87,8 +88,8 @@ const ContractDetailsModal: React.FC<ContractDetailsModalProps> = ({
     // Frontend Validation
     if (val > contract.remaining_balance) {
       const msg = t('payment_exceeds_balance_detail', 'Payment amount ({{val}}) exceeds remaining balance ({{balance}})')
-        .replace('{{val}}', `${currencySymbol}${val.toLocaleString()}`)
-        .replace('{{balance}}', `${currencySymbol}${contract.remaining_balance.toLocaleString()}`);
+        .replace('{{val}}', `${currencySymbol}${formatCurrency(val)}`)
+        .replace('{{balance}}', `${currencySymbol}${formatCurrency(contract.remaining_balance)}`);
       
       setError(msg);
       setIsSaving(false);
@@ -145,14 +146,14 @@ const ContractDetailsModal: React.FC<ContractDetailsModalProps> = ({
               <TrendingUp size={14} />
               {t('total_amount')}
             </div>
-            <div className="stat-box__value">{currencySymbol}{currentContract.total_amount.toLocaleString()}</div>
+            <div className="stat-box__value">{currencySymbol}{formatCurrency(currentContract.total_amount)}</div>
           </div>
           <div className="stat-box stat-box--success">
             <div className="stat-box__label">
               <ArrowDownCircle size={14} />
               {t('amount_paid')}
             </div>
-            <div className="stat-box__value">{currencySymbol}{currentContract.total_paid.toLocaleString()}</div>
+            <div className="stat-box__value">{currencySymbol}{formatCurrency(currentContract.total_paid)}</div>
           </div>
           {!currentContract.is_fully_paid && (
             <div className="stat-box stat-box--warning">
@@ -160,7 +161,7 @@ const ContractDetailsModal: React.FC<ContractDetailsModalProps> = ({
                 <AlertCircle size={14} />
                 {t('remaining_balance')}
               </div>
-              <div className="stat-box__value">{currencySymbol}{currentContract.remaining_balance.toLocaleString()}</div>
+              <div className="stat-box__value">{currencySymbol}{formatCurrency(currentContract.remaining_balance)}</div>
             </div>
           )}
         </div>
@@ -220,7 +221,7 @@ const ContractDetailsModal: React.FC<ContractDetailsModalProps> = ({
               payments.map(payment => (
                 <div key={payment.id} className="payment-row">
                   <div className="payment-row__info">
-                    <span className="amount">{currencySymbol}{payment.amount.toLocaleString()}</span>
+                    <span className="amount">{currencySymbol}{formatCurrency(payment.amount)}</span>
                     <span className="date">{formatDate(payment.paid_at)}</span>
                   </div>
                   <div className="payment-row__actions">

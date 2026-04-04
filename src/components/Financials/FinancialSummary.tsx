@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Receipt, Plus, CheckCircle2 } from 'lucide-react';
 import type { Contract } from '../../types';
 import Button from '../UI/Button';
+import { formatCurrency } from '../../utils/format';
 
 interface FinancialSummaryProps {
   contracts: Contract[];
@@ -69,11 +70,11 @@ const FinancialSummary: React.FC<FinancialSummaryProps> = ({
               <div className="contract-footer">
                 {!contract.is_fully_paid && (
                   <span className="remaining-label">
-                    {t('remaining_balance')}: <strong>{currencySymbol}{contract.remaining_balance.toLocaleString()}</strong>
+                    {t('remaining_balance')}: <strong>{currencySymbol}{formatCurrency(contract.remaining_balance)}</strong>
                   </span>
                 )}
                 <span className="total-label">
-                  {currencySymbol}{contract.total_amount.toLocaleString()}
+                  {currencySymbol}{formatCurrency(contract.total_amount)}
                 </span>
               </div>
             </div>
