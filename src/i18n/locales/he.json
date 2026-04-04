@@ -126,6 +126,20 @@
     "payment_exceeds_balance": "סכום התשלום עולה על היתרה הנותרת",
     "payment_exceeds_balance_detail": "סכום התשלום ({{val}}) עולה על היתרה הנותרת ({{balance}})",
     "future_date_error": "תאריך התשלום אינו יכול להיות בעתיד",
+    "payments_report": "דוח תשלומים",
+    "payments_subtitle": "ניהול חוזים פיננסיים וחובות של כלל הלקוחות.",
+    "contract_count": "כמות חוזים",
+    "total_contract_value": "שווי חוזים כולל",
+    "debt_aging": "גיל חוב",
+    "debt_0_30": "0-30 ימים",
+    "debt_31_60": "31-60 ימים",
+    "debt_60_plus": "60+ ימים",
+    "last_payment": "תשלום אחרון",
+    "debt_label": "חוב",
+    "sort_unpaid_first": "לא שולם תחילה",
+    "sort_last_payment_asc": "תשלום אחרון ישן",
+    "sort_last_payment_desc": "תשלום אחרון חדש",
+    "per_page": "לכל עמוד",
     "currency_symbol": "₪"
   }
 }

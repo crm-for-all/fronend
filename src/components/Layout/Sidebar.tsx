@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LayoutDashboard, Users, ClipboardList, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, CreditCard, ClipboardList, Settings } from 'lucide-react';
 import clsx from 'clsx';
 import './Sidebar.scss';
 
@@ -53,6 +53,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             >
               <Users />
               <span>{t('customers')}</span>
+            </NavLink>
+
+            <NavLink
+              to="/payments"
+              onClick={onClose}
+              className={({ isActive }) =>
+                clsx('sidebar__link', { 'sidebar__link--active': isActive })
+              }
+            >
+              <CreditCard />
+              <span>{t('payments')}</span>
             </NavLink>
 
             <div className="sidebar__link sidebar__link--disabled">

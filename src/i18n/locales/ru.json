@@ -126,6 +126,20 @@
     "payment_exceeds_balance": "Сумма платежа превышает остаток",
     "payment_exceeds_balance_detail": "Сумма платежа ({{val}}) превышает остаток ({{balance}})",
     "future_date_error": "Дата платежа не может быть в будущем",
-    "currency_symbol": "₽"
+    "payments_report": "Отчет по платежам",
+    "payments_subtitle": "Управление финансовыми контрактами и задолженностью всех клиентов.",
+    "contract_count": "Количество контрактов",
+    "total_contract_value": "Общая стоимость контрактов",
+    "debt_aging": "Возраст задолженности",
+    "debt_0_30": "0-30 дней",
+    "debt_31_60": "31-60 дней",
+    "debt_60_plus": "60+ дней",
+    "last_payment": "Последний платеж",
+    "debt_label": "Долг",
+    "sort_unpaid_first": "Сначала неоплаченные",
+    "sort_last_payment_asc": "Старые платежи сначала",
+    "sort_last_payment_desc": "Новые платежи сначала",
+    "per_page": "На странице",
+    "currency_symbol": "₪"
   }
 }

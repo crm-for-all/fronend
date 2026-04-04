@@ -149,3 +149,36 @@ export interface PaymentUpdateDTO {
   amount?: number;
   paid_at?: string;
 }
+
+// Payment Report
+export interface PaymentReportItem {
+  id: string;
+  name: string;
+  status: string | Status | null;
+  has_unpaid_contracts: boolean;
+  total_paid: number;
+  total_owed: number; // Remaining debt
+  last_payment_amount: number;
+  last_payment_at: string;
+}
+
+export interface DebtAging {
+  "0-30": number;
+  "31-60": number;
+  "60+": number;
+}
+
+export interface PaymentStats {
+  total_contract_amount: number;
+  contract_count: number;
+  debt_aging: DebtAging;
+}
+
+export interface PaymentReportResponse {
+  items: PaymentReportItem[];
+  stats: PaymentStats;
+  total_count: number;
+  page: number;
+  per_page: number;
+  pages: number;
+}

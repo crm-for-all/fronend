@@ -10,6 +10,7 @@ import Register from './pages/Auth/Register';
 import CustomersDashboard from './pages/Dashboard/Customers';
 import SettingsDashboard from './pages/Dashboard/Settings';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Payments from './pages/Dashboard/Payments';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -33,6 +34,13 @@ function AppRoutes() {
         <ProtectedRoute>
           <Layout>
             <CustomersDashboard />
+          </Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/payments" element={
+        <ProtectedRoute>
+          <Layout>
+            <Payments />
           </Layout>
         </ProtectedRoute>
       } />

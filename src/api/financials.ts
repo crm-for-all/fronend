@@ -5,10 +5,23 @@ import type {
   ContractUpdateDTO, 
   Payment, 
   PaymentCreateDTO, 
-  PaymentUpdateDTO 
+  PaymentUpdateDTO,
+  PaymentReportResponse
 } from '../types';
 
 export const financialsApi = {
+  // Reports
+  getPaymentsReport: async (params: {
+    start_date?: string;
+    end_date?: string;
+    page?: number;
+    per_page?: number;
+    sort_by?: string;
+  } = {}): Promise<PaymentReportResponse> => {
+    const response = await api.get('/customers/payments/report', { params });
+    return response.data;
+  },
+
   // Contracts
   getContracts: async (customerId: string): Promise<Contract[]> => {
     const response = await api.get(`/customers/${customerId}/contracts`);
