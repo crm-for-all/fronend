@@ -130,7 +130,7 @@
     "payments_subtitle": "Управление финансовыми контрактами и задолженностью всех клиентов.",
     "contract_count": "Количество контрактов",
     "signed_at": "Подписан",
-    "total_contract_value": "Стоимость контрактов",
+    "total_contract_value": "Общая сумма задолженности",
     "period_overall": "Общий",
     "debt_new": "Новый долг",
     "debt_overdue": "Просрочено",
@@ -144,6 +144,10 @@
     "per_page": "На странице",
     "from": "С",
     "to": "По",
+    "col_customer": "Клиент",
+    "contract_value": "Сумма контракта",
+    "debt_left": "Остаток долга",
+    "customer_total_debt": "Общий долг",
     "currency_symbol": "₪"
   }
 }

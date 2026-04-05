@@ -370,6 +370,16 @@
     &.danger {
       color: #ef4444;
     }
+
+    &.global-debt {
+      font-size: 14px;
+      display: inline-flex;
+      padding: 4px 10px;
+      background-color: var(--color-sidebar-bg);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      color: var(--color-secondary);
+    }
   }
 
   .last-payment-cell {

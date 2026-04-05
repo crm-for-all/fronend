@@ -155,14 +155,16 @@ export interface PaymentUpdateDTO {
 
 // Payment Report
 export interface PaymentReportItem {
-  id: string;
-  name: string;
-  status: string | Status | null;
-  has_unpaid_contracts: boolean;
-  total_paid: number;
-  total_owed: number; // Remaining debt
-  last_payment_amount: number;
-  last_payment_at: string;
+  contract_id: string;
+  contract_name: string;
+  customer_id: string;
+  customer_name: string;
+  signed_at: string;
+  contract_value: number;
+  debt_left: number;
+  last_payment_amount: number | null;
+  last_payment_at: string | null;
+  customer_total_debt: number;
 }
 
 export interface DebtAging {

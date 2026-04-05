@@ -130,7 +130,7 @@
     "payments_subtitle": "Manage financial contracts and debt across all customers.",
     "contract_count": "Contract Count",
     "signed_at": "Signed At",
-    "total_contract_value": "Contract Value",
+    "total_contract_value": "Total Uncollected Debt",
     "period_overall": "Overall",
     "debt_new": "New Debt",
     "debt_overdue": "Overdue",
@@ -144,6 +144,10 @@
     "per_page": "Per page",
     "from": "From",
     "to": "To",
+    "col_customer": "Customer",
+    "contract_value": "Contract Value",
+    "debt_left": "Debt Left",
+    "customer_total_debt": "Global Debt",
     "currency_symbol": "₪"
   }
 }

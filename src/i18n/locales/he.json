@@ -130,7 +130,7 @@
     "payments_subtitle": "ניהול חוזים פיננסיים וחובות של כלל הלקוחות.",
     "contract_count": "כמות חוזים",
     "signed_at": "נחתם ב-",
-    "total_contract_value": "שווי חוזים",
+    "total_contract_value": "סך חוב שטרם נגבה",
     "period_overall": "כללי",
     "debt_new": "חוב חדש",
     "debt_overdue": "חוב באיחור",
@@ -144,6 +144,10 @@
     "per_page": "לכל עמוד",
     "from": "מ-",
     "to": "עד",
+    "col_customer": "שם הלקוח",
+    "contract_value": "שווי חוזה",
+    "debt_left": "חוב לחוזה",
+    "customer_total_debt": "סך חוב כולל",
     "currency_symbol": "₪"
   }
 }

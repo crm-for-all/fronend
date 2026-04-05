@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  CreditCard, 
-  Calendar, 
-  ChevronLeft, 
-  ChevronRight, 
-  AlertCircle, 
-  Clock, 
-  TrendingUp, 
+import {
+  CreditCard,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  AlertCircle,
+  Clock,
+  TrendingUp,
   ExternalLink,
   ChevronDown
 } from 'lucide-react';
 import { financialsApi } from '../../api/financials';
 import type { PaymentReportItem, PaymentStats } from '../../types';
 import Button from '../../components/UI/Button';
-import Badge from '../../components/UI/Badge';
-import CustomerDetailsModal from '../../components/CustomerModal/CustomerDetailsModal';
+import ContractDetailsModal from '../../components/Financials/ContractDetailsModal';
 import { formatCurrency } from '../../utils/format';
 import './Payments.scss';
 
@@ -33,9 +32,9 @@ const Payments: React.FC = () => {
   const [sortBy, setSortBy] = useState('unpaid_first');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  
+
   // Modal state
-  const [selectedCustomer, setSelectedCustomer] = useState<any>(null); // For details modal
+  const [selectedContract, setSelectedContract] = useState<any>(null); // For contract detail view
 
   const fetchReport = async () => {
     setLoading(true);
@@ -48,7 +47,7 @@ const Payments: React.FC = () => {
         sort_by: sortBy
       });
       setItems(response.items);
-      setStats(response.stats);
+      setStats(response.stats); // Use server-side calculated stats
       setTotalPages(response.pages);
     } catch (err) {
       console.error('Failed to fetch payments report', err);
@@ -62,24 +61,32 @@ const Payments: React.FC = () => {
   }, [page, perPage, sortBy, startDate, endDate]);
 
   const handleRowClick = (item: PaymentReportItem) => {
-    // This assumes we have a way to fetch the full customer object
-    // For now we'll pass a partial or add a helper to CustomersAPI
-    setSelectedCustomer({ id: item.id, name: item.name, status: item.status } as any);
+    // Treat the report item as a Contract for the details modal
+    const contractData = {
+      id: item.contract_id, 
+      title: item.contract_name, 
+      total_amount: item.contract_value,
+      total_paid: item.contract_value - item.debt_left,
+      remaining_balance: item.debt_left,
+      signed_at: item.signed_at,
+      is_fully_paid: item.debt_left <= 0
+    };
+    setSelectedContract(contractData as any);
   };
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '---';
-    return new Date(dateStr).toLocaleDateString(undefined, { 
-      day: 'numeric', 
+    return new Date(dateStr).toLocaleDateString(undefined, {
+      day: 'numeric',
       month: 'short',
-      year: 'numeric' 
+      year: 'numeric'
     });
   };
 
   const formatDateShort = (dateStr: string) => {
     if (!dateStr) return '';
-    return new Date(dateStr).toLocaleDateString(undefined, { 
-      day: 'numeric', 
+    return new Date(dateStr).toLocaleDateString(undefined, {
+      day: 'numeric',
       month: 'short'
     });
   };
@@ -105,8 +112,8 @@ const Payments: React.FC = () => {
             <div className="metric-card__footer">
               <span className="contract-count">{stats?.contract_count || 0} {t('contracts')}</span>
               <span className="period-badge">
-                {startDate || endDate 
-                  ? `${startDate ? formatDateShort(startDate) : ''} - ${endDate ? formatDateShort(endDate) : '∞'}` 
+                {startDate || endDate
+                  ? `${startDate ? formatDateShort(startDate) : ''} - ${endDate ? formatDateShort(endDate) : '∞'}`
                   : t('period_overall', 'Overall')}
               </span>
             </div>
@@ -140,7 +147,7 @@ const Payments: React.FC = () => {
           <div className="metric-card__content">
             <span className="metric-card__label">{t('debt_critical', 'Critical')}</span>
             <div className="metric-card__value">
-              {currencySymbol}{formatCurrency(stats?.debt_aging?.range_60_plus || 0)}
+              {currencySymbol}{formatCurrency(Number(stats?.debt_aging?.range_60_plus || 0))}
             </div>
             <span className="metric-card__sub">60+ {t('days')}</span>
           </div>
@@ -154,10 +161,10 @@ const Payments: React.FC = () => {
             <label>{t('from', 'From')}</label>
             <div className="date-input">
               <Calendar size={16} />
-              <input 
-                type="date" 
-                value={startDate} 
-                onChange={(e) => { setStartDate(e.target.value); setPage(1); }} 
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => { setStartDate(e.target.value); setPage(1); }}
               />
             </div>
           </div>
@@ -165,10 +172,10 @@ const Payments: React.FC = () => {
             <label>{t('to', 'To')}</label>
             <div className="date-input">
               <Calendar size={16} />
-              <input 
-                type="date" 
-                value={endDate} 
-                onChange={(e) => { setEndDate(e.target.value); setPage(1); }} 
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => { setEndDate(e.target.value); setPage(1); }}
               />
             </div>
           </div>
@@ -214,38 +221,51 @@ const Payments: React.FC = () => {
               <table className="payments-table">
                 <thead>
                   <tr>
-                    <th>{t('col_name')}</th>
-                    <th>{t('status')}</th>
-                    <th>{t('debt_label')}</th>
+                    <th>{t('col_customer', 'Customer')}</th>
+                    <th>{t('contract_title', 'Contract')}</th>
+                    <th>{t('signed_at')}</th>
+                    <th>{t('contract_value', 'Value')}</th>
+                    <th>{t('debt_left', 'Debt Left')}</th>
+                    <th>{t('customer_total_debt', 'Global Debt')}</th>
                     <th>{t('last_payment')}</th>
                     <th className="actions-th"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {items.map(item => (
-                    <tr 
-                      key={item.id} 
+                    <tr
+                      key={item.contract_id}
                       onClick={() => handleRowClick(item)}
-                      className={item.has_unpaid_contracts ? 'row--has-debt' : ''}
+                      className={item.debt_left > 0 ? 'row--has-debt' : ''}
                     >
-                      <td data-label={t('col_name')}>
+                      <td data-label={t('col_customer')}>
                         <div className="customer-name-cell">
-                          <strong>{item.name}</strong>
-                          {item.has_unpaid_contracts && (
-                            <span className="debt-indicator" title={t('unpaid_contracts')}></span>
-                          )}
+                          <strong>{item.customer_name}</strong>
                         </div>
                       </td>
-                      <td data-label={t('status')}><Badge status={item.status} /></td>
-                      <td data-label={t('debt_label')}>
-                        <span className={item.total_owed > 0 ? 'debt-amount danger' : 'debt-amount'}>
-                          {currencySymbol}{formatCurrency(item.total_owed)}
+                      <td data-label={t('contract_title')}>
+                        <strong>{item.contract_name}</strong>
+                      </td>
+                      <td data-label={t('signed_at')}>
+                        <span className="date-badge-simple">{item.signed_at ? formatDateShort(item.signed_at) : '---'}</span>
+                      </td>
+                      <td data-label={t('contract_value')}>
+                        {currencySymbol}{formatCurrency(item.contract_value)}
+                      </td>
+                      <td data-label={t('debt_left')}>
+                        <span className={item.debt_left > 0 ? 'debt-amount danger' : 'debt-amount'}>
+                          {currencySymbol}{formatCurrency(item.debt_left)}
+                        </span>
+                      </td>
+                      <td data-label={t('customer_total_debt')}>
+                        <span className="debt-amount global-debt">
+                          {currencySymbol}{formatCurrency(item.customer_total_debt)}
                         </span>
                       </td>
                       <td data-label={t('last_payment')}>
                         <div className="last-payment-cell">
-                          <span className="amount">{currencySymbol}{formatCurrency(item.last_payment_amount)}</span>
-                          <span className="date">{formatDate(item.last_payment_at)}</span>
+                          <span className="amount">{item.last_payment_amount ? `${currencySymbol}${formatCurrency(item.last_payment_amount)}` : '---'}</span>
+                          <span className="date">{item.last_payment_at ? formatDate(item.last_payment_at) : ''}</span>
                         </div>
                       </td>
                       <td className="actions-td">
@@ -265,18 +285,18 @@ const Payments: React.FC = () => {
                 {t('showing_page', { page, total: totalPages })}
               </div>
               <div className="pagination-controls">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  disabled={page === 1} 
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page === 1}
                   onClick={() => setPage(p => p - 1)}
                 >
                   <ChevronLeft size={16} />
                 </Button>
                 <div className="page-numbers">
                   {[...Array(totalPages)].map((_, i) => (
-                    <button 
-                      key={i + 1} 
+                    <button
+                      key={i + 1}
                       className={page === i + 1 ? 'active' : ''}
                       onClick={() => setPage(i + 1)}
                     >
@@ -284,10 +304,10 @@ const Payments: React.FC = () => {
                     </button>
                   ))}
                 </div>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  disabled={page === totalPages} 
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page === totalPages}
                   onClick={() => setPage(p => p + 1)}
                 >
                   <ChevronRight size={16} />
@@ -298,12 +318,12 @@ const Payments: React.FC = () => {
         )}
       </div>
 
-      {selectedCustomer && (
-        <CustomerDetailsModal 
-          isOpen={!!selectedCustomer}
-          onClose={() => setSelectedCustomer(null)}
-          onEdit={() => {}} // Handle if needed
-          customer={selectedCustomer}
+      {selectedContract && (
+        <ContractDetailsModal
+          isOpen={!!selectedContract}
+          onClose={() => setSelectedContract(null)}
+          onUpdate={fetchReport}
+          contract={selectedContract}
         />
       )}
     </div>
