@@ -1,8 +1,13 @@
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
   align-items: flex-start;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   &--full {
     width: 100%;
@@ -29,6 +34,19 @@
     &:focus {
       border-color: var(--color-tertiary);
       box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.1);
+    }
+
+    // Fix browser native icons in dark mode
+    &[type="date"],
+    &[type="datetime-local"] {
+      [data-theme="dark"] & {
+        color-scheme: dark; // Tells browser to use dark native UI
+        
+        &::-webkit-calendar-picker-indicator {
+          filter: invert(1); // Force icon to white if color-scheme isn't enough
+          cursor: pointer;
+        }
+      }
     }
 
     &::placeholder {

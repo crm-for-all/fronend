@@ -117,6 +117,7 @@ export interface Contract {
   remaining_balance: number;
   payment_count: number;
   is_fully_paid: boolean;
+  signed_at: string; // ISO datetime
   created_at: string;
   updated_at: string;
 }
@@ -124,11 +125,13 @@ export interface Contract {
 export interface ContractCreateDTO {
   title: string;
   total_amount: number;
+  signed_at?: string;
 }
 
 export interface ContractUpdateDTO {
   title?: string;
   total_amount?: number;
+  signed_at?: string;
 }
 
 export interface Payment {

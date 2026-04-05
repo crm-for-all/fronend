@@ -129,6 +129,7 @@
     "payments_report": "דוח תשלומים",
     "payments_subtitle": "ניהול חוזים פיננסיים וחובות של כלל הלקוחות.",
     "contract_count": "כמות חוזים",
+    "signed_at": "נחתם ב-",
     "total_contract_value": "שווי חוזים",
     "period_overall": "כללי",
     "debt_new": "חוב חדש",

@@ -7,7 +7,8 @@ import {
   TrendingUp, 
   AlertCircle,
   Clock,
-  ArrowDownCircle
+  ArrowDownCircle,
+  FileCheck
 } from 'lucide-react';
 import Modal from '../UI/Modal';
 import Button from '../UI/Button';
@@ -147,6 +148,12 @@ const ContractDetailsModal: React.FC<ContractDetailsModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={currentContract.title} size="md">
       <div className="contract-modal">
+        {/* Contract Metadata Subtitle */}
+        <div className="contract-modal__metadata">
+          <FileCheck size={14} />
+          <span>{t('signed_at')}: <strong>{formatDate(currentContract.signed_at)}</strong></span>
+        </div>
+
         {/* Statistics Header */}
         <div className="contract-modal__stats">
           <div className="stat-box">

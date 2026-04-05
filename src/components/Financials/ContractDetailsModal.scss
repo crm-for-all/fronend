@@ -5,6 +5,30 @@
   flex-direction: column;
   gap: 24px;
   animation: fadeIn 0.2s ease;
+  margin-top: -12px;
+
+  &__metadata {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-muted);
+    background-color: var(--color-sidebar-bg);
+    padding: 6px 16px;
+    border-radius: 99px;
+    width: fit-content;
+    border: 1px solid var(--color-border);
+    margin-bottom: -8px;
+
+    svg {
+      color: var(--color-tertiary);
+    }
+
+    strong {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+  }
 
   &__stats {
     display: grid;

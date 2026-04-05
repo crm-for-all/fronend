@@ -129,6 +129,7 @@
     "payments_report": "Payments Report",
     "payments_subtitle": "Manage financial contracts and debt across all customers.",
     "contract_count": "Contract Count",
+    "signed_at": "Signed At",
     "total_contract_value": "Contract Value",
     "period_overall": "Overall",
     "debt_new": "New Debt",

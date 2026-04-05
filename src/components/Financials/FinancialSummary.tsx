@@ -18,8 +18,19 @@ const FinancialSummary: React.FC<FinancialSummaryProps> = ({
   onSelectContract,
   isLoading 
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const currencySymbol = t('currency_symbol', '$');
+
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const locale = i18n.language === 'he' ? 'he-IL' : i18n.language === 'ru' ? 'ru-RU' : 'en-US';
+    return date.toLocaleDateString(locale, { 
+      day: 'numeric', 
+      month: 'short',
+      year: '2-digit'
+    });
+  };
 
   return (
     <div className="info-card financial-summary">
@@ -67,18 +78,27 @@ const FinancialSummary: React.FC<FinancialSummaryProps> = ({
                 />
               </div>
 
-              <div className="contract-footer">
-                {!contract.is_fully_paid && (
-                  <span className="remaining-label">
-                    {t('remaining_balance')}: <strong>{currencySymbol}{formatCurrency(contract.remaining_balance)}</strong>
+                <div className="contract-status-row">
+                  {!contract.is_fully_paid && (
+                    <span className="remaining-label">
+                      {t('remaining_balance')}: <strong>{currencySymbol}{formatCurrency(contract.remaining_balance)}</strong>
+                    </span>
+                  )}
+                  {contract.is_fully_paid && (
+                    <span className="paid-label">
+                      {t('fully_paid', 'Fully Paid')}
+                    </span>
+                  )}
+                </div>
+
+                <div className="contract-footer">
+                  <span className="signed-label">{formatDate(contract.signed_at)}</span>
+                  <span className="total-label">
+                    {currencySymbol}{formatCurrency(contract.total_amount)}
                   </span>
-                )}
-                <span className="total-label">
-                  {currencySymbol}{formatCurrency(contract.total_amount)}
-                </span>
+                </div>
               </div>
-            </div>
-          ))
+            ))
         )}
       </div>
     </div>
