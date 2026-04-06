@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, UserPlus, Filter, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, UserPlus, Filter, X, ChevronDown, ChevronUp, Download, Loader } from 'lucide-react';
 import { customersApi } from '../../api/customers';
 import { tagsApi } from '../../api/tags';
 import { statusesApi } from '../../api/statuses';
@@ -11,6 +11,7 @@ import Card from '../../components/UI/Card';
 import Input from '../../components/UI/Input';
 import CustomerModal from '../../components/CustomerModal/CustomerModal';
 import CustomerDetailsModal from '../../components/CustomerModal/CustomerDetailsModal';
+import { useToast } from '../../components/UI/ToastProvider';
 import './Customers.scss';
 
 const CustomersDashboard = () => {
@@ -28,7 +29,12 @@ const CustomersDashboard = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
   const [availableStatuses, setAvailableStatuses] = useState<Status[]>([]);
+  const { showToast } = useToast();
   
+  // Export State
+  const [isExportDropdownOpen, setIsExportDropdownOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+
   // Local state for debouncing textual inputs
   const [localSearch, setLocalSearch] = useState('');
   const [localEmail, setLocalEmail] = useState('');
@@ -111,6 +117,26 @@ const CustomersDashboard = () => {
     if (key === 'phone') setLocalPhone('');
   };
 
+  const handleExport = async (format: 'csv') => {
+    setIsExportDropdownOpen(false);
+    setIsExporting(true);
+    try {
+      const blob = await customersApi.export(filters);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `customers_export.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Export failed', error);
+      showToast(t('export_failed', 'Export failed. Please try again.'), 'error');
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const handleOpenCreateModal = () => {
     setSelectedCustomer(undefined);
@@ -175,6 +201,55 @@ const CustomersDashboard = () => {
               {t('clear_all', 'Clear All')}
             </Button>
           )}
+
+          <div style={{ flex: 1 }} />
+          
+          <div className="export-container" style={{ position: 'relative' }}>
+            <Button 
+               variant="outline" 
+               onClick={() => setIsExportDropdownOpen(!isExportDropdownOpen)}
+               disabled={isExporting}
+               className={isExportDropdownOpen ? 'btn-filters-active' : ''}
+            >
+              {isExporting ? <Loader size={18} className="animate-spin" /> : <Download size={18} />}
+              <span style={{ marginInlineStart: '8px' }}>{t('export', 'Export')}</span>
+              <ChevronDown size={16} style={{ marginInlineStart: '4px' }} />
+            </Button>
+            
+            {isExportDropdownOpen && (
+              <>
+                <div onClick={() => setIsExportDropdownOpen(false)} style={{position: 'fixed', inset: 0, zIndex: 10}} />
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0, 
+                  marginTop: '8px',
+                  minWidth: '160px',
+                  backgroundColor: 'var(--color-surface)',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-md)',
+                  border: '1px solid var(--color-border)',
+                  zIndex: 20,
+                  padding: '6px'
+                }}>
+                  <button 
+                    onClick={() => handleExport('csv')} 
+                    style={{
+                      width: '100%', textAlign: 'start', padding: '10px 14px', 
+                      fontSize: '14px', color: 'var(--color-primary)', fontWeight: 500,
+                      background: 'transparent', border: 'none', cursor: 'pointer',
+                      borderRadius: 'var(--radius-sm)',
+                      display: 'flex', alignItems: 'center', gap: '8px'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-sidebar-hover)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <span>{t('export_csv', 'Export as CSV')}</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {showFilters && (

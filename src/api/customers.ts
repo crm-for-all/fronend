@@ -12,6 +12,14 @@ export const customersApi = {
     return response.data;
   },
 
+  export: async (filters?: CustomerFilters): Promise<Blob> => {
+    const response = await api.get('/customers/export', { 
+      params: filters, 
+      responseType: 'blob' 
+    });
+    return response.data;
+  },
+
   create: async (data: CustomerCreateDTO): Promise<Customer> => {
     const response = await api.post('/customers', data);
     return response.data;
