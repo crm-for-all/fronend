@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Modal from '../UI/Modal';
+import ConfirmModal from '../UI/ConfirmModal';
 import Input from '../UI/Input';
 import Button from '../UI/Button';
 import Badge from '../UI/Badge';
@@ -37,6 +38,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showConfirmClose, setShowConfirmClose] = useState(false);
 
   useEffect(() => {
     const fetchMeta = async () => {
@@ -149,10 +151,33 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
     });
   };
 
+  const handleClose = () => {
+    // Only warn for new customers that have started filling data
+    if (!customer) {
+      const hasData = 
+        Boolean(formData.name?.trim()) ||
+        Boolean(formData.email?.trim()) ||
+        Boolean(formData.notes?.trim()) ||
+        Boolean(formData.last_event?.trim()) ||
+        Boolean(formData.status_id) ||
+        (formData.tag_ids && formData.tag_ids.length > 0) ||
+        (formData.phones && formData.phones.some(p => p.phone_number.trim() !== ''));
+
+      if (hasData) {
+        setShowConfirmClose(true);
+        return;
+      }
+    }
+    
+    // Default close for edits or empty forms
+    onClose(false);
+  };
+
   return (
+    <>
     <Modal 
       isOpen={isOpen} 
-      onClose={() => onClose(false)} 
+      onClose={handleClose} 
       title={customer ? t('edit_customer', 'ערוך לקוח') : t('new_customer', 'לקוח חדש')}
     >
       <form className="customer-form" onSubmit={handleSubmit}>
@@ -325,7 +350,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
         </div>
 
         <div className="customer-form__actions">
-          <Button type="button" variant="outline" onClick={() => onClose()}>
+          <Button type="button" variant="outline" onClick={handleClose}>
             {t('cancel', 'ביטול')}
           </Button>
           <Button type="submit" isLoading={isLoading}>
@@ -334,6 +359,21 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ isOpen, onClose, customer
         </div>
       </form>
     </Modal>
+
+    <ConfirmModal
+      isOpen={showConfirmClose}
+      onClose={() => setShowConfirmClose(false)}
+      onConfirm={() => {
+        setShowConfirmClose(false);
+        onClose(false);
+      }}
+      title={t('unsaved_changes', 'Unsaved Changes')}
+      message={t('discard_new_customer_msg', 'Are you sure you want to exit? All the data you\'ve entered will be permanently erased.')}
+      confirmLabel={t('close_without_saving', 'Close without saving')}
+      cancelLabel={t('keep_editing', 'Keep editing')}
+      variant="danger"
+    />
+    </>
   );
 };
 

@@ -5,8 +5,6 @@ import {
   Calendar,
   ChevronLeft,
   ChevronRight,
-  AlertCircle,
-  Clock,
   TrendingUp,
   ExternalLink,
   ChevronDown
@@ -120,38 +118,6 @@ const Payments: React.FC = () => {
           </div>
         </div>
 
-        <div className="metric-card">
-          <div className="metric-card__icon"><Clock size={20} /></div>
-          <div className="metric-card__content">
-            <span className="metric-card__label">{t('debt_new', 'New Debt')}</span>
-            <div className="metric-card__value">
-              {currencySymbol}{formatCurrency(stats?.debt_aging?.range_0_30 || 0)}
-            </div>
-            <span className="metric-card__sub">0-30 {t('days')}</span>
-          </div>
-        </div>
-
-        <div className="metric-card metric-card--warning">
-          <div className="metric-card__icon"><AlertCircle size={20} /></div>
-          <div className="metric-card__content">
-            <span className="metric-card__label">{t('debt_overdue', 'Overdue')}</span>
-            <div className="metric-card__value">
-              {currencySymbol}{formatCurrency(stats?.debt_aging?.range_31_60 || 0)}
-            </div>
-            <span className="metric-card__sub">31-60 {t('days')}</span>
-          </div>
-        </div>
-
-        <div className="metric-card metric-card--danger">
-          <div className="metric-card__icon"><AlertCircle size={20} /></div>
-          <div className="metric-card__content">
-            <span className="metric-card__label">{t('debt_critical', 'Critical')}</span>
-            <div className="metric-card__value">
-              {currencySymbol}{formatCurrency(Number(stats?.debt_aging?.range_60_plus || 0))}
-            </div>
-            <span className="metric-card__sub">60+ {t('days')}</span>
-          </div>
-        </div>
       </div>
 
       {/* Filters Bar */}

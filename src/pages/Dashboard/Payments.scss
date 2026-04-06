@@ -35,17 +35,8 @@
 
   // Metrics Grid
   .payments-metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-
-    @include tablet {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include mobile {
-      grid-template-columns: 1fr;
-    }
+    display: flex;
+    justify-content: flex-start;
   }
 
   .metric-card {
@@ -144,37 +135,14 @@
 
     // Variants
     &--primary {
+      max-width: 350px;
+      width: 100%;
       border-left: 4px solid var(--color-tertiary);
       @include rtl { border-left: none; border-right: 4px solid var(--color-tertiary); }
       .metric-card__icon { 
         background-color: rgba(13, 148, 136, 0.1); 
         color: var(--color-tertiary);
       }
-    }
-
-    &--warning {
-      border-left: 4px solid #f59e0b;
-      @include rtl { border-left: none; border-right: 4px solid #f59e0b; }
-      .metric-card__icon { 
-        background-color: rgba(245, 158, 11, 0.1); 
-        color: #d97706;
-      }
-    }
-
-    &--danger {
-      border-left: 4px solid #ef4444;
-      @include rtl { border-left: none; border-right: 4px solid #ef4444; }
-      background: linear-gradient(135deg, var(--color-surface) 0%, rgba(239, 68, 68, 0.02) 100%);
-      
-      [data-theme="dark"] & {
-        box-shadow: 0 0 15px rgba(239, 68, 68, 0.1);
-      }
-
-      .metric-card__icon { 
-        background-color: rgba(239, 68, 68, 0.1); 
-        color: #ef4444;
-      }
-      .metric-card__value { color: #ef4444; }
     }
   }
 

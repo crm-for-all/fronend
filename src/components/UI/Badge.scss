@@ -15,41 +15,93 @@
   }
 
   &--status {
-    padding: 2px 0;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    background-color: var(--color-surface);
     color: var(--color-primary);
-    font-weight: 500;
-    
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
     // Status Dot
     &::before {
       content: '';
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background-color: currentColor;
     }
   }
 
-  @each $color in gray, blue, green, yellow, orange, red, purple, pink, teal {
-    &--tone-#{$color} {
-      &.badge--tag {
-        background-color: var(--tone-#{$color}-bg);
-        color: var(--tone-#{$color}-text);
-        border-color: var(--tone-#{$color}-border);
-      }
+  $status-colors: (
+    "gray": #6B7280,
+    "blue": #3B82F6,
+    "green": #10B981,
+    "yellow": #EAB308,
+    "orange": #F97316,
+    "red": #EF4444,
+    "purple": #8B5CF6,
+    "pink": #EC4899,
+    "teal": #14B8A6
+  );
 
-      &.badge--status {
-        &::before {
-          background-color: var(--tone-#{$color}-text);
-        }
+@each $name, $hex in $status-colors {
+  &--tone-#{$name} {
+    &.badge--tag {
+      background-color: var(--tone-#{$name}-bg);
+      color: var(--tone-#{$name}-text);
+      border-color: var(--tone-#{$name}-border);
+    }
+
+    &.badge--status {
+      border-color: rgba($hex, 0.3);
+
+      &::before {
+        background-color: #{$hex};
+        box-shadow: 0 0 6px rgba($hex, 0.5);
       }
     }
   }
+}
 
-  // Handle default statuses (legacy support)
-  &--lead { color: var(--status-lead-text); &::before { background-color: var(--status-lead-text); } }
-  &--contacted { color: var(--status-contacted-text); &::before { background-color: var(--status-contacted-text); } }
-  &--qualified { color: var(--status-qualified-text); &::before { background-color: var(--status-qualified-text); } }
-  &--customer { color: var(--status-customer-text); &::before { background-color: var(--status-customer-text); } }
-  &--inactive { color: var(--status-inactive-text); &::before { background-color: var(--status-inactive-text); } }
+// Handle default statuses (legacy support)
+&--lead {
+  color: var(--status-lead-text);
+
+  &::before {
+    background-color: var(--status-lead-text);
+  }
+}
+
+&--contacted {
+  color: var(--status-contacted-text);
+
+  &::before {
+    background-color: var(--status-contacted-text);
+  }
+}
+
+&--qualified {
+  color: var(--status-qualified-text);
+
+  &::before {
+    background-color: var(--status-qualified-text);
+  }
+}
+
+&--customer {
+  color: var(--status-customer-text);
+
+  &::before {
+    background-color: var(--status-customer-text);
+  }
+}
+
+&--inactive {
+  color: var(--status-inactive-text);
+
+  &::before {
+    background-color: var(--status-inactive-text);
+  }
+}
 }

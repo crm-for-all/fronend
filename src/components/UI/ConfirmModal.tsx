@@ -33,7 +33,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       <div style={{ padding: '16px 0', color: 'var(--color-secondary)' }}>
         <p>{message}</p>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '24px', marginTop: '24px' }}>
         <Button variant="outline" onClick={onClose} disabled={isLoading}>
           {cancelLabel || t('cancel', 'ביטול')}
         </Button>

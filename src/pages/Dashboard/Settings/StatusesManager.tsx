@@ -94,9 +94,34 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
   };
 
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [hoveredColor, setHoveredColor] = useState<StatusColor | null>(null);
+  const hoverTimeoutRef = React.useRef<number | null>(null);
+
+  const handleMouseEnter = (color: StatusColor) => {
+    if (hoverTimeoutRef.current) window.clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = window.setTimeout(() => setHoveredColor(color), 250);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) window.clearTimeout(hoverTimeoutRef.current);
+    setHoveredColor(null);
+  };
 
   const renderColorSelect = () => {
     const colors: StatusColor[] = ['gray', 'blue', 'green', 'yellow', 'orange', 'red', 'purple', 'pink', 'teal'];
+    
+    // Fixed standard hex colors so that they are totally identical in Light & Dark modes
+    const colorHexMap: Record<StatusColor, string> = {
+      gray: '#6B7280',
+      blue: '#3B82F6',
+      green: '#10B981',
+      yellow: '#EAB308',
+      orange: '#F97316',
+      red: '#EF4444',
+      purple: '#8B5CF6',
+      pink: '#EC4899',
+      teal: '#14B8A6'
+    };
     
     return (
       <div style={{ position: 'relative', width: 'fit-content' }}>
@@ -108,7 +133,7 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
             height: '40px',
             borderRadius: 'var(--radius-sm)',
             border: '2px solid var(--color-border)',
-            backgroundColor: `var(--tone-${editForm.color || 'gray'}-bg)`,
+            backgroundColor: 'var(--color-surface)',
             cursor: 'pointer',
             transition: 'all 0.2s',
             display: 'flex',
@@ -116,7 +141,7 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
             justifyContent: 'center',
           }}
         >
-          <div style={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: `var(--tone-${editForm.color || 'gray'}-text)` }} />
+          <div style={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: colorHexMap[(editForm.color as StatusColor) || 'gray'] }} />
         </button>
         
         {isColorPickerOpen && (
@@ -139,6 +164,8 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
               <button
                 key={color}
                 type="button"
+                onMouseEnter={() => handleMouseEnter(color)}
+                onMouseLeave={handleMouseLeave}
                 onClick={() => {
                   setEditForm(prev => ({ ...prev, color }));
                   setIsColorPickerOpen(false);
@@ -147,12 +174,40 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
                   width: '32px',
                   height: '32px',
                   borderRadius: 'var(--radius-sm)',
-                  backgroundColor: `var(--tone-${color}-bg)`,
-                  border: `2px solid ${editForm.color === color ? 'var(--color-primary)' : 'var(--tone-${color}-border)'}`,
+                  backgroundColor: colorHexMap[color],
+                  border: `2px solid ${editForm.color === color ? 'var(--color-primary)' : 'transparent'}`,
                   cursor: 'pointer',
                   transition: 'all 0.2s',
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-              />
+              >
+                {hoveredColor === color && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: 'calc(100% + 6px)',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: 'var(--color-primary)',
+                    color: 'var(--color-surface)',
+                    padding: '4px 8px',
+                    borderRadius: 'var(--radius-sm)',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    whiteSpace: 'nowrap',
+                    pointerEvents: 'none',
+                    zIndex: 1000,
+                    boxShadow: 'var(--shadow-md)',
+                  }}>
+                    {t(`color_${color}`, color)}
+                  </div>
+                )}
+                {editForm.color === color && (
+                  <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-surface)', borderRadius: '50%' }} />
+                )}
+              </button>
             ))}
           </div>
         )}
