@@ -154,7 +154,7 @@
     height: 40px;
     background-color: var(--color-sidebar-bg);
     border-radius: var(--radius-md);
-    color: var(--color-tertiary);
+    color: var(--tone-teal-text);
   }
 
   &__text {
@@ -376,4 +376,30 @@
     padding: 10px 0;
   }
 }
+
+.phone-copy-item {
+  transition: transform 0.2s ease;
+
+  .copy-icon-hover {
+    opacity: 0 !important;
+    transform: translateX(-4px);
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    .copy-icon-hover {
+      opacity: 1 !important;
+      transform: translateX(0);
+    }
+    
+    strong {
+      color: var(--tone-teal-text) !important;
+    }
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
 
