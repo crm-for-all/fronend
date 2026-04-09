@@ -64,7 +64,7 @@
     "phone_copied": "Телефон скопирован!",
     "export": "Экспорт",
     "export_csv": "Экспорт в CSV",
-    "export_failed": "Ошибка экспорта. Попробуйте еще раз.",
+    "export_failed": "Ошибка экспорта",
     "color_gray": "Серый",
     "color_blue": "Синий",
     "color_green": "Зеленый",
@@ -164,6 +164,7 @@
     "contract_value": "Сумма контракта",
     "debt_left": "Остаток долга",
     "customer_total_debt": "Общий долг",
-    "currency_symbol": "₪"
+    "currency_symbol": "₪",
+    "auth_rate_limit_error": "Вы пытаетесь войти слишком часто. Пожалуйста, подождите минуту и попробуйте снова."
   }
 }

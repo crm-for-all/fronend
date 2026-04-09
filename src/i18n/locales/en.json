@@ -64,7 +64,7 @@
     "phone_copied": "Phone copied!",
     "export": "Export",
     "export_csv": "Export as CSV",
-    "export_failed": "Export failed. Please try again.",
+    "export_failed": "Export failed",
     "color_gray": "Gray",
     "color_blue": "Blue",
     "color_green": "Green",
@@ -164,6 +164,7 @@
     "contract_value": "Contract Value",
     "debt_left": "Debt Left",
     "customer_total_debt": "Global Debt",
-    "currency_symbol": "₪"
+    "currency_symbol": "₪",
+    "auth_rate_limit_error": "You are trying to log in too fast. Please wait a minute and try again."
   }
 }

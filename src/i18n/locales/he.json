@@ -64,7 +64,7 @@
     "phone_copied": "הטלפון הועתק!",
     "export": "ייצוא",
     "export_csv": "ייצוא כ-CSV",
-    "export_failed": "הייצוא נכשל. נסה שוב.",
+    "export_failed": "הייצוא נכשל",
     "color_gray": "אפור",
     "color_blue": "כחול",
     "color_green": "ירוק",
@@ -164,6 +164,7 @@
     "contract_value": "שווי חוזה",
     "debt_left": "חוב לחוזה",
     "customer_total_debt": "סך חוב כולל",
-    "currency_symbol": "₪"
+    "currency_symbol": "₪",
+    "auth_rate_limit_error": "אתה מנסה להתחבר מהר מדי. אנא המתן דקה ונסה שוב."
   }
 }
