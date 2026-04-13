@@ -347,6 +347,11 @@
   font-size: 14px;
   color: var(--color-secondary);
 
+  .notes-trigger-area {
+    width: 100%;
+    cursor: default;
+  }
+
   .truncate {
     display: -webkit-box;
     -webkit-line-clamp: 2;

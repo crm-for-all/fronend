@@ -15,7 +15,9 @@ const Register = () => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [confirmEmail, setConfirmEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,8 +25,18 @@ const Register = () => {
     e.preventDefault();
     setError('');
     
+    if (email !== confirmEmail) {
+      setError(t('error_email_mismatch', 'Emails do not match.'));
+      return;
+    }
+
     if (password.length < 6) {
-      setError('Password must be at least 6 characters.');
+      setError(t('error_password_too_short', 'Password must be at least 6 characters.'));
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError(t('error_password_mismatch', 'Passwords do not match.'));
       return;
     }
 
@@ -37,7 +49,8 @@ const Register = () => {
       
       // Auto login after register
       const loginResp = await authApi.login({ email, password });
-      login(loginResp.access_token);
+      const defaultOrgId = loginResp.organizations?.[0]?.id;
+      login(loginResp.access_token, defaultOrgId);
       navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
@@ -76,10 +89,28 @@ const Register = () => {
             placeholder="user@example.com"
           />
           <Input 
+            label={t('confirm_email', 'Confirm Email')} 
+            type="email" 
+            value={confirmEmail}
+            onChange={(e) => setConfirmEmail(e.target.value)}
+            fullWidth
+            required
+            placeholder="user@example.com"
+          />
+          <Input 
             label="Password" 
             type="password" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            required
+            placeholder="••••••••"
+          />
+          <Input 
+            label={t('confirm_password', 'Confirm Password')} 
+            type="password" 
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             fullWidth
             required
             placeholder="••••••••"

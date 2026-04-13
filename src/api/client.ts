@@ -13,6 +13,12 @@ api.interceptors.request.use((config) => {
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  
+  const orgId = localStorage.getItem('crm_org_id');
+  if (orgId && config.headers) {
+    config.headers['X-Organization-Id'] = orgId;
+  }
+  
   return config;
 }, (error) => {
   return Promise.reject(error);

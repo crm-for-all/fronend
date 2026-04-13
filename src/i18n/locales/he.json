@@ -165,6 +165,11 @@
     "debt_left": "חוב לחוזה",
     "customer_total_debt": "סך חוב כולל",
     "currency_symbol": "₪",
-    "auth_rate_limit_error": "אתה מנסה להתחבר מהר מדי. אנא המתן דקה ונסה שוב."
+    "auth_rate_limit_error": "אתה מנסה להתחבר מהר מדי. אנא המתן דקה ונסה שוב.",
+    "confirm_email": "אימות דואר אלקטרוני",
+    "confirm_password": "אימות סיסמה",
+    "error_email_mismatch": "כתובות הדואר האלקטרוני אינן תואמות.",
+    "error_password_too_short": "הסיסמה חייבת להכיל לפחות 6 תווים.",
+    "error_password_mismatch": "הסיסמאות אינן תואמות."
   }
 }

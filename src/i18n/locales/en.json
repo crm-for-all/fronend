@@ -165,6 +165,11 @@
     "debt_left": "Debt Left",
     "customer_total_debt": "Global Debt",
     "currency_symbol": "₪",
-    "auth_rate_limit_error": "You are trying to log in too fast. Please wait a minute and try again."
+    "auth_rate_limit_error": "You are trying to log in too fast. Please wait a minute and try again.",
+    "confirm_email": "Confirm Email",
+    "confirm_password": "Confirm Password",
+    "error_email_mismatch": "Emails do not match.",
+    "error_password_too_short": "Password must be at least 6 characters.",
+    "error_password_mismatch": "Passwords do not match."
   }
 }

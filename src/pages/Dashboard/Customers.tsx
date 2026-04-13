@@ -12,6 +12,7 @@ import Input from '../../components/UI/Input';
 import CustomerModal from '../../components/CustomerModal/CustomerModal';
 import CustomerDetailsModal from '../../components/CustomerModal/CustomerDetailsModal';
 import { useToast } from '../../components/UI/ToastProvider';
+import NotesPopover from '../../components/UI/NotesPopover';
 import './Customers.scss';
 
 const CustomersDashboard = () => {
@@ -379,9 +380,13 @@ const CustomersDashboard = () => {
                   {primaryPhone && <span className="phone">{primaryPhone}</span>}
                 </div>
                 
-                <div className="col-notes">
-                  <span className="truncate">{customer.notes || '\u2014'}</span>
-                  {customer.notes && <span className="read-more">{t('read_more')}</span>}
+                <div className="col-notes" onClick={(e) => e.stopPropagation()}>
+                  <NotesPopover notes={customer.notes || ''}>
+                    <div className="notes-trigger-area">
+                      <span className="truncate">{customer.notes || '\u2014'}</span>
+                      {customer.notes && <span className="read-more">{t('read_more')}</span>}
+                    </div>
+                  </NotesPopover>
                 </div>
 
                 <div className="col-tags">

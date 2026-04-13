@@ -11,10 +11,17 @@ export interface LoginDTO {
   password?: string;
 }
 
+export interface OrganizationDTO {
+  id: string;
+  name: string;
+}
+
 export interface AuthResponseDTO {
   access_token: string;
   user_id: string;
   email: string;
+  name?: string;
+  organizations: OrganizationDTO[];
 }
 
 export const authApi = {
