@@ -305,10 +305,20 @@
 
     tbody tr {
       cursor: pointer;
-      &:hover {
+      &:hover:not(.expanded-row-wrapper) {
         background-color: rgba(13, 148, 136, 0.02);
       }
+      
+      &.row--expanded td {
+        border-bottom: none;
+        background-color: rgba(13, 148, 136, 0.02); // Subtle highlight for the active row
+      }
     }
+  }
+
+  .expanded-row-wrapper td {
+    padding: 0 !important;
+    background-color: var(--color-sidebar-bg); // To blend with inside accordion
   }
 
   .customer-name-cell {
@@ -466,7 +476,7 @@
       padding: 16px;
     }
 
-    tr {
+    tr:not(.expanded-row-wrapper) {
       display: flex;
       flex-direction: column;
       background-color: var(--color-surface);
@@ -476,9 +486,31 @@
       gap: 12px;
       position: relative;
 
-      &--has-debt {
+      &.row--has-debt {
         border-left: 4px solid #ef4444;
         @include rtl { border-left: none; border-right: 4px solid #ef4444; }
+      }
+
+      &.row--expanded {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: none;
+        margin-bottom: -12px; // Pull the accordion connected
+      }
+    }
+
+    tr.expanded-row-wrapper {
+      display: block;
+      background-color: var(--color-sidebar-bg);
+      border: 1px solid var(--color-border);
+      border-top: none;
+      border-bottom-left-radius: var(--radius-lg);
+      border-bottom-right-radius: var(--radius-lg);
+      padding: 0;
+      margin-top: 0;
+
+      td {
+        &::before { display: none; }
       }
     }
 

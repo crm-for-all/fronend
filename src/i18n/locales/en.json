@@ -170,6 +170,11 @@
     "confirm_password": "Confirm Password",
     "error_email_mismatch": "Emails do not match.",
     "error_password_too_short": "Password must be at least 6 characters.",
-    "error_password_mismatch": "Passwords do not match."
+    "error_password_mismatch": "Passwords do not match.",
+    "payment_timeline": "Payment Timeline",
+    "installment": "Installment",
+    "paid": "PAID",
+    "unpaid": "UNPAID",
+    "open_contract_details": "Open Contract Details"
   }
 }

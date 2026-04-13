@@ -170,6 +170,11 @@
     "confirm_password": "אימות סיסמה",
     "error_email_mismatch": "כתובות הדואר האלקטרוני אינן תואמות.",
     "error_password_too_short": "הסיסמה חייבת להכיל לפחות 6 תווים.",
-    "error_password_mismatch": "הסיסמאות אינן תואמות."
+    "error_password_mismatch": "הסיסמאות אינן תואמות.",
+    "payment_timeline": "ציר זמן תשלומים",
+    "installment": "תשלום",
+    "paid": "שולם",
+    "unpaid": "לא שולם",
+    "open_contract_details": "פתיחת פרטי חוזה"
   }
 }

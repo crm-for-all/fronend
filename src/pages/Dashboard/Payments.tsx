@@ -7,12 +7,14 @@ import {
   ChevronRight,
   TrendingUp,
   ExternalLink,
-  ChevronDown
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { financialsApi } from '../../api/financials';
 import type { PaymentReportItem, PaymentStats } from '../../types';
 import Button from '../../components/UI/Button';
 import ContractDetailsModal from '../../components/Financials/ContractDetailsModal';
+import ExpandedContractDetails from '../../components/Financials/ExpandedContractDetails';
 import { formatCurrency } from '../../utils/format';
 import './Payments.scss';
 
@@ -30,6 +32,9 @@ const Payments: React.FC = () => {
   const [sortBy, setSortBy] = useState('unpaid_first');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  // Row state
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
 
   // Modal state
   const [selectedContract, setSelectedContract] = useState<any>(null); // For contract detail view
@@ -59,7 +64,10 @@ const Payments: React.FC = () => {
   }, [page, perPage, sortBy, startDate, endDate]);
 
   const handleRowClick = (item: PaymentReportItem) => {
-    // Treat the report item as a Contract for the details modal
+    setExpandedRowId(expandedRowId === item.contract_id ? null : item.contract_id);
+  };
+
+  const handleOpenModal = (item: PaymentReportItem) => {
     const contractData = {
       id: item.contract_id, 
       title: item.contract_name, 
@@ -198,49 +206,64 @@ const Payments: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map(item => (
-                    <tr
-                      key={item.contract_id}
-                      onClick={() => handleRowClick(item)}
-                      className={item.debt_left > 0 ? 'row--has-debt' : ''}
-                    >
-                      <td data-label={t('col_customer')}>
-                        <div className="customer-name-cell">
-                          <strong>{item.customer_name}</strong>
-                        </div>
-                      </td>
-                      <td data-label={t('contract_title')}>
-                        <strong>{item.contract_name}</strong>
-                      </td>
-                      <td data-label={t('signed_at')}>
-                        <span className="date-badge-simple">{item.signed_at ? formatDateShort(item.signed_at) : '---'}</span>
-                      </td>
-                      <td data-label={t('contract_value')}>
-                        {currencySymbol}{formatCurrency(item.contract_value)}
-                      </td>
-                      <td data-label={t('debt_left')}>
-                        <span className={item.debt_left > 0 ? 'debt-amount danger' : 'debt-amount'}>
-                          {currencySymbol}{formatCurrency(item.debt_left)}
-                        </span>
-                      </td>
-                      <td data-label={t('customer_total_debt')}>
-                        <span className="debt-amount global-debt">
-                          {currencySymbol}{formatCurrency(item.customer_total_debt)}
-                        </span>
-                      </td>
-                      <td data-label={t('last_payment')}>
-                        <div className="last-payment-cell">
-                          <span className="amount">{item.last_payment_amount ? `${currencySymbol}${formatCurrency(item.last_payment_amount)}` : '---'}</span>
-                          <span className="date">{item.last_payment_at ? formatDate(item.last_payment_at) : ''}</span>
-                        </div>
-                      </td>
-                      <td className="actions-td">
-                        <Button variant="ghost" size="sm">
-                          <ExternalLink size={14} />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                  {items.map(item => {
+                    const isExpanded = expandedRowId === item.contract_id;
+                    const hasDebt = item.debt_left > 0;
+                    
+                    return (
+                      <React.Fragment key={item.contract_id}>
+                        <tr
+                          onClick={() => handleRowClick(item)}
+                          className={`${hasDebt ? 'row--has-debt' : ''} ${isExpanded ? 'row--expanded' : ''}`}
+                        >
+                          <td data-label={t('col_customer')}>
+                            <div className="customer-name-cell">
+                              <strong>{item.customer_name}</strong>
+                            </div>
+                          </td>
+                          <td data-label={t('contract_title')}>
+                            <strong>{item.contract_name}</strong>
+                          </td>
+                          <td data-label={t('signed_at')}>
+                            <span className="date-badge-simple">{item.signed_at ? formatDateShort(item.signed_at) : '---'}</span>
+                          </td>
+                          <td data-label={t('contract_value')}>
+                            {currencySymbol}{formatCurrency(item.contract_value)}
+                          </td>
+                          <td data-label={t('debt_left')}>
+                            <span className={hasDebt ? 'debt-amount danger' : 'debt-amount'}>
+                              {currencySymbol}{formatCurrency(item.debt_left)}
+                            </span>
+                          </td>
+                          <td data-label={t('customer_total_debt')}>
+                            <span className="debt-amount global-debt">
+                              {currencySymbol}{formatCurrency(item.customer_total_debt)}
+                            </span>
+                          </td>
+                          <td data-label={t('last_payment')}>
+                            <div className="last-payment-cell">
+                              <span className="amount">{item.last_payment_amount ? `${currencySymbol}${formatCurrency(item.last_payment_amount)}` : '---'}</span>
+                              <span className="date">{item.last_payment_at ? formatDate(item.last_payment_at) : ''}</span>
+                            </div>
+                          </td>
+                          <td className="actions-td">
+                            <Button variant="ghost" size="sm" className="expand-trigger">
+                              {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                            </Button>
+                          </td>
+                        </tr>
+                        <tr className="expanded-row-wrapper">
+                           <td colSpan={8} className="p-0 border-0">
+                              <ExpandedContractDetails 
+                                contract={item} 
+                                isOpen={isExpanded} 
+                                onOpenModal={() => handleOpenModal(item)} 
+                              />
+                           </td>
+                        </tr>
+                      </React.Fragment>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

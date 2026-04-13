@@ -170,6 +170,11 @@
     "confirm_password": "Подтвердите пароль",
     "error_email_mismatch": "Email-адреса не совпадают.",
     "error_password_too_short": "Пароль должен содержать не менее 6 символов.",
-    "error_password_mismatch": "Пароли не совпадают."
+    "error_password_mismatch": "Пароли не совпадают.",
+    "payment_timeline": "График платежей",
+    "installment": "Платеж",
+    "paid": "ОПЛАЧЕНО",
+    "unpaid": "НЕ ОПЛАЧЕНО",
+    "open_contract_details": "Открыть детали контракта"
   }
 }

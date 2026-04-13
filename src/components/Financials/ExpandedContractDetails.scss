@@ -1,0 +1,174 @@
+.expanded-contract-details {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  background: var(--color-sidebar-bg);
+
+  &.open {
+    grid-template-rows: 1fr;
+  }
+
+  &__inner {
+    min-height: 0;
+    padding: 0 24px;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.3s ease-out 0.1s, transform 0.3s ease-out 0.1s, padding 0.3s;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-sizing: border-box;
+  }
+  
+  &.open &__inner {
+    opacity: 1;
+    transform: translateY(0);
+    padding: 24px;
+  }
+}
+
+.timeline-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-secondary);
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+.timeline-loading,
+.timeline-empty {
+  padding: 20px 0;
+  color: var(--color-muted);
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 500px;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  position: relative;
+  
+  &__icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--status-customer-text);
+    
+    svg {
+      fill: var(--status-customer-bg);
+      background: white;
+      border-radius: 50%;
+      z-index: 2;
+    }
+  }
+
+  &--pending &__icon {
+    color: var(--color-muted);
+    svg {
+      fill: transparent;
+    }
+  }
+
+  .timeline-line {
+    position: absolute;
+    top: 20px;
+    bottom: -20px;
+    left: 7px;
+    width: 2px;
+    background: var(--color-border);
+    z-index: 1;
+  }
+  
+  &:last-child .timeline-line {
+    display: none;
+  }
+
+  &__content {
+    flex: 1;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  &--pending &__content {
+    background: transparent;
+    border-style: dashed;
+    box-shadow: none;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    
+    .installment-num {
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+    
+    .installment-amount {
+      font-weight: 700;
+      color: var(--status-customer-text);
+      
+      &.pending {
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  &__meta {
+    font-size: 12px;
+    color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    
+    .status-badge {
+      font-weight: 600;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      
+      &.paid {
+        background: var(--status-customer-bg);
+        color: var(--status-customer-text);
+      }
+      &.pending {
+        background: var(--color-border);
+        color: var(--color-secondary);
+      }
+    }
+  }
+}
+
+.actions-section {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 8px;
+  
+  .open-contract-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    @media (max-width: 640px) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
