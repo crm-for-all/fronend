@@ -13,7 +13,7 @@ const NotesPopover: React.FC<NotesPopoverProps> = ({ notes, children }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [coords, setCoords] = useState<{ top: number; left: number; width: number; direction: 'top' | 'bottom' } | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<any>(null);
 
   const calculatePosition = () => {
     if (triggerRef.current) {

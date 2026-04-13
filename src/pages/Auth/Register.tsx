@@ -51,7 +51,7 @@ const Register = () => {
       const loginResp = await authApi.login({ email, password });
       const defaultOrgId = loginResp.organizations?.[0]?.id;
       login(loginResp.access_token, defaultOrgId);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {

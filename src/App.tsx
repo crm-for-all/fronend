@@ -23,35 +23,41 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/" element={
+      
+      <Route path="/dashboard" element={
         <ProtectedRoute>
           <Layout>
             <Dashboard />
           </Layout>
         </ProtectedRoute>
       } />
-      <Route path="/customers" element={
+      
+      <Route path="/dashboard/customers" element={
         <ProtectedRoute>
           <Layout>
             <CustomersDashboard />
           </Layout>
         </ProtectedRoute>
       } />
-      <Route path="/payments" element={
+      
+      <Route path="/dashboard/payments" element={
         <ProtectedRoute>
           <Layout>
             <Payments />
           </Layout>
         </ProtectedRoute>
       } />
-      <Route path="/settings" element={
+      
+      <Route path="/dashboard/settings" element={
         <ProtectedRoute>
           <Layout>
             <SettingsDashboard />
           </Layout>
         </ProtectedRoute>
       } />
-      <Route path="*" element={<Navigate to="/" replace />} />
+
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }

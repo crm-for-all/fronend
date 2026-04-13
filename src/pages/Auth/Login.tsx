@@ -27,7 +27,7 @@ const Login = () => {
       const resp = await authApi.login({ email, password });
       const defaultOrgId = resp.organizations?.[0]?.id;
       login(resp.access_token, defaultOrgId);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {

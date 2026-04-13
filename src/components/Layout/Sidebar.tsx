@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <nav className="sidebar__nav">
           <div className="sidebar__nav-links">
             <NavLink
-              to="/"
+              to="/dashboard"
               end
               onClick={onClose}
               className={({ isActive }) =>
@@ -45,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </NavLink>
 
             <NavLink
-              to="/customers"
+              to="/dashboard/customers"
               onClick={onClose}
               className={({ isActive }) =>
                 clsx('sidebar__link', { 'sidebar__link--active': isActive })
@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </NavLink>
 
             <NavLink
-              to="/payments"
+              to="/dashboard/payments"
               onClick={onClose}
               className={({ isActive }) =>
                 clsx('sidebar__link', { 'sidebar__link--active': isActive })
@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           <div className="sidebar__footer">
             <NavLink
-              to="/settings"
+              to="/dashboard/settings"
               onClick={onClose}
               className={({ isActive }) =>
                 clsx('sidebar__link', { 'sidebar__link--active': isActive })
