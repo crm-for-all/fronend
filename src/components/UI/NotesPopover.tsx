@@ -28,7 +28,7 @@ const NotesPopover: React.FC<NotesPopoverProps> = ({ notes, children }) => {
       }
 
       const spaceBelow = window.innerHeight - rect.bottom;
-      const direction = spaceBelow < popoverMaxHeight ? 'top' : 'bottom';
+      const direction: 'top' | 'bottom' = spaceBelow < popoverMaxHeight ? 'top' : 'bottom';
       
       const top = direction === 'bottom' 
         ? rect.bottom + window.scrollY 
