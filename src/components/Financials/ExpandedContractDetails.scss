@@ -61,16 +61,32 @@
   position: relative;
   
   &__icon {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     color: var(--status-customer-text);
+    width: 20px;
+    flex-shrink: 0;
     
     svg {
       fill: var(--status-customer-bg);
       background: white;
       border-radius: 50%;
       z-index: 2;
+      position: relative;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: calc(100% + 16px);
+      background: var(--color-border);
+      z-index: 1;
     }
   }
 
@@ -80,18 +96,8 @@
       fill: transparent;
     }
   }
-
-  .timeline-line {
-    position: absolute;
-    top: 20px;
-    bottom: -20px;
-    left: 7px;
-    width: 2px;
-    background: var(--color-border);
-    z-index: 1;
-  }
   
-  &:last-child .timeline-line {
+  &:last-child &__icon .timeline-line {
     display: none;
   }
 

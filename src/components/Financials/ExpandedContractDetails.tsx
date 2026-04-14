@@ -62,7 +62,7 @@ const ExpandedContractDetails: React.FC<ExpandedContractDetailsProps> = ({
                 <div key={payment.id} className="timeline-item">
                   <div className="timeline-item__icon">
                     <CheckCircle2 size={16} />
-                    {index < payments.length - 1 && <div className="timeline-line"></div>}
+                    <div className="timeline-line"></div>
                   </div>
                   <div className="timeline-item__content">
                     <div className="timeline-item__header">
