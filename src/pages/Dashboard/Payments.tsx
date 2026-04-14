@@ -6,7 +6,6 @@ import {
   ChevronLeft,
   ChevronRight,
   TrendingUp,
-  ExternalLink,
   ChevronDown,
   ChevronUp
 } from 'lucide-react';
