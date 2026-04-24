@@ -48,8 +48,6 @@ const Onboarding = () => {
           <OrgDetailsStep
             data={data}
             updateData={updateData}
-            onNext={nextStep}
-            onBack={prevStep}
           />
         );
       case 3:
@@ -57,8 +55,6 @@ const Onboarding = () => {
           <PlanSelectionStep
             data={data}
             updateData={updateData}
-            onNext={nextStep}
-            onBack={prevStep}
           />
         );
       case 4:
@@ -66,8 +62,6 @@ const Onboarding = () => {
           <StatusesSetupStep
             data={data}
             updateData={updateData}
-            onNext={nextStep}
-            onBack={prevStep}
           />
         );
       case 5:
@@ -75,8 +69,6 @@ const Onboarding = () => {
           <TagsSetupStep
             data={data}
             updateData={updateData}
-            onNext={nextStep}
-            onBack={prevStep}
           />
         );
       case 6:
