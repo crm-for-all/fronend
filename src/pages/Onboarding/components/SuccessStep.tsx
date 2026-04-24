@@ -17,7 +17,6 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ data }) => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   const [setupResponse, setSetupResponse] = useState<any>(null);
 
@@ -34,7 +33,6 @@ const SuccessStep: React.FC<SuccessStepProps> = ({ data }) => {
       });
       
       setSetupResponse(response);
-      setIsSuccess(true);
     } catch (err: any) {
       console.error(err);
       setError(err.response?.data?.message || t('onboarding.error_creating_org'));

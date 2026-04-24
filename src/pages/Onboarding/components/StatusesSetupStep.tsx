@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, X, Palette } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import Input from '../../../components/UI/Input';
 import Button from '../../../components/UI/Button';
 import ColorPicker from '../../../components/UI/ColorPicker';
@@ -10,8 +10,6 @@ import { type StatusColor } from '../../../types';
 interface StatusesSetupStepProps {
   data: OnboardingData;
   updateData: (newData: Partial<OnboardingData>) => void;
-  onNext: () => void;
-  onBack: () => void;
 }
 
 const DEFAULT_STATUSES: { key: string; color: StatusColor }[] = [
@@ -24,8 +22,6 @@ const DEFAULT_STATUSES: { key: string; color: StatusColor }[] = [
 const StatusesSetupStep: React.FC<StatusesSetupStepProps> = ({
   data,
   updateData,
-  onNext,
-  onBack,
 }) => {
   const { t } = useTranslation();
   const [newStatusName, setNewStatusName] = useState('');

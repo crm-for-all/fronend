@@ -8,8 +8,6 @@ import { type OnboardingData } from '../types';
 interface TagsSetupStepProps {
   data: OnboardingData;
   updateData: (newData: Partial<OnboardingData>) => void;
-  onNext: () => void;
-  onBack: () => void;
 }
 
 const SUGGESTED_TAG_KEYS = ['tag_vip', 'tag_urgent', 'tag_wholesale', 'tag_interested', 'tag_partner'];
@@ -17,8 +15,6 @@ const SUGGESTED_TAG_KEYS = ['tag_vip', 'tag_urgent', 'tag_wholesale', 'tag_inter
 const TagsSetupStep: React.FC<TagsSetupStepProps> = ({
   data,
   updateData,
-  onNext,
-  onBack,
 }) => {
   const { t } = useTranslation();
   const [newTagName, setNewTagName] = useState('');

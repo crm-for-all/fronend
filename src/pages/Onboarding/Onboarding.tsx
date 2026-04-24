@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+// ... modules ...
 import WelcomeStep from './components/WelcomeStep';
 import OrgDetailsStep from './components/OrgDetailsStep';
 import PlanSelectionStep from './components/PlanSelectionStep';
@@ -15,8 +14,6 @@ import './Onboarding.scss';
 
 const Onboarding = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { logout } = useAuth();
 
   const [step, setStep] = useState(1);
   const [data, setData] = useState<OnboardingData>({

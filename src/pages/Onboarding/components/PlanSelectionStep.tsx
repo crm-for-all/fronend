@@ -8,15 +8,11 @@ import { type OnboardingData } from '../types';
 interface PlanSelectionStepProps {
   data: OnboardingData;
   updateData: (newData: Partial<OnboardingData>) => void;
-  onNext: () => void;
-  onBack: () => void;
 }
 
 const PlanSelectionStep: React.FC<PlanSelectionStepProps> = ({
   data,
   updateData,
-  onNext,
-  onBack,
 }) => {
   const { t } = useTranslation();
 

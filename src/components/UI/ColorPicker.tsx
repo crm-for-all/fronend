@@ -35,22 +35,34 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ value, onChange }) => {
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const pickerHeight = 170; // Estimated height including padding and gap
+      const viewportWidth = window.innerWidth;
+      const pickerHeight = 170; 
+      const pickerWidth = 160;
+      
       const spaceBelow = viewportHeight - rect.bottom;
+      const spaceAbove = rect.top;
       
       let top;
-      if (spaceBelow < pickerHeight + 20) {
-        // Open above if there's no space below
-        top = rect.top + window.scrollY - 160; // Picker height is roughly 152px
+      if (spaceBelow < pickerHeight + 20 && spaceAbove > pickerHeight + 20) {
+        // Open above if more space there
+        top = rect.top + window.scrollY - pickerHeight - 8;
       } else {
-        // Open below
+        // Default to open below
         top = rect.bottom + window.scrollY + 8;
       }
 
-      setCoords({
-        top,
-        left: rect.right + window.scrollX - 160,
-      });
+      // Horizontal smart positioning
+      let left = rect.left + window.scrollX;
+      
+      // If picker goes off-screen to the right, align its right edge with trigger's right edge
+      if (left + pickerWidth > viewportWidth - 20) {
+        left = rect.right + window.scrollX - pickerWidth;
+      }
+      
+      // Safety check for left edge
+      left = Math.max(10, left);
+
+      setCoords({ top, left });
     }
   };
 

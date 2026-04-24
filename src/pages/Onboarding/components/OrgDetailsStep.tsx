@@ -1,25 +1,18 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Input from '../../../components/UI/Input';
-import Button from '../../../components/UI/Button';
 import { type OnboardingData } from '../types';
 
 interface OrgDetailsStepProps {
   data: OnboardingData;
   updateData: (newData: Partial<OnboardingData>) => void;
-  onNext: () => void;
-  onBack: () => void;
 }
 
 const OrgDetailsStep: React.FC<OrgDetailsStepProps> = ({
   data,
   updateData,
-  onNext,
-  onBack,
 }) => {
   const { t } = useTranslation();
-
-  const isInvalid = data.orgName.trim().length < 2;
 
   return (
     <div className="step-container">
