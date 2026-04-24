@@ -1,0 +1,259 @@
+.onboarding-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-neutral);
+  background-image: radial-gradient(circle at center, rgba(30, 58, 138, 0.15) 0%, transparent 70%);
+  color: var(--color-primary);
+  transition: all 0.3s ease;
+  padding: 48px 64px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  @media (max-width: 768px) {
+    padding: 24px 16px;
+  }
+
+  &__header {
+    background: transparent;
+    padding-bottom: var(--spacing-xl);
+    width: 100%;
+  }
+
+  &__header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+    span {
+      color: var(--color-secondary);
+      font-weight: 500;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 40px; // Very generous gap for high-end look
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-muted);
+    border: 2px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 0;
+  }
+
+  &__container {
+    width: 100%;
+    max-width: 1100px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: var(--spacing-3xl);
+  }
+
+  &__stepper-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: 48px; // Clear separation from header
+    margin-bottom: var(--spacing-3xl);
+    width: 100%;
+    max-width: 800px;
+  }
+
+  &__stepper {
+    display: flex;
+    gap: var(--spacing-sm);
+    width: 100%;
+  }
+
+  &__step-indicator {
+    height: 6px;
+    flex: 1;
+    border-radius: 3px;
+    background: var(--color-muted);
+    opacity: 0.6; // Slightly dimmed for non-visited steps
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &.active {
+      background: #3b82f6; // Vibrant blue from mockup
+      box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+      opacity: 1;
+    }
+
+    &.completed {
+      background: #3b82f6;
+      opacity: 1;
+    }
+  }
+
+  &__step-info {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    text-transform: capitalize;
+    span {
+      color: var(--color-primary);
+    }
+  }
+
+  &__content {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    z-index: 10;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: var(--spacing-2xl);
+    border-top: 1px solid var(--color-border);
+    width: 100%;
+    background: var(--color-neutral);
+    position: relative;
+    z-index: 5;
+  }
+}
+
+@keyframes fadeInScale {
+  from { 
+    opacity: 0; 
+    transform: scale(0.96); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+/* Step Layout Utilities */
+.step-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 80px; // Very large gap to separate title and cards
+  text-align: center;
+  width: 100%;
+}
+
+.step-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.step-title {
+  font-size: 4rem; // Even larger for premium feel
+  font-weight: 800;
+  margin: 0;
+  color: var(--color-primary);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.step-subtitle {
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 12px; // Fixed 12px gap between cards
+  width: 100%;
+  padding: 0 var(--spacing-xl);
+}
+
+@media (max-width: 768px) {
+  .onboarding-page {
+    &__main {
+      padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    &__stepper-wrapper {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    &__logo {
+      font-size: 1.25rem;
+    }
+
+    &__actions {
+      gap: var(--spacing-md);
+    }
+  }
+
+  .step-container {
+    gap: 40px; // Half of desktop gap for mobile
+  }
+
+  .step-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .step-subtitle {
+    font-size: 1.1rem;
+    padding: 0 var(--spacing-md);
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr;
+    padding: 0 var(--spacing-sm);
+    gap: 20px;
+  }
+}
+
+.hover-red-bg:hover {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+  opacity: 1 !important;
+}
+
+.status-row-item:hover {
+  background: rgba(var(--color-surface-rgb, 255, 255, 255), 0.1) !important;
+  border-color: var(--color-tertiary) !important;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+

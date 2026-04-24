@@ -3,7 +3,7 @@
   --color-primary: #1E293B; // Slate 800 - Headlines, main strong text
   --color-secondary: #475569; // Slate 600 - Body text, softer borders
   --color-tertiary: #0D9488; // Teal 600 - Accents, some active states
-  --color-neutral: #F8FAFC; // Slate 50 - Main background
+  --color-neutral: #f0f4f8; // Deepened for better contrast against white surfaces
   
   --color-surface: #FFFFFF; // Cards, Modals, inner backgrounds
   --color-border: #E2E8F0; // Slate 200 - General borders
@@ -54,7 +54,7 @@
   --color-tertiary: #334155; // Slate 700 - Subdued panels, borders
   --color-neutral: #0F172A; // Slate 900 - Main background
   
-  --color-surface: #1E293B; // Slate 800 - Cards, Modals
+  --color-surface: #263345; // Slightly lighter for better contrast against #0F172A
   --color-border: #334155; // Slate 700
   --color-muted: #475569; // Slate 600
   --color-inverted-text: #0F172A; // Text on bright elements (like primary buttons)

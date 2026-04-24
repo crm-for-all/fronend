@@ -11,10 +11,29 @@ import CustomersDashboard from './pages/Dashboard/Customers';
 import SettingsDashboard from './pages/Dashboard/Settings';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Payments from './pages/Dashboard/Payments';
+import Onboarding from './pages/Onboarding/Onboarding';
 
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated } = useAuth();
+const ProtectedRoute = ({ children, allowWithoutOrg = false }: { children: React.ReactNode, allowWithoutOrg?: boolean }) => {
+  const { isAuthenticated, isInitializing, hasOrganizations } = useAuth();
+  
+  if (isInitializing) {
+    return (
+      <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) return <Navigate to="/login" replace />;
+  
+  if (!allowWithoutOrg && hasOrganizations === false) {
+    return <Navigate to="/onboarding" replace />;
+  }
+
+  if (allowWithoutOrg && hasOrganizations === true) {
+     return <Navigate to="/dashboard" replace />;
+  }
+
   return <>{children}</>;
 };
 
@@ -24,6 +43,12 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       
+      <Route path="/onboarding" element={
+        <ProtectedRoute allowWithoutOrg>
+          <Onboarding />
+        </ProtectedRoute>
+      } />
+
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Layout>

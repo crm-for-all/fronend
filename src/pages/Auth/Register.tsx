@@ -6,6 +6,7 @@ import { authApi } from '../../api/auth';
 import Card from '../../components/UI/Card';
 import Input from '../../components/UI/Input';
 import Button from '../../components/UI/Button';
+import ThemeLanguageSwitcher from '../../components/UI/ThemeLanguageSwitcher';
 import './Auth.scss';
 
 const Register = () => {
@@ -49,8 +50,7 @@ const Register = () => {
       
       // Auto login after register
       const loginResp = await authApi.login({ email, password });
-      const defaultOrgId = loginResp.organizations?.[0]?.id;
-      login(loginResp.access_token, defaultOrgId);
+      login(loginResp.access_token, loginResp.organizations);
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
@@ -61,6 +61,9 @@ const Register = () => {
 
   return (
     <div className="auth-page">
+      <div className="auth-page__top-controls">
+        <ThemeLanguageSwitcher />
+      </div>
       <Card className="auth-page__card">
         <div className="auth-page__header">
           <h1>{t('register')}</h1>

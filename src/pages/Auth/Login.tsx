@@ -6,6 +6,7 @@ import { authApi } from '../../api/auth';
 import Card from '../../components/UI/Card';
 import Input from '../../components/UI/Input';
 import Button from '../../components/UI/Button';
+import ThemeLanguageSwitcher from '../../components/UI/ThemeLanguageSwitcher';
 import './Auth.scss';
 
 const Login = () => {
@@ -25,8 +26,7 @@ const Login = () => {
 
     try {
       const resp = await authApi.login({ email, password });
-      const defaultOrgId = resp.organizations?.[0]?.id;
-      login(resp.access_token, defaultOrgId);
+      login(resp.access_token, resp.organizations);
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
@@ -37,6 +37,9 @@ const Login = () => {
 
   return (
     <div className="auth-page">
+      <div className="auth-page__top-controls">
+        <ThemeLanguageSwitcher />
+      </div>
       <Card className="auth-page__card">
         <div className="auth-page__header">
           <h1>{t('login')}</h1>

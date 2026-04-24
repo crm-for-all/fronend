@@ -1,0 +1,176 @@
+.option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-2xl);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  background: var(--color-surface);
+  border: 2px solid #cbd5e1; // Bolder 2px border for maximum clarity in light mode
+  border-radius: var(--radius-xl);
+  text-align: center;
+  min-height: 340px; 
+  height: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  
+  [data-theme="dark"] & {
+    background: #1e293b; // Explicit surface for dark mode
+    border-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+
+  &:hover:not(.option-card--disabled) {
+    border-color: var(--color-success, #10b981);
+    box-shadow: 0 10px 40px -12px rgba(16, 185, 129, 0.25);
+    background: var(--color-surface);
+    
+    [data-theme="dark"] & {
+      box-shadow: 0 10px 40px rgba(16, 185, 129, 0.2);
+    }
+  }
+
+  &--selected {
+    border-color: var(--color-success, #10b981);
+    background: rgba(16, 185, 129, 0.05);
+
+    [data-theme="dark"] & {
+      background: rgba(16, 185, 129, 0.1);
+    }
+  }
+
+  &__selected-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex: 1; /* Occupies the flexible space in the content div */
+    z-index: 10;
+  }
+
+  &__check {
+    width: 48px;
+    height: 48px;
+    background: var(--color-success, #10b981);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    animation: scaleCheck 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background: var(--color-neutral);
+    border-color: transparent;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-lg);
+    background: transparent;
+    color: #3b82f6;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.01em;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-secondary);
+    line-height: 1.6;
+  }
+
+  &__footer {
+    margin-top: auto; // Pushes footer to the bottom
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: var(--spacing-lg);
+    pointer-events: none; // Let clicks drop through to the card itself
+
+    button {
+      width: 100%;
+      height: 56px; // Taller, more professional click area
+      font-size: 1.1rem; // Larger text
+      font-weight: 700;
+      border-radius: var(--radius-lg);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: var(--spacing-md);
+    inset-inline-end: var(--spacing-md);
+  }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+
+@keyframes scaleCheck {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .option-card {
+    min-height: auto; // Let content decide height on mobile
+    padding: var(--spacing-xl);
+    gap: var(--spacing-lg);
+
+    &__icon {
+      width: 60px;
+      height: 60px;
+      svg { width: 32px; height: 32px; }
+    }
+
+    &__title {
+      font-size: 1.25rem;
+    }
+
+    &__description {
+      font-size: 0.95rem;
+    }
+
+    &__footer button {
+      height: 48px;
+      font-size: 1rem;
+    }
+  }
+}

@@ -5,6 +5,7 @@ import Button from '../../../components/UI/Button';
 import Input from '../../../components/UI/Input';
 import Badge from '../../../components/UI/Badge';
 import ConfirmModal from '../../../components/UI/ConfirmModal';
+import ColorPicker from '../../../components/UI/ColorPicker';
 import { statusesApi } from '../../../api/statuses';
 import type { Status, StatusColor } from '../../../types';
 
@@ -93,127 +94,7 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
     }
   };
 
-  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  const [hoveredColor, setHoveredColor] = useState<StatusColor | null>(null);
-  const hoverTimeoutRef = React.useRef<number | null>(null);
-
-  const handleMouseEnter = (color: StatusColor) => {
-    if (hoverTimeoutRef.current) window.clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = window.setTimeout(() => setHoveredColor(color), 250);
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) window.clearTimeout(hoverTimeoutRef.current);
-    setHoveredColor(null);
-  };
-
-  const renderColorSelect = () => {
-    const colors: StatusColor[] = ['gray', 'blue', 'green', 'yellow', 'orange', 'red', 'purple', 'pink', 'teal'];
-    
-    // Fixed standard hex colors so that they are totally identical in Light & Dark modes
-    const colorHexMap: Record<StatusColor, string> = {
-      gray: '#6B7280',
-      blue: '#3B82F6',
-      green: '#10B981',
-      yellow: '#EAB308',
-      orange: '#F97316',
-      red: '#EF4444',
-      purple: '#8B5CF6',
-      pink: '#EC4899',
-      teal: '#14B8A6'
-    };
-    
-    return (
-      <div style={{ position: 'relative', width: 'fit-content' }}>
-        <button
-          type="button"
-          onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
-          style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: 'var(--radius-sm)',
-            border: '2px solid var(--color-border)',
-            backgroundColor: 'var(--color-surface)',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div style={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: colorHexMap[(editForm.color as StatusColor) || 'gray'] }} />
-        </button>
-        
-        {isColorPickerOpen && (
-          <div style={{
-            position: 'absolute',
-            top: '100%',
-            insetInlineEnd: 0,
-            marginTop: '8px',
-            padding: '8px',
-            background: 'var(--color-surface)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            boxShadow: 'var(--shadow-lg)',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '8px',
-            zIndex: 100,
-          }}>
-            {colors.map(color => (
-              <button
-                key={color}
-                type="button"
-                onMouseEnter={() => handleMouseEnter(color)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => {
-                  setEditForm(prev => ({ ...prev, color }));
-                  setIsColorPickerOpen(false);
-                }}
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: colorHexMap[color],
-                  border: `2px solid ${editForm.color === color ? 'var(--color-primary)' : 'transparent'}`,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  position: 'relative',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                {hoveredColor === color && (
-                  <div style={{
-                    position: 'absolute',
-                    bottom: 'calc(100% + 6px)',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'var(--color-surface)',
-                    padding: '4px 8px',
-                    borderRadius: 'var(--radius-sm)',
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    whiteSpace: 'nowrap',
-                    pointerEvents: 'none',
-                    zIndex: 1000,
-                    boxShadow: 'var(--shadow-md)',
-                  }}>
-                    {t(`color_${color}`, color)}
-                  </div>
-                )}
-                {editForm.color === color && (
-                  <div style={{ width: '8px', height: '8px', backgroundColor: 'var(--color-surface)', borderRadius: '50%' }} />
-                )}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  // Replaced renderColorSelect with ColorPicker component
 
   if (isLoading) return <div>{t('loading', 'טוען...')}</div>;
 
@@ -239,7 +120,10 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
                 />
               </div>
               <div style={{ paddingBottom: '4px' }}>
-                {renderColorSelect()}
+                <ColorPicker 
+                  value={editForm.color as StatusColor || 'gray'} 
+                  onChange={(color) => setEditForm((prev: any) => ({ ...prev, color }))} 
+                />
               </div>
             </div>
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
@@ -263,7 +147,10 @@ const StatusesManager: React.FC<StatusesManagerProps> = ({ setIsDirty }) => {
                     />
                   </div>
                   <div style={{ paddingBottom: '4px' }}>
-                    {renderColorSelect()}
+                    <ColorPicker 
+                      value={editForm.color as StatusColor || 'gray'} 
+                      onChange={(color) => setEditForm((prev: any) => ({ ...prev, color }))} 
+                    />
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
