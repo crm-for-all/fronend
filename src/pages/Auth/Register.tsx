@@ -51,7 +51,13 @@ const Register = () => {
       // Auto login after register
       const loginResp = await authApi.login({ email, password });
       login(loginResp.access_token, loginResp.organizations);
-      navigate('/dashboard');
+      
+      const redirectUrl = sessionStorage.getItem('redirect_after_auth');
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {

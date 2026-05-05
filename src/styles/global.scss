@@ -73,3 +73,29 @@ input, textarea {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Hover Utilities */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+.hover-card {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border: 1px solid var(--color-border) !important;
+
+  &:hover {
+    border-color: var(--color-primary) !important;
+    background-color: var(--color-surface-hover) !important;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+}

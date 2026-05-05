@@ -12,6 +12,7 @@ import SettingsDashboard from './pages/Dashboard/Settings';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Payments from './pages/Dashboard/Payments';
 import Onboarding from './pages/Onboarding/Onboarding';
+import AcceptInvite from './pages/Invite/AcceptInvite';
 
 const ProtectedRoute = ({ children, allowWithoutOrg = false }: { children: React.ReactNode, allowWithoutOrg?: boolean }) => {
   const { isAuthenticated, isInitializing, hasOrganizations } = useAuth();
@@ -42,6 +43,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/invite" element={<AcceptInvite />} />
       
       <Route path="/onboarding" element={
         <ProtectedRoute allowWithoutOrg>

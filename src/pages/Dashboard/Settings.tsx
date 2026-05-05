@@ -5,9 +5,11 @@ import Card from '../../components/UI/Card';
 import SettingsMenu from './Settings/SettingsMenu';
 import TagsManager from './Settings/TagsManager';
 import StatusesManager from './Settings/StatusesManager';
+import OrganizationManager from './Settings/OrganizationManager';
+import InviteManager from './Settings/InviteManager';
 import ConfirmModal from '../../components/UI/ConfirmModal';
 
-type SettingsView = 'main' | 'tags' | 'statuses';
+type SettingsView = 'main' | 'tags' | 'statuses' | 'organization' | 'invite';
 
 const SettingsDashboard = () => {
   const { t, i18n } = useTranslation();
@@ -64,12 +66,33 @@ const SettingsDashboard = () => {
               <span>{t('settings_statuses', 'ניהול סטטוסים')}</span>
             </>
           )}
+
+          {(view === 'organization' || view === 'invite') && (
+            <>
+              <ChevronIcon size={24} style={{ opacity: 0.5 }} />
+              <span 
+                onClick={() => handleNavigate('organization')}
+                style={{ cursor: view !== 'organization' ? 'pointer' : 'default', opacity: view !== 'organization' ? 0.6 : 1, transition: 'opacity 0.2s' }}
+              >
+                {t('settings_organization', 'הגדרות ארגון')}
+              </span>
+            </>
+          )}
+
+          {view === 'invite' && (
+            <>
+              <ChevronIcon size={24} style={{ opacity: 0.5 }} />
+              <span>{t('invite_members', 'הזמנת חברים')}</span>
+            </>
+          )}
         </div>
         
         <p style={{ color: 'var(--color-secondary)' }}>
           {view === 'main' && t('settings_subtitle', 'נהל את הגדרות ה-CRM והחשבון שלך.')}
           {view === 'tags' && t('settings_tags_desc', 'הוסף, ערוך ומחק תגיות לשימוש בסיווג לקוחות.')}
           {view === 'statuses' && t('settings_statuses_desc', 'צור ונהל סטטוסים דינמיים ובחר להם צבעים מותאמים.')}
+          {view === 'organization' && t('settings_organization_desc', 'נהל את רשימת החברים והזמנות לארגון')}
+          {view === 'invite' && t('invite.create_title', 'Create an invite to your organization')}
         </p>
       </div>
 
@@ -87,6 +110,18 @@ const SettingsDashboard = () => {
       {view === 'statuses' && (
         <Card>
           <StatusesManager setIsDirty={setIsDirty} />
+        </Card>
+      )}
+
+      {view === 'organization' && (
+        <Card>
+          <OrganizationManager onNavigate={handleNavigate} />
+        </Card>
+      )}
+
+      {view === 'invite' && (
+        <Card>
+          <InviteManager />
         </Card>
       )}
 

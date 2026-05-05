@@ -1,10 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tags, Activity, UserCircle } from 'lucide-react';
+import { Tags, Activity, UserCircle, Building2 } from 'lucide-react';
 import Card from '../../../components/UI/Card';
 
 interface SettingsMenuProps {
-  onSelect: (view: 'main' | 'tags' | 'statuses') => void;
+  onSelect: (view: 'main' | 'tags' | 'statuses' | 'organization') => void;
 }
 
 const SettingsMenu: React.FC<SettingsMenuProps> = ({ onSelect }) => {
@@ -46,6 +46,24 @@ const SettingsMenu: React.FC<SettingsMenuProps> = ({ onSelect }) => {
         </div>
         <p style={{ color: 'var(--color-secondary)', margin: 0 }}>
           {t('settings_statuses_desc', 'צור ונהל סטטוסים דינמיים ובחר להם צבעים מותאמים.')}
+        </p>
+      </Card>
+
+      <Card 
+        onClick={() => onSelect('organization')} 
+        style={{ cursor: 'pointer', transition: 'transform 0.2s', border: '1px solid transparent' }}
+        className="settings-card hover-lift"
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+          <div style={{ padding: '12px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-primary)', color: 'var(--color-surface)', display: 'flex' }}>
+            <Building2 size={24} />
+          </div>
+          <h3 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-primary)', margin: 0 }}>
+            {t('settings_organization', 'הגדרות ארגון')}
+          </h3>
+        </div>
+        <p style={{ color: 'var(--color-secondary)', margin: 0 }}>
+          {t('settings_organization_desc', 'נהל את רשימת החברים והזמנות לארגון')}
         </p>
       </Card>
 

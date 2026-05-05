@@ -27,7 +27,13 @@ const Login = () => {
     try {
       const resp = await authApi.login({ email, password });
       login(resp.access_token, resp.organizations);
-      navigate('/dashboard');
+      
+      const redirectUrl = sessionStorage.getItem('redirect_after_auth');
+      if (redirectUrl) {
+        navigate(redirectUrl);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
